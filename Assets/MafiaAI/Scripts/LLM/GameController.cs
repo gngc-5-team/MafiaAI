@@ -71,8 +71,32 @@ namespace MafiaAI.LLM
             if (State == null || HumanPlayer == null || !HumanPlayer.Alive) return;
             if (!Rooms.Contains(room)) return;
             _locations[HumanPlayer.Id] = room;
-            Emit(LogKind.System, "SYSTEM", HumanPlayer.Id + " 이(가) " + room + "으로 이동했다.");
+            // 밤(공간 사냥) 중 이동은 로그로 노출하지 않는다(은밀함 유지).
+            if (State.Phase == Phase.Discuss)
+                Emit(LogKind.System, "SYSTEM", HumanPlayer.Id + " 이(가) " + room + "으로 이동했다.");
             OnLocationsChanged?.Invoke();
+        }
+
+        /// <summary>인간 마피아가 밤에 직접 살해할 수 있는 대상(생존 비마피아). 마피아가 아니면 빈 목록.</summary>
+        public List<string> NightKillCandidates()
+        {
+            if (State == null || HumanPlayer == null || !HumanPlayer.Alive || HumanPlayer.Role != Role.Mafia)
+                return new List<string>();
+            return State.Alive.Where(x => x.Role != Role.Mafia).Select(x => x.Id).ToList();
+        }
+
+        /// <summary>뷰가 호출: 접근한 대상을 이번 밤 살해 대상으로 확정한다(사망은 새벽에 정산·공개).</summary>
+        public bool TrySubmitNightKill(string targetId)
+        {
+            if (State == null || State.Phase != Phase.Night) return false;
+            if (HumanPlayer == null || !HumanPlayer.Alive || HumanPlayer.Role != Role.Mafia) return false;
+            if (string.IsNullOrEmpty(targetId) || !NightKillCandidates().Contains(targetId)) return false;
+            if (_actors.TryGetValue(HumanPlayer.Id, out var a) && a is HumanActor ha)
+            {
+                ha.SubmitChoice(targetId);
+                return true;
+            }
+            return false;
         }
 
         public void SubmitHumanMessage(string text, string target)
@@ -137,7 +161,11 @@ namespace MafiaAI.LLM
                 var hp = State.Players[hs];
                 hp.IsHuman = true;
                 HumanPlayer = hp;
-                if (humanActor != null) _actors[hp.Id] = humanActor;
+                if (humanActor != null)
+                {
+                    _actors[hp.Id] = humanActor;
+                    if (humanActor is HumanActor ha) ha.SpatialKillMode = config.SpatialNightHunt;
+                }
             }
 
             GameRules.AssignRoles(State.Players, _rng);
@@ -208,7 +236,9 @@ namespace MafiaAI.LLM
             int ms = Mathf.Max(0, (int)((nightEnd - Time.realtimeSinceStartup) * 1000));
             await Task.WhenAny(Task.WhenAll(jobs), Task.Delay(ms, ct));
 
-            if (mafia != null && string.IsNullOrEmpty(State.Night.MafiaTarget)) State.Night.MafiaTarget = RandomNightTarget(mafia);
+            // 인간 마피아가 직접 사냥하는 밤에는 자동 랜덤 살해를 하지 않는다 — 못 죽였으면 '조용한 밤'.
+            bool spatialHumanMafia = mafia != null && mafia.IsHuman && config.SpatialNightHunt;
+            if (mafia != null && !spatialHumanMafia && string.IsNullOrEmpty(State.Night.MafiaTarget)) State.Night.MafiaTarget = RandomNightTarget(mafia);
             if (police != null && string.IsNullOrEmpty(State.Night.PoliceTarget)) State.Night.PoliceTarget = RandomNightTarget(police);
             if (doctor != null && string.IsNullOrEmpty(State.Night.DoctorTarget)) State.Night.DoctorTarget = RandomNightTarget(doctor);
         }
@@ -220,7 +250,12 @@ namespace MafiaAI.LLM
             var finished = await Task.WhenAny(task, Task.Delay(ms, ct));
             if (finished != task)
             {
-                if (p.IsHuman && _actors[p.Id] is HumanActor ha) ha.ForceResolveChoice(RandomNightTarget(p));
+                if (p.IsHuman && _actors[p.Id] is HumanActor ha)
+                {
+                    // 공간 사냥 마피아는 시간초과 시 랜덤 살해 없이 넘어감(놓친 밤). 그 외(경찰/의사)는 기존대로 랜덤.
+                    bool spatialMafia = p.Role == Role.Mafia && config.SpatialNightHunt;
+                    ha.ForceResolveChoice(spatialMafia ? null : RandomNightTarget(p));
+                }
                 else return;
             }
 

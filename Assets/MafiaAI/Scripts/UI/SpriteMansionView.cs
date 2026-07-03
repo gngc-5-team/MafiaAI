@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using MafiaAI.Core;
 using MafiaAI.LLM;
 
 namespace MafiaAI.UI
@@ -36,6 +38,13 @@ namespace MafiaAI.UI
         Vector3 _humanWorldPos;
         string _humanRoom;
 
+        // ── 밤 시야(암전) + 공간 사냥 ──
+        const float MaskWorldHalf = 30f;   // 암전 스프라이트 반경(카메라 뷰를 넉넉히 덮음)
+        GameObject _nightMask;
+        SpriteRenderer _nightMaskSr;
+        float _nightMaskHole = -1f;
+        bool _killedThisNight;
+
         void Awake()
         {
             _controller = GetComponent<GameController>();
@@ -46,13 +55,17 @@ namespace MafiaAI.UI
             _controller.OnGameSetup += BuildTokens;
             _controller.OnLocationsChanged += RefreshTargets;
             _controller.OnPhaseChanged += delegate { RefreshTargets(); };
+            _controller.OnPhaseChanged += HandleNightPhase;
+            EnsureNightMask();
         }
 
         void Update()
         {
             HandleHumanMovement();
+            HandleNightKill();
             UpdateTokens();
             FollowCamera();
+            UpdateNightMaskPosition();
         }
 
         void CleanupGeneratedMap()
@@ -345,6 +358,118 @@ namespace MafiaAI.UI
 
             var target = new Vector3(human.position.x, human.position.y, cam.transform.position.z);
             cam.transform.position = Vector3.Lerp(cam.transform.position, target, 12f * Time.deltaTime);
+        }
+
+        // ========================= 밤 시야(암전) =========================
+
+        void EnsureNightMask()
+        {
+            if (_nightMask != null) return;
+            _nightMask = new GameObject("NightVision");
+            _nightMask.transform.SetParent(transform, false);
+            _nightMaskSr = _nightMask.AddComponent<SpriteRenderer>();
+            _nightMaskSr.sortingOrder = 500;   // 토큰 위, UI(스크린 캔버스) 아래
+            _nightMask.SetActive(false);
+        }
+
+        void HandleNightPhase(GameState s)
+        {
+            EnsureNightMask();
+            bool night = s != null && s.Phase == Phase.Night
+                         && _controller.HumanPlayer != null && _controller.HumanPlayer.Alive;
+            if (!night) { _nightMask.SetActive(false); return; }
+
+            _killedThisNight = false;
+            bool mafia = _controller.HumanPlayer.Role == Role.Mafia;
+            float vision = mafia ? _controller.config.MafiaNightVision : _controller.config.CitizenNightVision;
+            SetNightMaskHole(vision);
+            _nightMask.SetActive(true);
+        }
+
+        void UpdateNightMaskPosition()
+        {
+            if (_nightMask == null || !_nightMask.activeSelf) return;
+            _nightMask.transform.position = new Vector3(_humanWorldPos.x, _humanWorldPos.y, -2f);
+        }
+
+        /// <summary>중심은 투명(시야), 반경 밖은 검정으로 채운 방사형 암전 스프라이트를 생성.</summary>
+        void SetNightMaskHole(float holeWorld)
+        {
+            if (Mathf.Approximately(_nightMaskHole, holeWorld) && _nightMaskSr.sprite != null) return;
+            _nightMaskHole = holeWorld;
+
+            const int T = 256;
+            float ppu = T / (2f * MaskWorldHalf);       // world → pixel
+            float holePx = holeWorld * ppu;
+            float softPx = Mathf.Max(6f, holePx * 0.5f); // 시야 가장자리 부드럽게
+            float cx = (T - 1) * 0.5f, cy = (T - 1) * 0.5f;
+
+            var tex = new Texture2D(T, T, TextureFormat.RGBA32, false)
+            { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            var cols = new Color[T * T];
+            for (int y = 0; y < T; y++)
+                for (int x = 0; x < T; x++)
+                {
+                    float d = Mathf.Sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
+                    float a = Mathf.Clamp01((d - holePx) / softPx); // 안쪽 0(투명) → 바깥 1(검정)
+                    cols[y * T + x] = new Color(0f, 0f, 0f, a);
+                }
+            tex.SetPixels(cols);
+            tex.Apply();
+            _nightMaskSr.sprite = Sprite.Create(tex, new Rect(0, 0, T, T), new Vector2(0.5f, 0.5f), ppu, 0, SpriteMeshType.FullRect);
+        }
+
+        // ========================= 공간 사냥(인간 마피아) =========================
+
+        void HandleNightKill()
+        {
+            if (_controller == null || _controller.State == null) return;
+            if (_controller.State.Phase != Phase.Night || _killedThisNight) return;
+            var hp = _controller.HumanPlayer;
+            if (hp == null || !hp.Alive || hp.Role != Role.Mafia) return;
+            if (IsTyping()) return;
+            var keyboard = Keyboard.current;
+            if (keyboard == null || !keyboard.spaceKey.wasPressedThisFrame) return;
+
+            string best = null;
+            float bestD = float.MaxValue;
+            foreach (var id in _controller.NightKillCandidates())
+            {
+                if (!_tokens.TryGetValue(id, out var t) || t == null || !t.gameObject.activeSelf) continue;
+                float d = Vector2.Distance(new Vector2(t.position.x, t.position.y),
+                                           new Vector2(_humanWorldPos.x, _humanWorldPos.y));
+                if (d < bestD) { bestD = d; best = id; }
+            }
+
+            if (best == null || bestD > _controller.config.KillRadius) return;   // 사거리 밖 → 헛손질
+            if (_controller.TrySubmitNightKill(best))
+            {
+                _killedThisNight = true;
+                StartCoroutine(KillFeedback(best));
+            }
+        }
+
+        /// <summary>살해 순간의 시각 피드백. 실제 사망 표시·정산은 새벽에만 일어난다(은밀).</summary>
+        IEnumerator KillFeedback(string id)
+        {
+            if (!_tokens.TryGetValue(id, out var t) || t == null) yield break;
+            var body = t.Find("Body");
+            var bsr = body != null ? body.GetComponent<SpriteRenderer>() : null;
+            Color orig = bsr != null ? bsr.color : Color.white;
+            if (bsr != null) bsr.color = Hex("8A3A3A");
+
+            var mark = new GameObject("KillMark");
+            mark.transform.SetParent(t, false);
+            mark.transform.localPosition = new Vector3(0f, 1.4f, -0.1f);
+            var tm = mark.AddComponent<TextMesh>();
+            tm.text = "제거"; tm.fontSize = 42; tm.characterSize = 0.10f;
+            tm.anchor = TextAnchor.MiddleCenter; tm.alignment = TextAlignment.Center;
+            tm.color = Hex("E0503A");
+            mark.GetComponent<MeshRenderer>().sortingOrder = 520;
+
+            yield return new WaitForSeconds(1.2f);
+            if (mark != null) Destroy(mark);
+            if (bsr != null) bsr.color = orig;   // 표식 제거 — 사망은 새벽 정산 때 드러난다
         }
 
         Sprite MakePixel()
