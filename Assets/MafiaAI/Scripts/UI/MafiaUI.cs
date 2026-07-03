@@ -93,6 +93,7 @@ namespace MafiaAI.UI
                 _human = new HumanActor();
                 _human.OnNeedSpeech += HandleNeedSpeech;
                 _human.OnNeedChoice += HandleNeedChoice;
+                _human.OnNeedSpatialKill += HandleNeedSpatialKill;
                 _human.OnChoiceResolved += delegate { if (_overlay != null) _overlay.SetActive(false); };
                 _controller.humanActor = _human;
             }
@@ -549,6 +550,13 @@ namespace MafiaAI.UI
             if (_pressLabel == null) return;
             _pressLabel.text = _pressIndex == 0 ? "추궁: 없음" : "추궁: " + _pressCandidates[_pressIndex - 1];
             _pressBtn.GetComponent<Image>().color = _pressIndex == 0 ? PANEL : Color.Lerp(PANEL, ACCENT, 0.6f);
+        }
+
+        // 인간 마피아의 밤: 오버레이 대신 저택에서 직접 접근해 Space로 살해한다.
+        void HandleNeedSpatialKill(Player self, List<string> candidates)
+        {
+            if (_overlay != null) _overlay.SetActive(false);
+            SetInputActive(false, "[밤] 어둠 속에서 대상에게 접근한 뒤 Space로 살해하라");
         }
 
         void HandleNeedChoice(Player self, List<string> candidates, string kind)
