@@ -21,6 +21,12 @@ namespace MafiaAI.LLM
         /// <summary>UI가 구독: 선택이 (클릭이든 시간초과든) 확정되었다 → 오버레이 닫기.</summary>
         public event Action OnChoiceResolved;
 
+        /// <summary>UI가 구독: 밤에 인간 마피아가 직접 접근해 살해해야 한다(오버레이 대신 공간 사냥). (self, 후보들)</summary>
+        public event Action<Player, List<string>> OnNeedSpatialKill;
+
+        /// <summary>true면 인간 마피아의 밤 선택을 오버레이 대신 공간 사냥(접근+Space)으로 처리.</summary>
+        public bool SpatialKillMode;
+
         TaskCompletionSource<string> _speechTcs;
         TaskCompletionSource<ActionChoice> _choiceTcs;
 
@@ -67,6 +73,16 @@ namespace MafiaAI.LLM
 
         public Task<ActionChoice> NightAsync(GameState s, Player self, CancellationToken ct)
         {
+            // 인간 마피아 + 공간 사냥 모드: 오버레이를 띄우지 않고, 저택에서 직접 접근해 Space로 살해한다.
+            if (SpatialKillMode && self.Role == Role.Mafia)
+            {
+                var targets = PromptBuilder.MafiaTargets(s, self);
+                _choiceTcs = new TaskCompletionSource<ActionChoice>(TaskCreationOptions.RunContinuationsAsynchronously);
+                ct.Register(() => _choiceTcs.TrySetCanceled());
+                OnNeedSpatialKill?.Invoke(self, targets);
+                return _choiceTcs.Task;
+            }
+
             List<string> cands;
             string kind;
             switch (self.Role)

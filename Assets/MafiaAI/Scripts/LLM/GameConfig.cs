@@ -11,7 +11,7 @@ namespace MafiaAI.LLM
 
         public int RoomCount = 5;           // 저택 방 개수(복도는 항상 방 개수-1개, 신장 트리 간선 수와 같음)
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간
-        public int NightSeconds = 10;       // 밤 지속 시간(인간 능력자 선택 제한)
+        public int NightSeconds = 15;       // 밤 지속 시간(공간 사냥 이동 여유)
         public int TalkIntervalMinMs = 3000; // AI 문답 최소 간격
         public int TalkIntervalMaxMs = 5000; // AI 문답 최대 간격
         public int MoveIntervalMs = 7000;    // NPC 방 이동 간격
@@ -22,5 +22,11 @@ namespace MafiaAI.LLM
         public float ActionTemperature = 0.4f;  // 투표/밤 판단 온도(안정적으로)
 
         public bool RevealRolesOnDeath = true;  // 사망/처형 시 역할 공개(기획서 기준)
+
+        // ── 밤 공간 사냥(인간 마피아 전용) ──
+        public bool SpatialNightHunt = true;      // 인간이 마피아면 밤에 직접 접근해 Space로 살해
+        public float KillRadius = 1.6f;           // 이 반경 안의 대상만 살해 가능(월드 단위)
+        public float MafiaNightVision = 6.0f;     // 마피아일 때 밤 시야 반경(넓음)
+        public float CitizenNightVision = 2.3f;   // 비마피아일 때 밤 시야 반경(좁음)
     }
 }
