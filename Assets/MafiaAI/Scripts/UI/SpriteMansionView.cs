@@ -12,7 +12,8 @@ namespace MafiaAI.UI
 {
     /// <summary>
     /// Binds gameplay movement and room detection to the sprites already placed in the scene.
-    /// Expected scene objects: room1..room5, corridor1..corridor4, with roomline/corridorline as visual walls.
+    /// Expected scene objects: room1(+corridor1) as templates — GameConfig.RoomCount decides how many
+    /// room2..N / corridor2..N-1 are cloned from them at runtime, so the mansion size is configurable.
     /// </summary>
     [RequireComponent(typeof(GameController))]
     public class SpriteMansionView : MonoBehaviour
@@ -20,6 +21,8 @@ namespace MafiaAI.UI
         const float HumanSpeed = 3.8f;
         const float NpcSpeed = 2.4f;
         const float RoomEdgePadding = 0.2f;
+        const float MansionCellSize = 20f; // room1~5 원래 배치 간격과 동일(씬 좌표 실측값)
+        const int MaxMansionSlots = 20;    // RoomCount를 줄였을 때 꺼야 할 여분 room/corridor를 찾는 탐색 상한(GameController의 클램프 상한보다 넉넉히)
 
         static readonly Color Player = Hex("8A4DFF");
         static readonly Color Npc = Hex("D9B56B");
@@ -79,7 +82,8 @@ namespace MafiaAI.UI
             _roomRects.Clear();
             _walkableAreas.Clear();
 
-            for (int i = 1; i <= 5; i++)
+            int roomCount = _controller.Rooms.Length;
+            for (int i = 1; i <= roomCount; i++)
             {
                 var go = GameObject.Find("room" + i);
                 if (go == null) continue;
@@ -90,7 +94,7 @@ namespace MafiaAI.UI
                 EnsureCollider(go, rect);
             }
 
-            for (int i = 1; i <= 4; i++)
+            for (int i = 1; i <= roomCount - 1; i++)
             {
                 var go = GameObject.Find("corridor" + i);
                 if (go == null) continue;
@@ -100,7 +104,7 @@ namespace MafiaAI.UI
             }
 
             if (_roomRects.Count == 0)
-                Debug.LogWarning("room1~room5 SpriteRenderer를 찾지 못했습니다. 씬에 배치한 방 이름을 확인하세요.");
+                Debug.LogWarning("room1~room" + roomCount + " SpriteRenderer를 찾지 못했습니다. 씬에 배치한 방 이름을 확인하세요.");
         }
 
         bool TryGetWorldRect(GameObject go, out Rect rect)
@@ -148,6 +152,11 @@ namespace MafiaAI.UI
             _tokens.Clear();
             _tokenVel.Clear();
             _npcTargets.Clear();
+
+            int roomCount = _controller.Rooms.Length;
+            EnsureSlots("room", roomCount);
+            EnsureSlots("corridor", Mathf.Max(0, roomCount - 1));
+            LayoutMansion();
             BindSceneMap();
 
             foreach (var p in _controller.State.Players)
@@ -168,6 +177,75 @@ namespace MafiaAI.UI
             }
 
             RefreshTargets();
+        }
+
+        /// <summary>
+        /// 씬에 손으로 배치해둔 room1~5 / corridor1~4 스프라이트를 매판 새로 생성된 저택 구조에 맞춰 재배치한다.
+        /// 방 5개짜리 신장 트리는 항상 간선이 4개라 기존 복도 스프라이트 4개와 정확히 맞아떨어진다.
+        /// </summary>
+        void LayoutMansion()
+        {
+            var mansion = _controller.Mansion;
+            if (mansion.GridPos == null) return;
+
+            int roomCount = _controller.Rooms.Length;
+            for (int i = 1; i <= roomCount; i++)
+            {
+                var go = GameObject.Find("room" + i);
+                if (go == null || !mansion.GridPos.TryGetValue("방" + i, out var cell)) continue;
+                var p = go.transform.position;
+                go.transform.position = new Vector3(cell.X * MansionCellSize, cell.Y * MansionCellSize, p.z);
+            }
+
+            for (int i = 0; i < mansion.Corridors.Count; i++)
+            {
+                var go = GameObject.Find("corridor" + (i + 1));
+                if (go == null) continue;
+                var (a, b) = mansion.Corridors[i];
+                if (!mansion.GridPos.TryGetValue(a, out var ca) || !mansion.GridPos.TryGetValue(b, out var cb)) continue;
+
+                go.transform.position = new Vector3((ca.X + cb.X) * 0.5f * MansionCellSize, (ca.Y + cb.Y) * 0.5f * MansionCellSize, go.transform.position.z);
+                bool vertical = ca.X == cb.X;
+                go.transform.rotation = Quaternion.Euler(0f, 0f, vertical ? 90f : 0f);
+            }
+        }
+
+        /// <summary>
+        /// room1 / corridor1을 원본 삼아 필요한 개수만큼 복제하고, 지금 판에서 안 쓰는 여분은 꺼둔다.
+        /// 씬에 손으로 더 배치해둘 필요 없이 GameConfig.RoomCount만 바꾸면 개수가 그대로 반영된다.
+        /// </summary>
+        void EnsureSlots(string prefix, int needed)
+        {
+            // GameObject.Find는 비활성 오브젝트를 못 찾으므로(이전 판에서 꺼둔 여분과 중복 생성될 수 있음)
+            // 존재 여부 확인·재활성화 모두 비활성 포함 검색(FindAny)으로 처리한다.
+            var template = FindAny(prefix + "1");
+            if (template != null)
+            {
+                for (int i = 2; i <= needed; i++)
+                {
+                    if (FindAny(prefix + i) != null) continue;
+                    var clone = Instantiate(template, template.transform.parent);
+                    clone.name = prefix + i;
+                }
+            }
+
+            for (int i = 1; i <= MaxMansionSlots; i++)
+            {
+                var go = FindAny(prefix + i);
+                if (go == null) continue;
+                go.SetActive(i <= needed);
+            }
+        }
+
+        /// <summary>비활성 오브젝트까지 포함해 이름으로 찾는다(GameObject.Find는 활성 오브젝트만 찾음).</summary>
+        GameObject FindAny(string name)
+        {
+            foreach (var t in Resources.FindObjectsOfTypeAll<Transform>())
+            {
+                if (t.name == name && t.gameObject.scene.IsValid())
+                    return t.gameObject;
+            }
+            return null;
         }
 
         void AddActorSprite(Transform token, string id, bool isHuman)

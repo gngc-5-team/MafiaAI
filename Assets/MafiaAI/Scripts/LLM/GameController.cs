@@ -40,7 +40,8 @@ namespace MafiaAI.LLM
         /// <summary>현재 페이즈가 끝나는 시각(Time.realtimeSinceStartup 기준). 0이면 카운트다운 없음.</summary>
         public float PhaseEndsAt { get; private set; }
 
-        public readonly string[] Rooms = { "방1", "방2", "방3", "방4", "방5" };
+        /// <summary>매판 config.RoomCount 기준으로 다시 생성된다("방1".."방N").</summary>
+        public string[] Rooms { get; private set; } = { "방1", "방2", "방3", "방4", "방5" };
 
         OllamaClient _ollama;
         IRng _rng;
@@ -48,7 +49,11 @@ namespace MafiaAI.LLM
         readonly Dictionary<string, string> _locations = new();
         readonly List<RoomLine> _roomLines = new();
         readonly Queue<HumanMessage> _humanMsgs = new();
+        MansionGenerator.Layout _mansion;
         CancellationTokenSource _cts;
+
+        /// <summary>매판 랜덤 생성된 저택 구조(논리 그래프 + 방 격자 좌표 + 물리 복도 목록).</summary>
+        public MansionGenerator.Layout Mansion => _mansion;
 
         public struct HumanMessage { public string Text; public string Target; public bool Explicit; }
         public struct RoomLine { public int Day; public string Room; public string Speaker; public string Target; public string Text; }
@@ -138,6 +143,9 @@ namespace MafiaAI.LLM
             _roomLines.Clear();
             _humanMsgs.Clear();
 
+            int roomCount = Mathf.Clamp(config.RoomCount, 3, 12);
+            Rooms = Enumerable.Range(1, roomCount).Select(i => "방" + i).ToArray();
+
             var personas = PersonaLibrary.PickDistinct(6, _rng);
             for (int i = 0; i < 6; i++)
             {
@@ -169,14 +177,17 @@ namespace MafiaAI.LLM
             }
 
             GameRules.AssignRoles(State.Players, _rng);
+            _mansion = MansionGenerator.Generate(Rooms, _rng);
+            if (logToConsole)
+                Debug.Log("[DEBUG 저택 구조] 복도: " + string.Join(", ", _mansion.Corridors.Select(e => e.A + "-" + e.B)) +
+                          " / 동선 그래프: " + string.Join(" ", _mansion.Adjacency.Select(kv => kv.Key + "→" + string.Join(",", kv.Value))));
             AssignInitialRooms();
         }
 
         void AssignInitialRooms()
         {
-            var startRooms = new[] { "방1", "방2", "방3", "방4", "방5", "방3" };
             for (int i = 0; i < State.Players.Count; i++)
-                _locations[State.Players[i].Id] = startRooms[i % startRooms.Length];
+                _locations[State.Players[i].Id] = Rooms[_rng.Next(Rooms.Length)];
         }
 
         async Task RunAsync(CancellationToken ct)
@@ -305,7 +316,7 @@ namespace MafiaAI.LLM
             while (Time.realtimeSinceStartup < end)
             {
                 ct.ThrowIfCancellationRequested();
-                DrainHumanMessages();
+                await DrainHumanMessages(ct);
 
                 if (Time.realtimeSinceStartup >= nextMove)
                 {
@@ -319,13 +330,24 @@ namespace MafiaAI.LLM
             }
         }
 
-        void DrainHumanMessages()
+        async Task DrainHumanMessages(CancellationToken ct)
         {
             while (_humanMsgs.Count > 0)
             {
                 var m = _humanMsgs.Dequeue();
                 string room = GetPlayerRoom(HumanPlayer.Id);
                 EmitRoomSpeech(room, HumanPlayer.Id, m.Target, m.Text);
+
+                // 플레이어가 특정 인물을 콕 집어 말을 걸었다면, 그 AI가 뒷순서를 기다리지 않고 바로 반응한다.
+                if (m.Explicit)
+                {
+                    var pressed = State.ById(m.Target);
+                    if (pressed != null && pressed.Alive && !pressed.IsHuman && GetPlayerRoom(pressed.Id) == room)
+                    {
+                        string reply = OneSentence(await _actors[pressed.Id].RebuttalAsync(State, pressed, HumanPlayer.Id, m.Text, ct));
+                        EmitRoomSpeech(room, pressed.Id, HumanPlayer.Id, reply);
+                    }
+                }
             }
         }
 
@@ -355,7 +377,7 @@ namespace MafiaAI.LLM
                 {
                     EmitRoomSpeech(pick.Room, target.Id, speaker.Id, answer);
                     await TalkDelay(end, ct);
-                    string reaction = OneSentence(await _actors[speaker.Id].AnswerRoomQuestionAsync(State, speaker, target, answer, pick.Room, LocalTranscript(pick.Room), ct));
+                    string reaction = OneSentence(await _actors[speaker.Id].ReactAsync(State, speaker, target.Id, answer, ct));
                     EmitRoomSpeech(pick.Room, speaker.Id, target.Id, reaction);
                 }
                 return;
@@ -403,15 +425,7 @@ namespace MafiaAI.LLM
 
         List<string> AdjacentRooms(string room)
         {
-            switch (room)
-            {
-                case "방1": return new List<string> { "방2" };
-                case "방2": return new List<string> { "방1", "방3" };
-                case "방3": return new List<string> { "방2", "방4" };
-                case "방4": return new List<string> { "방3", "방5" };
-                case "방5": return new List<string> { "방4" };
-                default: return Rooms.ToList();
-            }
+            return _mansion.Adjacency.TryGetValue(room, out var neighbors) ? neighbors : Rooms.ToList();
         }
 
         void EmitRoomSpeech(string room, string speaker, string target, string text)
