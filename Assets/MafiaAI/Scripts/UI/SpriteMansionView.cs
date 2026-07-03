@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using MafiaAI.Core;
+using TMPro;
 using MafiaAI.LLM;
 
 namespace MafiaAI.UI
@@ -41,12 +41,23 @@ namespace MafiaAI.UI
         Vector3 _humanWorldPos;
         string _humanRoom;
 
-        // ── 밤 시야(암전) + 공간 사냥 ──
-        const float MaskWorldHalf = 30f;   // 암전 스프라이트 반경(카메라 뷰를 넉넉히 덮음)
-        GameObject _nightMask;
-        SpriteRenderer _nightMaskSr;
-        float _nightMaskHole = -1f;
-        bool _killedThisNight;
+        /// <summary>인간 플레이어의 현재 월드 좌표(밤 이동 스냅샷/복구용).</summary>
+        public Vector3 HumanWorldPosition => _humanWorldPos;
+
+        /// <summary>다른 플레이어(주로 AI) 토큰의 현재 화면 좌표. 근접 판정(예: 밤 이동 지목)에 쓴다.</summary>
+        public bool TryGetTokenPosition(string playerId, out Vector3 pos)
+        {
+            if (_tokens.TryGetValue(playerId, out var t) && t != null) { pos = t.position; return true; }
+            pos = default;
+            return false;
+        }
+
+        /// <summary>인간 플레이어 위치를 강제로 지정한다(밤 시작 전 위치로 되돌릴 때 사용).</summary>
+        public void SetHumanPosition(Vector3 worldPos, string room)
+        {
+            _humanWorldPos = worldPos;
+            _humanRoom = room;
+        }
 
         void Awake()
         {
@@ -363,7 +374,8 @@ namespace MafiaAI.UI
         bool IsTyping()
         {
             var selected = EventSystem.current == null ? null : EventSystem.current.currentSelectedGameObject;
-            return selected != null && selected.GetComponent<InputField>() != null;
+            if (selected == null) return false;
+            return selected.GetComponent<TMP_InputField>() != null || selected.GetComponent<InputField>() != null;
         }
 
         bool IsWalkable(Vector3 pos)
