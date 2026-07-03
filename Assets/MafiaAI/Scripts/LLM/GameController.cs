@@ -55,7 +55,7 @@ namespace MafiaAI.LLM
         /// <summary>매판 랜덤 생성된 저택 구조(논리 그래프 + 방 격자 좌표 + 물리 복도 목록).</summary>
         public MansionGenerator.Layout Mansion => _mansion;
 
-        public struct HumanMessage { public string Text; public string Target; public bool Explicit; }
+        public struct HumanMessage { public string Text; public string Target; public string Room; }
         public struct RoomLine { public int Day; public string Room; public string Speaker; public string Target; public string Text; }
 
         public string GetPlayerRoom(string id)
@@ -85,12 +85,33 @@ namespace MafiaAI.LLM
             if (State == null || HumanPlayer == null || !HumanPlayer.Alive) return;
             if (State.Phase != Phase.Discuss) return;
             if (string.IsNullOrWhiteSpace(text)) return;
-            _humanMsgs.Enqueue(new HumanMessage
+
+            string clean = OneSentence(text.Trim());
+            string room = GetPlayerRoom(HumanPlayer.Id);
+            string pressTarget = string.IsNullOrEmpty(target) ? null : target;
+
+            // 화면엔 즉시 띄운다 — AI의 LLM 응답을 기다리느라 내 채팅이 늦게 뜨면 안 된다.
+            EmitRoomSpeech(room, HumanPlayer.Id, pressTarget, clean);
+
+            // WaitForHumanAnswer(AI가 직접 물었을 때 대답을 기다리는 로직)가 가져갈 수 있게 큐에도 넣는다.
+            _humanMsgs.Enqueue(new HumanMessage { Text = clean, Target = pressTarget, Room = room });
+
+            // 특정 인물을 콕 집었다면, 낮 토론 루프의 다른 순서를 기다리지 않고 즉시 그 AI가 반응한다.
+            if (pressTarget != null)
+                _ = ReactToPressAsync(pressTarget, room, clean, _cts?.Token ?? default);
+        }
+
+        async Task ReactToPressAsync(string targetId, string room, string text, CancellationToken ct)
+        {
+            try
             {
-                Text = OneSentence(text.Trim()),
-                Target = string.IsNullOrEmpty(target) ? null : target,
-                Explicit = !string.IsNullOrEmpty(target)
-            });
+                var pressed = State.ById(targetId);
+                if (pressed == null || !pressed.Alive || pressed.IsHuman || GetPlayerRoom(pressed.Id) != room) return;
+                string reply = OneSentence(await _actors[pressed.Id].RebuttalAsync(State, pressed, HumanPlayer.Id, text, ct));
+                EmitRoomSpeech(room, pressed.Id, HumanPlayer.Id, reply);
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception e) { Debug.LogException(e); }
         }
 
         async void Start()
@@ -219,9 +240,9 @@ namespace MafiaAI.LLM
             int ms = Mathf.Max(0, (int)((nightEnd - Time.realtimeSinceStartup) * 1000));
             await Task.WhenAny(Task.WhenAll(jobs), Task.Delay(ms, ct));
 
-            if (mafia != null && string.IsNullOrEmpty(State.Night.MafiaTarget)) State.Night.MafiaTarget = RandomNightTarget(mafia);
-            if (police != null && string.IsNullOrEmpty(State.Night.PoliceTarget)) State.Night.PoliceTarget = RandomNightTarget(police);
-            if (doctor != null && string.IsNullOrEmpty(State.Night.DoctorTarget)) State.Night.DoctorTarget = RandomNightTarget(doctor);
+            if (mafia != null && string.IsNullOrEmpty(State.Night.MafiaTarget)) State.Night.MafiaTarget = DefaultNightTarget(mafia);
+            if (police != null && string.IsNullOrEmpty(State.Night.PoliceTarget)) State.Night.PoliceTarget = DefaultNightTarget(police);
+            if (doctor != null && string.IsNullOrEmpty(State.Night.DoctorTarget)) State.Night.DoctorTarget = DefaultNightTarget(doctor);
         }
 
         async Task GatherNightInto(Player p, Action<string> assign, float nightEnd, CancellationToken ct)
@@ -231,7 +252,7 @@ namespace MafiaAI.LLM
             var finished = await Task.WhenAny(task, Task.Delay(ms, ct));
             if (finished != task)
             {
-                if (p.IsHuman && _actors[p.Id] is HumanActor ha) ha.ForceResolveChoice(RandomNightTarget(p));
+                if (p.IsHuman && _actors[p.Id] is HumanActor ha) ha.ForceResolveChoice(DefaultNightTarget(p));
                 else return;
             }
 
@@ -239,19 +260,14 @@ namespace MafiaAI.LLM
             if (!string.IsNullOrEmpty(choice.TargetId)) assign(choice.TargetId);
         }
 
-        string RandomNightTarget(Player p)
-        {
-            var valid = NightCandidates(p);
-            return valid.Count == 0 ? null : valid[_rng.Next(valid.Count)];
-        }
-
-        List<string> NightCandidates(Player p)
+        /// <summary>대상을 못 정했을 때(시간 초과 등) 역할별 기본 행동. 무작위가 아니라 역할 성격에 맞춘 값.</summary>
+        string DefaultNightTarget(Player p)
         {
             switch (p.Role)
             {
-                case Role.Mafia: return State.Alive.Where(x => x.Role != Role.Mafia).Select(x => x.Id).ToList();
-                case Role.Doctor: return State.Alive.Select(x => x.Id).ToList();
-                default: return State.Alive.Where(x => x.Id != p.Id).Select(x => x.Id).ToList();
+                case Role.Doctor: return p.Id; // 못 정하면 자힐
+                case Role.Mafia: return null;  // 못 정하면 그날 밤은 아무도 안 죽임
+                default: return null;          // 경찰: 못 정하면 그날 밤은 조사하지 않음
             }
         }
 
@@ -281,7 +297,6 @@ namespace MafiaAI.LLM
             while (Time.realtimeSinceStartup < end)
             {
                 ct.ThrowIfCancellationRequested();
-                await DrainHumanMessages(ct);
 
                 if (Time.realtimeSinceStartup >= nextMove)
                 {
@@ -292,27 +307,6 @@ namespace MafiaAI.LLM
                 await RunOneRoomExchange(end, ct);
 
                 await TalkDelay(end, ct);
-            }
-        }
-
-        async Task DrainHumanMessages(CancellationToken ct)
-        {
-            while (_humanMsgs.Count > 0)
-            {
-                var m = _humanMsgs.Dequeue();
-                string room = GetPlayerRoom(HumanPlayer.Id);
-                EmitRoomSpeech(room, HumanPlayer.Id, m.Target, m.Text);
-
-                // 플레이어가 특정 인물을 콕 집어 말을 걸었다면, 그 AI가 뒷순서를 기다리지 않고 바로 반응한다.
-                if (m.Explicit)
-                {
-                    var pressed = State.ById(m.Target);
-                    if (pressed != null && pressed.Alive && !pressed.IsHuman && GetPlayerRoom(pressed.Id) == room)
-                    {
-                        string reply = OneSentence(await _actors[pressed.Id].RebuttalAsync(State, pressed, HumanPlayer.Id, m.Text, ct));
-                        EmitRoomSpeech(room, pressed.Id, HumanPlayer.Id, reply);
-                    }
-                }
             }
         }
 
@@ -337,10 +331,11 @@ namespace MafiaAI.LLM
             if (target.IsHuman)
             {
                 OnPlayerQuestion?.Invoke(speaker.Id, pick.Room, question);
+                _humanMsgs.Clear(); // 질문 이후 새로 온 메시지만 답변으로 인정한다(그 전 잡담이 답으로 잘못 잡히지 않게).
                 string answer = await WaitForHumanAnswer(speaker.Id, pick.Room, end, ct);
                 if (!string.IsNullOrEmpty(answer) && answer != "...")
                 {
-                    EmitRoomSpeech(pick.Room, target.Id, speaker.Id, answer);
+                    // 플레이어의 답변은 SubmitHumanMessage에서 이미 화면에 떴다 — 여기선 AI의 후속 반응만 만든다.
                     await TalkDelay(end, ct);
                     string reaction = OneSentence(await _actors[speaker.Id].ReactAsync(State, speaker, target.Id, answer, ct));
                     EmitRoomSpeech(pick.Room, speaker.Id, target.Id, reaction);
