@@ -9,6 +9,7 @@ namespace MafiaAI.LLM
         public string BaseUrl = "http://localhost:11434";
         public string Model = "gemma3:4b";
 
+        public int RoomCount = 5;           // 저택 방 개수(복도는 항상 방 개수-1개, 신장 트리 간선 수와 같음)
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간
         public int NightSeconds = 10;       // 밤 지속 시간(인간 능력자 선택 제한)
         public int TalkIntervalMinMs = 3000; // AI 문답 최소 간격

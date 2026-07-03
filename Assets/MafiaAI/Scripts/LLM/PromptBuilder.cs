@@ -49,19 +49,24 @@ namespace MafiaAI.LLM
         public static Prompt React(GameState s, Player self, string speakerId, string statement)
         {
             string task =
-                "[반응] 방금 " + speakerId + "이(가) 이렇게 말했다: \"" + statement + "\"\n" +
-                "이 말을 절대 무시하지 말고 정면으로 반응하라. 동의하든, 반박하든, 되묻든 하나를 골라 " +
-                speakerId + "의 말을 근거로 특정 인물을 지목하라. 2문장 이내, 이름표 없이 발언만.";
+                "[반응] 방금 " + speakerId + "이(가) 너에게 이렇게 말했다: \"" + statement + "\"\n" +
+                "이 말을 절대 무시하지 말고 자연스럽게 반응하라.\n" +
+                "- 가벼운 잡담·농담·안부처럼 게임과 무관한 말이면, 굳이 게임 얘기로 끌고 가지 말고 그 화제에 맞춰 짧게 받아쳐라.\n" +
+                "- 의심·추궁·역할 얘기처럼 게임과 관련된 말이면, 동의·반박·되받아치기 중 하나를 골라 " +
+                speakerId + "의 말을 근거로 필요하면 특정 인물을 지목하라.\n" +
+                "- \"그게 무슨 말이야?\", \"무슨 뜻이야?\" 처럼 되묻기만 하는 답은 금지 — 반드시 네 생각이나 반응을 담아 답하라.\n" +
+                "2문장 이내, 이름표 없이 발언만.";
             return new Prompt(BuildSystem(s, self), BuildUser(s, self, task));
         }
 
-        /// <summary>인간이 특정 인물을 지목해 추궁했을 때, 그 대상이 즉시 반박하는 턴.</summary>
+        /// <summary>인간이 특정 인물을 지목해 말을 걸었을 때, 그 대상이 즉시 반응하는 턴.</summary>
         public static Prompt Rebuttal(GameState s, Player self, string presserId, string question)
         {
             string task =
-                "[추궁] " + presserId + "이(가) 너를 콕 집어 따졌다: \"" + question + "\"\n" +
-                "모두가 지금 너를 주목한다. 회피하거나 딴청 부리지 말고 이 추궁에 정면으로 답하라. " +
-                "억울하면 구체적 근거로 반박하고, 필요하면 " + presserId + " 또는 다른 사람을 역으로 지목해 반격하라. " +
+                "[지목] " + presserId + "이(가) 너를 콕 집어 말을 걸었다: \"" + question + "\"\n" +
+                "모두가 지금 너를 주목한다. 회피하거나 딴청 부리지 말고, \"그게 무슨 말이야?\" 같은 되묻기만 하는 답도 하지 말고 정면으로 답하라.\n" +
+                "- 가벼운 잡담·농담·안부면 그 화제에 맞춰 자연스럽게 받아주면 된다.\n" +
+                "- 의심이나 추궁이면 억울한 부분은 구체적 근거로 반박하고, 필요하면 " + presserId + " 또는 다른 사람을 역으로 지목해 반격하라.\n" +
                 "2문장 이내, 이름표 없이 발언만.";
             return new Prompt(BuildSystem(s, self), BuildUser(s, self, task));
         }
@@ -86,8 +91,9 @@ namespace MafiaAI.LLM
                 "[방 대화] 지금 너는 '" + room + "'에 있고, 같은 방 사람들만 네 말을 듣는다.\n" +
                 "[같은 방 최근 대화]\n" + (string.IsNullOrWhiteSpace(localTranscript) ? "  (아직 들은 말 없음)" : localTranscript) + "\n" +
                 "[질문] " + asker.Id + "이(가) 너에게 물었다: \"" + question + "\"\n" +
-                "[지시] 이 질문을 듣고 답하라. 질문 속 핵심 단어를 받아서 직접 답하고, 모르면 모른다고 말하라. " +
-                "같은 답변 반복 금지. 한 문장만, 이름표 없이.";
+                "[지시] 이 질문을 듣고 곧장 답하라. 질문이 명확하면 핵심 단어를 받아 직접 답하고, " +
+                "애매하거나 잡담이면 되묻지 말고 네 나름대로 해석해서 자연스럽게 받아쳐라. " +
+                "\"그게 무슨 말이야?\" 같은 되묻기만 하는 답은 금지. 같은 답변 반복 금지. 한 문장만, 이름표 없이.";
             return new Prompt(BuildSystem(s, self), BuildRoomUser(s, self, room, localTranscript, task));
         }
 
