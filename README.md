@@ -86,6 +86,25 @@ Set-ExecutionPolicy -Scope Process Bypass -Force ; ./setup.ps1
 
 ---
 
+## 📦 빌드 / 배포 (심사위원 제출용 — 사전 설치 0)
+
+빌드에는 Ollama와 모델이 **통째로 동봉**되어, 받는 사람은 압축 풀고 실행만 하면 된다.
+게임이 시작될 때 `OllamaBootstrap`이 동봉 AI 엔진을 자동 기동한다(개발 머신에선 기존 Ollama를 재사용).
+
+1. **동봉물 패키징** (빌드 전 1회, 로컬에 `gemma4:12b`가 pull된 상태에서):
+   ```bash
+   bash tools/package_llm.sh
+   ```
+   → `Assets/StreamingAssets/ollama/{mac,win,models}` 생성 (약 8GB, git 제외됨)
+2. **Unity 빌드**: File→Build Settings에서 macOS / Windows 각각 빌드. StreamingAssets가 자동 포함된다.
+3. **배포**:
+   - **Windows**: 빌드 폴더째 zip → 받는 쪽은 풀고 `MafiaAI.exe` 더블클릭. 끝.
+   - **macOS**: `ditto -c -k --keepParent MafiaAI.app MafiaAI-mac.zip` 으로 압축(실행 권한 보존).
+     서명이 없으므로 첫 실행만 **앱 우클릭 → 열기** 안내 한 줄 필요(맥의 Gatekeeper, 유일한 예외).
+4. 첫 실행 시 AI 엔진 기동+모델 로딩으로 10~30초 걸릴 수 있다(이후 즉시).
+
+> 요구 사양(받는 쪽): RAM 16GB+ (12B 모델), 디스크 10GB. 인터넷 불필요(완전 오프라인 동작).
+
 ## 📁 구조
 
 ```

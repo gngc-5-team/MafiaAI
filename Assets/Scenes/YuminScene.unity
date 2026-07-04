@@ -23549,6 +23549,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InterrogationCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 378361668441226560, guid: b5510297b9bd94a948db328c03c1bfa3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1286388238324130023, guid: b5510297b9bd94a948db328c03c1bfa3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3351380435494968118, guid: b5510297b9bd94a948db328c03c1bfa3, type: 3}
       propertyPath: controller
       value: 
