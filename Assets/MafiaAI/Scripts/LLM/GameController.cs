@@ -473,12 +473,17 @@ namespace MafiaAI.LLM
             Emit(LogKind.System, "SYSTEM", "── Day " + State.Day + " · 투표 ──");
             State.Votes.Clear();
 
+            float voteEnd = Time.realtimeSinceStartup + config.VoteSeconds;
+            PhaseEndsAt = voteEnd;
+
             foreach (var pl in State.AliveList)
             {
                 ct.ThrowIfCancellationRequested();
-                var choice = await _actors[pl.Id].VoteAsync(State, pl, ct);
+                var choice = await GatherVoteFrom(pl, voteEnd, ct);
                 State.Votes[pl.Id] = choice.TargetId;
-                Emit(LogKind.Vote, pl.Id, pl.Id + " ▶ " + choice.TargetId + " (" + choice.Reason + ")");
+                string label = string.IsNullOrEmpty(choice.TargetId) ? "기권" : choice.TargetId;
+                string reason = string.IsNullOrEmpty(choice.Reason) ? "" : " (" + choice.Reason + ")";
+                Emit(LogKind.Vote, pl.Id, pl.Id + " ▶ " + label + reason);
             }
 
             var vr = GameRules.ResolveVotes(State, _rng);
@@ -489,6 +494,22 @@ namespace MafiaAI.LLM
                 Emit(LogKind.Reveal, "SYSTEM", ex.Id + " 이(가) 처형되었다. 정체는 '" + ex.Role.Korean() + "'!" + tie);
             }
             else Emit(LogKind.System, "SYSTEM", "표가 모이지 않아 처형이 무산되었다.");
+        }
+
+        /// <summary>사람은 화면 타이머(voteEnd)에, AI는 그와 별개인 넉넉한 시한(AiVoteTimeoutSeconds)에 묶인다.
+        /// 둘 다 시간 안에 못 정하면 기권(빈 대상) 처리 — GameRules.ResolveVotes가 이미 빈 대상을 기권으로 센다.</summary>
+        async Task<ActionChoice> GatherVoteFrom(Player p, float humanDeadline, CancellationToken ct)
+        {
+            var task = _actors[p.Id].VoteAsync(State, p, ct);
+            float deadline = p.IsHuman ? humanDeadline : Time.realtimeSinceStartup + config.AiVoteTimeoutSeconds;
+            int ms = Mathf.Max(0, (int)((deadline - Time.realtimeSinceStartup) * 1000));
+            var finished = await Task.WhenAny(task, Task.Delay(ms, ct));
+            if (finished != task)
+            {
+                if (p.IsHuman && _actors[p.Id] is HumanActor ha) ha.ForceResolveChoice(null);
+                else return new ActionChoice { TargetId = null, Reason = "(시간 초과·기권)" };
+            }
+            return await task;
         }
 
         void SetPhase(Phase p)
