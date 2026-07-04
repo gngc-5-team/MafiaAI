@@ -2,6 +2,8 @@
 
 Last updated: 2026-07-04
 
+Latest Codex update: 2026-07-04 evening
+
 ## Project Context
 
 - Unity project path: `/Users/kang-yumin/Documents/GitHub/MafiaAI`
@@ -53,8 +55,157 @@ Interpretation:
 - `Assets/MafiaAI/Scripts/UI/NightMovementUI.cs`
 - `Assets/MafiaAI/Lighting/MansionMoodProfile.asset`
 - `Assets/MafiaAI/Materials/MansionSpriteLit.mat`
+- `Assets/MafiaAI/Scripts/Core/Persona.cs`
+- `Assets/MafiaAI/Scripts/LLM/Actors.cs`
+- `Assets/MafiaAI/Scripts/LLM/PromptBuilder.cs`
+- `Assets/Prefabs/GameController.prefab`
+- `Assets/sprites/char/cha_*.aseprite`
 
 ## Work Already Completed
+
+### Character Skin Fixed Mapping (2026-07-04 evening, Codex)
+
+User replaced/added Aseprite character files:
+
+- Deleted old `Assets/sprites/char/cha_2.aseprite`
+- Added `Assets/sprites/char/cha_2-2.aseprite`
+- Added `Assets/sprites/char/cha_3.aseprite`
+- Added `Assets/sprites/char/cha_5.aseprite`
+- Existing: `cha_1`, `cha_4`, `cha_6`
+
+Required fixed mapping:
+
+- `cha_1` → `카이`
+- `cha_2-2` → `미로`
+- `cha_3` → `노아`
+- `cha_4` → `세이`
+- `cha_5` → `제로`
+- `cha_6` → `하루`
+
+Implemented:
+
+- `SpriteMansionView.CharacterSkin` now has `playerId`.
+- `SpriteMansionView.FindSkinForPlayer(playerId, seatIndex)` now selects by:
+  1. explicit `CharacterSkin.playerId`
+  2. default label mapping from Korean player name
+  3. old seat-index fallback
+- `Assets/Prefabs/GameController.prefab` and the `YuminScene` `GameController` instance were both configured with 6 skins.
+- Verified serialized mapping through Unity:
+  - Prefab: `카이=cha_1; 미로=cha_2-2; 노아=cha_3; 세이=cha_4; 제로=cha_5; 하루=cha_6`
+  - Scene: same mapping
+- Verified frame counts:
+  - `카이=cha_1 idle:10 walk:8`
+  - `미로=cha_2-2 idle:9 walk:7`
+  - `노아=cha_3 idle:9 walk:7`
+  - `세이=cha_4 idle:9 walk:8`
+  - `제로=cha_5 idle:9 walk:7`
+  - `하루=cha_6 idle:9 walk:7`
+
+Important:
+
+- Do not go back to seat-order skin assignment. The user's intent is fixed identity-to-skin mapping.
+- If new characters are added later, update `DefaultSkinLabel()` and the prefab/scene `_charSkins` list.
+
+### Name Label Editor Controls (2026-07-04 evening, Codex)
+
+User wanted character name text position editable from Unity Editor.
+
+Implemented in `SpriteMansionView`:
+
+- Added enum `NameLabelAnchor`:
+  - `AboveHead`
+  - `BelowFeet`
+  - `Custom`
+- Added serialized fields under header `캐릭터 이름표`:
+  - `_nameLabelAnchor`
+  - `_nameLabelCustomOffset`
+  - `_nameLabelAboveHeadY`
+  - `_nameLabelBelowFeetY`
+  - `_nameLabelFontSize`
+  - `_nameLabelCharacterSize`
+  - `_nameLabelSortingOrder`
+- `AddLabel()` now uses `NameLabelOffset()` instead of hard-coded offsets.
+- `ApplyNameLabelSettings()` runs during `Update()` so values changed in Inspector during Play Mode immediately apply to runtime labels.
+
+Where to adjust:
+
+- Select `GameController` in `YuminScene`
+- Open `Sprite Mansion View`
+- Adjust `캐릭터 이름표` fields
+
+### AI Dialogue Prompt / Harness Work (2026-07-04 evening, Codex)
+
+User complained NPCs were too "stupid" and did not play mafia well:
+
+- Repeated empty polite phrases:
+  - `무슨 의미죠?`
+  - `걱정스럽습니다`
+  - `다행입니다`
+  - `명확히 답변드리겠습니다`
+  - `필요성을 느낍니다`
+- NPCs treated `직업 뭐임?` as a normal request and kept saying everyone should reveal roles.
+- User wanted real mafia-game reasoning: suspicion, alibi pressure, vote-line reading, role reveal risk, reverse pressure.
+
+Implemented:
+
+- `Persona.cs`
+  - Strengthened each persona's Korean speech style:
+    - 카이: aggressive 반말
+    - 제로: cold analytic 존댓말
+    - 미로: playful mixed speech
+    - 하루: emotional mixed speech
+    - 노아: conspiracy-style 존댓말
+    - 세이: short blunt 반말
+- `PromptBuilder.cs`
+  - Reframed daytime talk away from rigid "role verification" into actual mafia-game incentives.
+  - Added explicit principle:
+    - early, baseless role reveal requests usually benefit mafia because they expose police/doctor.
+  - NPCs should treat role-fishing as suspicious rather than complying.
+  - Better question targets:
+    - alibi
+    - movement route
+    - changed statements
+    - silence
+    - vote intention
+    - why someone is pushing role reveal
+  - Removed/softened overly rigid wording that caused NPCs to mechanically ask for "직업".
+- `Actors.cs`
+  - Added output harness `EnsureUseful()`.
+  - Detects weak/non-productive output and replaces it with persona-specific mafia-game lines.
+  - Weak output now includes:
+    - `무슨 의미`
+    - `무슨 소리`
+    - `걱정스럽`
+    - `다행`
+    - `명확하게 대답`
+    - `필요성을 느끼`
+    - `요청드립니다`
+    - `직업을 밝`
+    - `각자의 직업`
+    - etc.
+  - Added `ContainsRoleFishing()` and role-fishing fallback lines.
+  - Added `ContainsAlibiTopic()` and alibi fallback lines.
+- `GameController.cs`
+  - `LocalTranscript()` now slices recent lines per room correctly instead of using total `_roomLines.Count`.
+  - `OneSentence()` now keeps up to two sentence-ending marks and raises length cap to 150 chars so useful reasoning is not cut off too early.
+
+Design note for next agent:
+
+- The goal is not "stricter prompt rules". The user explicitly noticed that overly strict prompts make NPCs robotic.
+- Prefer fewer rules plus stronger mafia-game heuristics.
+- Real mafia behavior to preserve:
+  - Do not reveal police/doctor early without a reason.
+  - If someone asks roles too early, suspect them.
+  - Ask for route + witness, not just "where were you".
+  - Force symmetry: if you ask my alibi, give yours too.
+  - Vote intent matters near voting.
+  - Mafia may fake helpful analysis or redirect suspicion.
+
+Verification so far:
+
+- Unity compile refresh passed.
+- Unity console errors/warnings: 0 after latest script changes.
+- A short sample before final refinements still showed some weak phrases; the final refinements were added after that sample, but a longer gameplay test is still recommended.
 
 ### Tilemap Autotiler + Scene Cleanup (2026-07-04, 다른 Claude 세션)
 
@@ -221,4 +372,3 @@ These appear to be URP/rendering informational warnings, not gameplay errors.
 ## Git / Dirty Files Note
 
 There may be `.DS_Store` changes from macOS/Unity. Ignore those unless the user specifically asks to clean them.
-

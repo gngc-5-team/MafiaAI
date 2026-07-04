@@ -22936,6 +22936,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -23327,18 +23347,6 @@ PrefabInstance:
       propertyPath: _decorTilemap
       value: 
       objectReference: {fileID: 2050576383}
-    - target: {fileID: 1970554226434130699, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: _nameLabelAnchor
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1970554226434130699, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: _nameLabelCustomOffset.y
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1970554226434130699, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: _nameLabelCustomOffset.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4076063715021806837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: input
       value: 
@@ -23407,14 +23415,6 @@ PrefabInstance:
       propertyPath: roleNameText
       value: 
       objectReference: {fileID: 2012932075}
-    - target: {fileID: 7572344028111951968, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: globalLight
-      value: 
-      objectReference: {fileID: 1790457645}
-    - target: {fileID: 7572344028111951968, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: moonlightPool
-      value: 
-      objectReference: {fileID: 1279274066}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

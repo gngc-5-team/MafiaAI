@@ -7,7 +7,7 @@ namespace MafiaAI.LLM
     public class GameConfig
     {
         public string BaseUrl = "http://localhost:11434";
-        public string Model = "gemma3:4b";
+        public string Model = "gemma4:latest";
 
         public int RoomCount = 5;           // 저택 방 개수(복도는 항상 방 개수-1개, 신장 트리 간선 수와 같음)
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간

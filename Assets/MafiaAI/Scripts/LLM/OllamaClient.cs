@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 namespace MafiaAI.LLM
 {
     /// <summary>
-    /// 로컬 Ollama(gemma3:4b 등)를 UnityWebRequest로 호출하는 얇은 클라이언트.
+    /// 로컬 Ollama(gemma4:latest 등)를 UnityWebRequest로 호출하는 얇은 클라이언트.
     /// 발언(자유 생성)과 행동(JSON 강제)을 모두 지원한다.
     /// </summary>
     public class OllamaClient
