@@ -23,9 +23,14 @@ namespace MafiaAI.UI
         [SerializeField] VoteCandidateView candidatePrefab;
         [SerializeField] Button confirmButton;
         [SerializeField] Button abstainButton;
+        [SerializeField] PersonaPortraitLibrary portraits; // 이름→초상화 매핑. 안 만들었으면 비워둬도 동작
 
         static readonly Color IdleColor = new Color32(0x33, 0x2A, 0x1E, 0xFF);
         static readonly Color SelectedColor = new Color32(0xC0, 0x39, 0x2B, 0xFF);
+
+        const float HoverScale = 1.15f;   // 마우스 올린 카드
+        const float RecedeScale = 0.88f;  // 그동안 나머지 카드
+        const int HoverSortingOrder = 10; // 옆 카드 위로 튀어나와 보이게
 
         HumanActor _human;
         string _selected;
@@ -108,7 +113,13 @@ namespace MafiaAI.UI
                 string target = id;
                 var card = Instantiate(candidatePrefab, candidateListRoot);
                 if (card.NameText != null) card.NameText.text = id;
+                if (card.Portrait != null && portraits != null)
+                {
+                    var sprite = portraits.GetPortrait(id);
+                    if (sprite != null) card.Portrait.sprite = sprite; // 없으면 기존 이미지(빈칸/기본값) 그대로 둠
+                }
                 if (card.Button != null) card.Button.onClick.AddListener(() => SelectCandidate(target));
+                card.OnHoverChanged += HandleCardHover;
                 _cards[id] = card;
             }
 
@@ -120,6 +131,26 @@ namespace MafiaAI.UI
         {
             _selected = id;
             RefreshCards();
+        }
+
+        /// <summary>
+        /// 마우스 올린 카드는 커지면서 다른 카드들 위로 튀어나오고, 나머지는 살짝 작아진다.
+        /// Layout Group이 자식 크기를 다시 재는 건 sizeDelta/anchor 기준이라, 여기서 localScale만
+        /// 바꾸는 건 레이아웃을 흔들지 않는다. 렌더 순서는 sibling index가 아니라 별도 Canvas로 덮어써서
+        /// 카드 배치 순서를 안 건드리고도 위로 튀어나와 보이게 한다.
+        /// </summary>
+        void HandleCardHover(VoteCandidateView hovered, bool hovering)
+        {
+            foreach (var kv in _cards)
+            {
+                bool isHovered = kv.Value == hovered;
+                kv.Value.SetTargetScale(hovering ? (isHovered ? HoverScale : RecedeScale) : 1f);
+            }
+
+            var canvas = hovered.GetComponent<Canvas>();
+            if (canvas == null) canvas = hovered.gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = hovering;
+            canvas.sortingOrder = HoverSortingOrder;
         }
 
         int TallyOf(string id)
