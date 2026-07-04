@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# AI 마피아 — 로컬 AI(Ollama + gemma3:4b) 자동 세팅 (macOS / Linux)
+# AI 마피아 — 로컬 AI(Ollama + gemma4:latest) 자동 세팅 (macOS / Linux)
 # 사용법:  bash setup.sh   또는   ./setup.sh
 set -e
 
-MODEL="gemma3:4b"
+MODEL="gemma4:latest"
 echo "=============================================="
 echo "  AI 마피아 - 로컬 AI 환경 세팅"
 echo "=============================================="
@@ -38,11 +38,11 @@ else
   echo "[2/3] Ollama 서버 실행 중"
 fi
 
-# 3) 모델 다운로드 (약 3.3GB) + 워밍업
+# 3) 모델 다운로드 (약 9.6GB) + 워밍업
 if ollama list 2>/dev/null | grep -q "$MODEL"; then
   echo "[3/3] 모델 $MODEL 이미 있음"
 else
-  echo "[3/3] 모델 $MODEL 다운로드 (약 3.3GB, 네트워크에 따라 수 분 소요)..."
+  echo "[3/3] 모델 $MODEL 다운로드 (약 9.6GB, 네트워크에 따라 수 분 소요)..."
   ollama pull "$MODEL"
 fi
 

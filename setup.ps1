@@ -1,9 +1,9 @@
-# AI 마피아 - 로컬 AI(Ollama + gemma3:4b) 자동 세팅 (Windows PowerShell)
+# AI 마피아 - 로컬 AI(Ollama + gemma4:latest) 자동 세팅 (Windows PowerShell)
 # 사용법(PowerShell):
 #   Set-ExecutionPolicy -Scope Process Bypass -Force ; ./setup.ps1
 
 $ErrorActionPreference = "Stop"
-$MODEL = "gemma3:4b"
+$MODEL = "gemma4:latest"
 
 Write-Host "=============================================="
 Write-Host "  AI 마피아 - 로컬 AI 환경 세팅"
@@ -50,7 +50,7 @@ $have = (ollama list | Select-String $MODEL)
 if ($have) {
     Write-Host "[3/3] 모델 $MODEL 이미 있음"
 } else {
-    Write-Host "[3/3] 모델 $MODEL 다운로드 (약 3.3GB, 수 분 소요)..."
+    Write-Host "[3/3] 모델 $MODEL 다운로드 (약 9.6GB, 수 분 소요)..."
     ollama pull $MODEL
 }
 

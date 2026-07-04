@@ -125,7 +125,6 @@ namespace MafiaAI.UI
         GameObject _nightMask;
         SpriteRenderer _nightMaskSr;
         float _nightMaskHole = -1f;
-        bool _killedThisNight;
 
         /// <summary>인간 플레이어의 현재 월드 좌표(밤 이동 스냅샷/복구용).</summary>
         public Vector3 HumanWorldPosition => _humanWorldPos;
@@ -169,7 +168,6 @@ namespace MafiaAI.UI
         void Update()
         {
             HandleHumanMovement();
-            HandleNightKill();
             UpdateTokens();
             UpdateTokenAnimations();
             ApplyNameLabelSettings();
@@ -1011,7 +1009,6 @@ namespace MafiaAI.UI
                          && _controller.HumanPlayer != null && _controller.HumanPlayer.Alive;
             if (!night) { _nightMask.SetActive(false); return; }
 
-            _killedThisNight = false;
             bool mafia = _controller.HumanPlayer.Role == Role.Mafia;
             float vision = mafia ? _controller.config.MafiaNightVision : _controller.config.CitizenNightVision;
             SetNightMaskHole(vision);
@@ -1051,35 +1048,11 @@ namespace MafiaAI.UI
             _nightMaskSr.sprite = Sprite.Create(tex, new Rect(0, 0, T, T), new Vector2(0.5f, 0.5f), ppu, 0, SpriteMeshType.FullRect);
         }
 
-        // ========================= 공간 사냥(인간 마피아) =========================
+        // ========================= 공간 능력 연출 =========================
+        // 밤 능력 입력(Space)은 NightMovementUI가 세 역할(마피아/경찰/의사) 통합으로 처리한다.
 
-        void HandleNightKill()
-        {
-            if (_controller == null || _controller.State == null) return;
-            if (_controller.State.Phase != Phase.Night || _killedThisNight) return;
-            var hp = _controller.HumanPlayer;
-            if (hp == null || !hp.Alive || hp.Role != Role.Mafia) return;
-            if (IsTyping()) return;
-            var keyboard = Keyboard.current;
-            if (keyboard == null || !keyboard.spaceKey.wasPressedThisFrame) return;
-
-            string best = null;
-            float bestD = float.MaxValue;
-            foreach (var id in _controller.NightKillCandidates())
-            {
-                if (!_tokens.TryGetValue(id, out var t) || t == null || !t.gameObject.activeSelf) continue;
-                float d = Vector2.Distance(new Vector2(t.position.x, t.position.y),
-                                           new Vector2(_humanWorldPos.x, _humanWorldPos.y));
-                if (d < bestD) { bestD = d; best = id; }
-            }
-
-            if (best == null || bestD > _controller.config.KillRadius) return;   // 사거리 밖 → 헛손질
-            if (_controller.TrySubmitNightKill(best))
-            {
-                _killedThisNight = true;
-                StartCoroutine(KillFeedback(best));
-            }
-        }
+        /// <summary>마피아 살해 순간의 시각 피드백(붉은 틴트+표식)을 재생한다. 사망 공개는 새벽 정산.</summary>
+        public void PlayKillFeedback(string id) => StartCoroutine(KillFeedback(id));
 
         /// <summary>살해 순간의 시각 피드백. 실제 사망 표시·정산은 새벽에만 일어난다(은밀).</summary>
         IEnumerator KillFeedback(string id)

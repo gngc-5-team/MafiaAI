@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 namespace MafiaAI.LLM
 {
     /// <summary>
-    /// 로컬 Ollama(gemma3:4b 등)를 UnityWebRequest로 호출하는 얇은 클라이언트.
+    /// 로컬 Ollama(gemma4:latest 등)를 UnityWebRequest로 호출하는 얇은 클라이언트.
     /// 발언(자유 생성)과 행동(JSON 강제)을 모두 지원한다.
     /// </summary>
     public class OllamaClient
@@ -28,6 +28,10 @@ namespace MafiaAI.LLM
             public string system;
             public bool stream;
             public string format;   // "json" 이면 구조화 출력 강제, "" 이면 자유 생성
+            public bool think;      // gemma4 등 thinking 모델용. 켜두면 num_predict 예산을 '생각'에 다 써서
+                                    // 발언이 빈 문자열로 나온다(실측). 항상 꺼서 예산을 답변에만 쓴다.
+                                    // (gemma3 등 비-thinking 모델에 false를 보내도 에러 없음 — 실측 확인)
+            public string keep_alive; // 판 중간에 대형 모델(9.6GB)이 메모리에서 내려가 수십 초 재로딩되는 것 방지
             public Options options;
         }
 
@@ -55,7 +59,7 @@ namespace MafiaAI.LLM
             float temperature = 0.8f,
             bool jsonFormat = false,
             CancellationToken ct = default,
-            int maxTokens = 100)
+            int maxTokens = 140) // gemma4 기준: 한국어 2문장(OneSentence 150자 컷) ≈ 80~120토큰, 여유 포함
         {
             // 프롬프트가 "2문장 이내"/"한 문장만"으로 답을 제한해도 Ollama 자체엔 길이 제한이 없어서
             // 모델이 그보다 훨씬 길게 계속 생성하고, 우리는 OneSentence()로 첫 문장만 잘라 쓰고 나머지는 버렸다.
@@ -67,6 +71,8 @@ namespace MafiaAI.LLM
                 system = system ?? string.Empty,
                 stream = false,
                 format = jsonFormat ? "json" : string.Empty,
+                think = false,
+                keep_alive = "30m",
                 options = new Options { temperature = temperature, num_predict = maxTokens }
             };
 
