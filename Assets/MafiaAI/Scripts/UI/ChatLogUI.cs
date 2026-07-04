@@ -102,7 +102,7 @@ namespace MafiaAI.UI
             var line = Instantiate(chatLinePrefab, chatContent);
             line.text = text;
             line.color = color;
-            line.enableWordWrapping = true;
+            line.textWrappingMode = TextWrappingModes.Normal;
             line.overflowMode = TextOverflowModes.Overflow;
             var rt = line.rectTransform;
             rt.anchorMin = new Vector2(0f, rt.anchorMin.y);
