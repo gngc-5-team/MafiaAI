@@ -7,7 +7,7 @@ namespace MafiaAI.LLM
     public class GameConfig
     {
         public string BaseUrl = "http://localhost:11434";
-        public string Model = "gemma3:4b";
+        public string Model = "gemma4:12b"; // 심리전용 상위 모델(M5 Max 실측 58.7tok/s). 주의: 씬/프리팹 serialized 값이 실효값
 
         public int RoomCount = 5;           // 저택 방 개수(복도는 항상 방 개수-1개, 신장 트리 간선 수와 같음)
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간

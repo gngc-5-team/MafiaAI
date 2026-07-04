@@ -2,6 +2,8 @@
 
 Last updated: 2026-07-04
 
+Latest Codex update: 2026-07-04 evening
+
 ## Project Context
 
 - Unity project path: `/Users/kang-yumin/Documents/GitHub/MafiaAI`
@@ -53,8 +55,175 @@ Interpretation:
 - `Assets/MafiaAI/Scripts/UI/NightMovementUI.cs`
 - `Assets/MafiaAI/Lighting/MansionMoodProfile.asset`
 - `Assets/MafiaAI/Materials/MansionSpriteLit.mat`
+- `Assets/MafiaAI/Scripts/Core/Persona.cs`
+- `Assets/MafiaAI/Scripts/LLM/Actors.cs`
+- `Assets/MafiaAI/Scripts/LLM/PromptBuilder.cs`
+- `Assets/Prefabs/GameController.prefab`
+- `Assets/sprites/char/cha_*.aseprite`
 
 ## Work Already Completed
+
+### Night Spatial Ability for All Roles (2026-07-04 밤, 다른 Claude 세션)
+
+- 밤 공간 능력을 마피아 전용 → **마피아(살해)/경찰(조사)/의사(보호) 3역할 통합**. 모두 대상에게 KillRadius(1.6) 안까지 접근 후 **Space**.
+- 단일 시스템 = `NightMovementUI` (기존 K키 스크립트 개조 + **GameController.prefab에 장착** — 이전엔 스크립트만 있고 미장착이었음):
+  - 사거리 안 최근접 대상 머리 위에 **PointArrow**(3프레임 애니+바운스, sortingOrder 520) 표시, 멀어지면 숨김. 튜너블 SerializeField.
+  - 역할별 피드백: 마피아=붉은 틴트 "제거"(SMV.PlayKillFeedback), 경찰="마피아!/시민" 텍스트, 의사="보호".
+- **효과 타이밍**: 경찰=사용 즉시(`GameController.SubmitImmediateInvestigation` → Investigations 즉시 기록, `GameRules.ResolveNight`가 중복 스킵). 마피아/의사=새벽 정산. **의사 무사용=자힐**(DefaultNightTarget 기존 구현).
+- `SpriteMansionView.HandleNightKill` 삭제(Space 중복 발화 방지) — 밤 입력은 NightMovementUI가 유일한 주인.
+- AI 역할들은 기존 JSON 추상 선택 그대로(인간만 공간 능력). 실플레이 미검증.
+
+### Model Migration to gemma4:12b (2026-07-04 저녁, 다른 Claude 세션)
+
+- `config.Model` = **`gemma4:12b`** (씬 + 프리팹 + 스크립트 기본값 3곳 모두). GameConfig는 [Serializable]이라 씬/프리팹 serialized 값이 실효 — 모델 바꿀 땐 SerializedObject로 둘 다 갱신할 것.
+- **⚠️ gemma4는 thinking 모델**: 기본 상태로 호출하면 num_predict 예산을 '생각'에 다 써서 response가 **빈 문자열**로 옴(실측). `OllamaClient`가 항상 `think:false`를 보내도록 수정 — 절대 제거하지 말 것. gemma3에 보내도 에러 없음(하위호환 실측).
+- `OllamaClient`: `keep_alive:"30m"`(대형 모델 중간 언로드 방지), 기본 maxTokens 100→140.
+- 12b 실측(M5 Max 48GB): 58.7 tok/s, 발언 1~2초 — TalkInterval(3-5s)·타임아웃(40s) 변경 불필요.
+- 실플레이 장기 테스트는 아직 안 함.
+
+### Character Skin Fixed Mapping (2026-07-04 evening, Codex)
+
+User replaced/added Aseprite character files:
+
+- Deleted old `Assets/sprites/char/cha_2.aseprite`
+- Added `Assets/sprites/char/cha_2-2.aseprite`
+- Added `Assets/sprites/char/cha_3.aseprite`
+- Added `Assets/sprites/char/cha_5.aseprite`
+- Existing: `cha_1`, `cha_4`, `cha_6`
+
+Required fixed mapping:
+
+- `cha_1` → `카이`
+- `cha_2-2` → `미로`
+- `cha_3` → `노아`
+- `cha_4` → `세이`
+- `cha_5` → `제로`
+- `cha_6` → `하루`
+
+Implemented:
+
+- `SpriteMansionView.CharacterSkin` now has `playerId`.
+- `SpriteMansionView.FindSkinForPlayer(playerId, seatIndex)` now selects by:
+  1. explicit `CharacterSkin.playerId`
+  2. default label mapping from Korean player name
+  3. old seat-index fallback
+- `Assets/Prefabs/GameController.prefab` and the `YuminScene` `GameController` instance were both configured with 6 skins.
+- Verified serialized mapping through Unity:
+  - Prefab: `카이=cha_1; 미로=cha_2-2; 노아=cha_3; 세이=cha_4; 제로=cha_5; 하루=cha_6`
+  - Scene: same mapping
+- Verified frame counts:
+  - `카이=cha_1 idle:10 walk:8`
+  - `미로=cha_2-2 idle:9 walk:7`
+  - `노아=cha_3 idle:9 walk:7`
+  - `세이=cha_4 idle:9 walk:8`
+  - `제로=cha_5 idle:9 walk:7`
+  - `하루=cha_6 idle:9 walk:7`
+
+Important:
+
+- Do not go back to seat-order skin assignment. The user's intent is fixed identity-to-skin mapping.
+- If new characters are added later, update `DefaultSkinLabel()` and the prefab/scene `_charSkins` list.
+
+### Name Label Editor Controls (2026-07-04 evening, Codex)
+
+User wanted character name text position editable from Unity Editor.
+
+Implemented in `SpriteMansionView`:
+
+- Added enum `NameLabelAnchor`:
+  - `AboveHead`
+  - `BelowFeet`
+  - `Custom`
+- Added serialized fields under header `캐릭터 이름표`:
+  - `_nameLabelAnchor`
+  - `_nameLabelCustomOffset`
+  - `_nameLabelAboveHeadY`
+  - `_nameLabelBelowFeetY`
+  - `_nameLabelFontSize`
+  - `_nameLabelCharacterSize`
+  - `_nameLabelSortingOrder`
+- `AddLabel()` now uses `NameLabelOffset()` instead of hard-coded offsets.
+- `ApplyNameLabelSettings()` runs during `Update()` so values changed in Inspector during Play Mode immediately apply to runtime labels.
+
+Where to adjust:
+
+- Select `GameController` in `YuminScene`
+- Open `Sprite Mansion View`
+- Adjust `캐릭터 이름표` fields
+
+### AI Dialogue Prompt / Harness Work (2026-07-04 evening, Codex)
+
+User complained NPCs were too "stupid" and did not play mafia well:
+
+- Repeated empty polite phrases:
+  - `무슨 의미죠?`
+  - `걱정스럽습니다`
+  - `다행입니다`
+  - `명확히 답변드리겠습니다`
+  - `필요성을 느낍니다`
+- NPCs treated `직업 뭐임?` as a normal request and kept saying everyone should reveal roles.
+- User wanted real mafia-game reasoning: suspicion, alibi pressure, vote-line reading, role reveal risk, reverse pressure.
+
+Implemented:
+
+- `Persona.cs`
+  - Strengthened each persona's Korean speech style:
+    - 카이: aggressive 반말
+    - 제로: cold analytic 존댓말
+    - 미로: playful mixed speech
+    - 하루: emotional mixed speech
+    - 노아: conspiracy-style 존댓말
+    - 세이: short blunt 반말
+- `PromptBuilder.cs`
+  - Reframed daytime talk away from rigid "role verification" into actual mafia-game incentives.
+  - Added explicit principle:
+    - early, baseless role reveal requests usually benefit mafia because they expose police/doctor.
+  - NPCs should treat role-fishing as suspicious rather than complying.
+  - Better question targets:
+    - alibi
+    - movement route
+    - changed statements
+    - silence
+    - vote intention
+    - why someone is pushing role reveal
+  - Removed/softened overly rigid wording that caused NPCs to mechanically ask for "직업".
+- `Actors.cs`
+  - Added output harness `EnsureUseful()`.
+  - Detects weak/non-productive output and replaces it with persona-specific mafia-game lines.
+  - Weak output now includes:
+    - `무슨 의미`
+    - `무슨 소리`
+    - `걱정스럽`
+    - `다행`
+    - `명확하게 대답`
+    - `필요성을 느끼`
+    - `요청드립니다`
+    - `직업을 밝`
+    - `각자의 직업`
+    - etc.
+  - Added `ContainsRoleFishing()` and role-fishing fallback lines.
+  - Added `ContainsAlibiTopic()` and alibi fallback lines.
+- `GameController.cs`
+  - `LocalTranscript()` now slices recent lines per room correctly instead of using total `_roomLines.Count`.
+  - `OneSentence()` now keeps up to two sentence-ending marks and raises length cap to 150 chars so useful reasoning is not cut off too early.
+
+Design note for next agent:
+
+- The goal is not "stricter prompt rules". The user explicitly noticed that overly strict prompts make NPCs robotic.
+- Prefer fewer rules plus stronger mafia-game heuristics.
+- Real mafia behavior to preserve:
+  - Do not reveal police/doctor early without a reason.
+  - If someone asks roles too early, suspect them.
+  - Ask for route + witness, not just "where were you".
+  - Force symmetry: if you ask my alibi, give yours too.
+  - Vote intent matters near voting.
+  - Mafia may fake helpful analysis or redirect suspicion.
+
+Verification so far:
+
+- Unity compile refresh passed.
+- Unity console errors/warnings: 0 after latest script changes.
+- A short sample before final refinements still showed some weak phrases; the final refinements were added after that sample, but a longer gameplay test is still recommended.
 
 ### Tilemap Autotiler + Scene Cleanup (2026-07-04, 다른 Claude 세션)
 
@@ -149,19 +318,15 @@ Latest user correction:
   - Tunables exposed as serialized fields on `MansionLightingController` (intensity/radius/angles/color).
   - Flicker base intensities re-cached after snap.
 
-Current lighting state:
+Current lighting state (2026-07-04 오후 늦게, 최종 — 위 서술은 히스토리):
 
 - `Player Sight Light` removed.
-- `MansionLightingController` no longer has player-following light fields or logic.
-- Room lights are named like `Lamp_Room*_WallDiagonal`.
-- Room light markers are named like `Lamp_Room* WallSconce`.
-- Room lights are placed very close to wall bounds and rotated inward diagonally.
-- Odd rooms use a vertical wall mount, even rooms use a horizontal wall mount, so they do not all look identical.
-- Corridors use `Corridor*_WallLight`, one per corridor.
-- Runtime verification result:
-  - wall diagonal lights: 5
-  - corridor lights: 4
-  - player light: false
+- **방 앰버 램프(Room Lamps 그룹)와 복도 파란 조명(Corridor Fill Lights 그룹)은 사용자 요청으로 완전 삭제됨.**
+- 현행 조명 = **창문 달빛(`Lighting/Window Moonlight` 풀, Moonlight_01~14) + Global Light 낮/밤 무드**가 전부.
+  - 오토타일러가 매판 뒷벽에 랜덤 배치하는 창문(window 타일)마다 `MansionLightingController.SnapMoonlights()`가 달빛을 하나씩 스냅(인접 창 병합, 폭에 따라 원뿔 확장). 남는 풀은 꺼둠.
+  - 달빛은 낮 0.3 ↔ 밤 1.05 강도로 러프(밤에 주광). 색/각도/반경/오프셋 전부 `MansionLightingController` SerializeField.
+  - 삼각형 꼭짓점이 보이지 않게 광원을 창문 뒤로 올림(dropOffset -1.2) + 넓은각(75°)+소프트엣지(ratio 0.25).
+- `SpriteMansionView.WindowAnchors`(public)가 창문 위치를 노출 — 조명·데코가 이 앵커를 쓰면 매판 자동 정합.
 
 Preview screenshots created:
 
@@ -221,4 +386,3 @@ These appear to be URP/rendering informational warnings, not gameplay errors.
 ## Git / Dirty Files Note
 
 There may be `.DS_Store` changes from macOS/Unity. Ignore those unless the user specifically asks to clean them.
-

@@ -89,8 +89,7 @@ namespace MafiaAI.LLM
             {
                 case Role.Mafia: cands = PromptBuilder.MafiaTargets(s, self); kind = "mafia"; break;
                 case Role.Doctor:
-                    cands = new List<string>();
-                    foreach (var p in s.Alive) cands.Add(p.Id);
+                    cands = PromptBuilder.DoctorTargets(s, self);
                     kind = "doctor";
                     break;
                 default: cands = PromptBuilder.OthersAlive(s, self); kind = "police"; break;

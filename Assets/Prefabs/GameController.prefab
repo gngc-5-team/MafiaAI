@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4801870741227523591}
   - component: {fileID: 5032610799490082308}
   - component: {fileID: 445694174192622571}
+  - component: {fileID: 7395236486764517638}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MonoBehaviour:
   humanSeat: 0
   config:
     BaseUrl: http://localhost:11434
-    Model: gemma3:4b
+    Model: gemma4:12b
     RoomCount: 5
     DiscussionSeconds: 2
     NightSeconds: 1
@@ -252,8 +253,8 @@ MonoBehaviour:
     walkFps: 11.5
   _charScale: 1.5
   _walkSpeedThreshold: 0.15
-  _nameLabelAnchor: 0
-  _nameLabelCustomOffset: {x: 0, y: 1.48, z: -0.05}
+  _nameLabelAnchor: 2
+  _nameLabelCustomOffset: {x: 0, y: -0.2, z: 0}
   _nameLabelAboveHeadY: 1.48
   _nameLabelBelowFeetY: -0.95
   _nameLabelFontSize: 42
@@ -470,3 +471,28 @@ MonoBehaviour:
   flickerSlowSpeed: 0.9
   flickerFastAmplitude: 0.06
   flickerFastSpeed: 3.1
+--- !u!114 &7395236486764517638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b845dd6bb3584fa380019f11a072256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.NightMovementUI
+  controller: {fileID: 6406926979918794837}
+  mansionView: {fileID: 1970554226434130699}
+  hintText: {fileID: 0}
+  arrowFrames:
+  - {fileID: -8451213529174515898, guid: a3b53623d20794744826ea043f27f19e, type: 3}
+  - {fileID: 549603640754851284, guid: a3b53623d20794744826ea043f27f19e, type: 3}
+  - {fileID: -8650379979715570529, guid: a3b53623d20794744826ea043f27f19e, type: 3}
+  arrowFps: 4
+  arrowScale: 7
+  arrowHeadOffset: 1.15
+  arrowBobAmplitude: 0.12
+  arrowBobSpeed: 3.5
+  arrowSortingOrder: 520

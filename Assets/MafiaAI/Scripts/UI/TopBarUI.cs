@@ -101,11 +101,14 @@ namespace MafiaAI.UI
             }
         }
 
-        static string PhaseLabel(Phase p)
+        string PhaseLabel(Phase p)
         {
             switch (p)
             {
-                case Phase.Night: return "밤";
+                case Phase.Night:
+                    return !string.IsNullOrEmpty(controller != null ? controller.NightStepLabel : null)
+                        ? controller.NightStepLabel
+                        : "밤";
                 case Phase.Dawn: return "새벽";
                 case Phase.Discuss: return "토론";
                 case Phase.Vote: return "투표";
