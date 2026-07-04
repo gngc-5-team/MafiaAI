@@ -33,6 +33,7 @@ namespace MafiaAI.LLM
         public event Action<Winner> OnGameEnd;
         public event Action OnLocationsChanged;
         public event Action<string, string, string> OnPlayerQuestion; // asker, room, question
+        public event Action OnVoteCast; // 투표 1건이 집계될 때마다(투표 UI 실시간 갱신용)
 
         public Player HumanPlayer { get; private set; }
         public GameState State { get; private set; }
@@ -470,11 +471,11 @@ namespace MafiaAI.LLM
 
         async Task VotePhase(CancellationToken ct)
         {
+            State.Votes.Clear(); // 투표창이 열릴 때(SetPhase) 지난 라운드 표가 보이지 않도록 먼저 비운다
             SetPhase(Phase.Vote);
             Emit(LogKind.System, "SYSTEM", "── Day " + State.Day + " · 투표 ──");
-            State.Votes.Clear();
 
-            float voteEnd = Time.realtimeSinceStartup + config.VoteSeconds;
+            float voteEnd = Time.realtimeSinceStartup + config.VoteSeconds; // SetPhase가 PhaseEndsAt을 0으로 리셋하므로 그 뒤에 설정
             PhaseEndsAt = voteEnd;
 
             foreach (var pl in State.AliveList)
@@ -485,6 +486,7 @@ namespace MafiaAI.LLM
                 string label = string.IsNullOrEmpty(choice.TargetId) ? "기권" : choice.TargetId;
                 string reason = string.IsNullOrEmpty(choice.Reason) ? "" : " (" + choice.Reason + ")";
                 Emit(LogKind.Vote, pl.Id, pl.Id + " ▶ " + label + reason);
+                OnVoteCast?.Invoke(); // 투표 UI가 실시간으로 표를 갱신하도록 알림
             }
 
             var vr = GameRules.ResolveVotes(State, _rng);

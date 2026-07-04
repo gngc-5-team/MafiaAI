@@ -1007,6 +1007,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &550530124 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1952386107896681335, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &576829667
 GameObject:
   m_ObjectHideFlags: 0
@@ -35333,6 +35344,37 @@ Transform:
   - {fileID: 1671198417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!1 &891234660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 891234661}
+  m_Layer: 0
+  m_Name: NightVision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &891234661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891234660}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &926652683 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2949792504158782800, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
@@ -35425,6 +35467,14 @@ PrefabInstance:
       propertyPath: overlayRoot
       value: 
       objectReference: {fileID: 1397441243}
+    - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: abstainButton
+      value: 
+      objectReference: {fileID: 550530124}
+    - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: confirmButton
+      value: 
+      objectReference: {fileID: 1326538740}
     - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: candidateListRoot
       value: 
@@ -35673,6 +35723,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1326538740 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2848782804397738124, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!114 &1338321203 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3375135708605860695, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
@@ -36078,6 +36139,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1807105309 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+  m_PrefabInstance: {fileID: 1006129854}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862783ce70864952abcf2353c6e6412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.LLM.GameController
 --- !u!1 &1839888684
 GameObject:
   m_ObjectHideFlags: 0
@@ -36816,6 +36888,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1635217396289905553, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 1807105309}
     - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -36916,6 +37012,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8035045448082181035, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 1807105309}
     - target: {fileID: 8511432311449082785, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -36947,3 +37047,4 @@ SceneRoots:
   - {fileID: 1857819865}
   - {fileID: 1964742995}
   - {fileID: 2024512021}
+  - {fileID: 891234661}
