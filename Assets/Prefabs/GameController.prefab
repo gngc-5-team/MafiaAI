@@ -66,9 +66,9 @@ MonoBehaviour:
     Model: gemma3:4b
     RoomCount: 5
     DiscussionSeconds: 60
-    NightSeconds: 10
+    NightSeconds: 15
     AiNightTimeoutSeconds: 40
-    VoteSeconds: 15
+    VoteSeconds: 30
     AiVoteTimeoutSeconds: 40
     TalkIntervalMinMs: 3000
     TalkIntervalMaxMs: 5000

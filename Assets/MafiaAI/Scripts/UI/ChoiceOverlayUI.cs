@@ -24,8 +24,8 @@ namespace MafiaAI.UI
         [SerializeField] Button confirmButton;
         [SerializeField] Button abstainButton;
         [SerializeField] PersonaPortraitLibrary portraits; // 이름→초상화 매핑. 안 만들었으면 비워둬도 동작
-
-        static readonly Color IdleColor = new Color32(0x33, 0x2A, 0x1E, 0xFF);
+        // 핵사로 받음
+        static readonly Color IdleColor = new Color32(0x11, 0x10, 0x10, 0xFF);
         static readonly Color SelectedColor = new Color32(0xC0, 0x39, 0x2B, 0xFF);
 
         const float HoverScale = 1.15f;   // 마우스 올린 카드
@@ -120,11 +120,23 @@ namespace MafiaAI.UI
                 }
                 if (card.Button != null) card.Button.onClick.AddListener(() => SelectCandidate(target));
                 card.OnHoverChanged += HandleCardHover;
+
+                // 클릭/호버가 먹으려면 레이캐스트를 받는 그래픽이 있어야 한다. 카드 배경/버튼 타깃에 강제로 켠다
+                // (프리팹에서 Raycast Target을 꺼놨어도 여기서 보정 — 호버·투표 먹통의 흔한 원인).
+                EnsureRaycast(card.GetComponent<Image>());
+                EnsureRaycast(card.Background);
+                if (card.Button != null) EnsureRaycast(card.Button.targetGraphic as Image);
+
                 _cards[id] = card;
             }
 
             RefreshCards();
             overlayRoot.SetActive(true);
+        }
+
+        static void EnsureRaycast(Image img)
+        {
+            if (img != null) img.raycastTarget = true;
         }
 
         void SelectCandidate(string id)
@@ -148,7 +160,14 @@ namespace MafiaAI.UI
             }
 
             var canvas = hovered.GetComponent<Canvas>();
-            if (canvas == null) canvas = hovered.gameObject.AddComponent<Canvas>();
+            if (canvas == null)
+            {
+                canvas = hovered.gameObject.AddComponent<Canvas>();
+                // 중첩 Canvas는 자체 GraphicRaycaster가 없으면 그 하위가 포인터 이벤트를 못 받는다.
+                // (이게 없으면 첫 호버 때 Canvas가 붙는 순간 그 카드가 PointerExit를 못 받아 호버가 굳는다.)
+                if (hovered.GetComponent<GraphicRaycaster>() == null)
+                    hovered.gameObject.AddComponent<GraphicRaycaster>();
+            }
             canvas.overrideSorting = hovering;
             canvas.sortingOrder = HoverSortingOrder;
         }

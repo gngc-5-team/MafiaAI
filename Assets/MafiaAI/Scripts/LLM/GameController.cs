@@ -107,7 +107,7 @@ namespace MafiaAI.LLM
         public void SubmitHumanMessage(string text, string target)
         {
             if (State == null || HumanPlayer == null || !HumanPlayer.Alive) return;
-            if (State.Phase != Phase.Discuss) return;
+            if (State.Phase != Phase.Discuss && State.Phase != Phase.Vote) return; // 투표 중에도 대화 허용
             if (string.IsNullOrWhiteSpace(text)) return;
 
             string clean = OneSentence(text.Trim());
