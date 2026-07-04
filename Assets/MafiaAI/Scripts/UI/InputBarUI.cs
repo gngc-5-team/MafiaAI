@@ -67,15 +67,18 @@ namespace MafiaAI.UI
 
         void HandlePhaseChanged(GameState s)
         {
-            bool canTalk = s.Phase == Phase.Discuss && controller.HumanPlayer != null && controller.HumanPlayer.Alive;
+            bool talkPhase = s.Phase == Phase.Discuss || s.Phase == Phase.Vote; // 투표 중에도 대화 허용
+            bool canTalk = talkPhase && controller.HumanPlayer != null && controller.HumanPlayer.Alive;
             if (canTalk)
             {
                 RebuildChips();
-                SetInputActive(true, "Enter로 채팅 입력. WASD로 이동. 사람 칩을 눌러 콕 집어 말 걸기");
+                SetInputActive(true, s.Phase == Phase.Vote
+                    ? "투표 중 — Enter로 발언. 사람 칩을 눌러 콕 집어 말 걸기"
+                    : "Enter로 채팅 입력. WASD로 이동. 사람 칩을 눌러 콕 집어 말 걸기");
             }
             else
             {
-                SetInputActive(false, "지금은 발언할 수 없습니다 (낮 토론에 활성화)");
+                SetInputActive(false, "지금은 발언할 수 없습니다 (토론·투표에 활성화)");
             }
         }
 
