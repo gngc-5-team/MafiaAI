@@ -16,9 +16,10 @@ GameObject:
   - component: {fileID: 4381711470279274661}
   - component: {fileID: 7021528774289023853}
   - component: {fileID: 4076063715021806837}
-  - component: {fileID: 4465809370810946607}
   - component: {fileID: 5076677308181466845}
   - component: {fileID: 6805265625977110828}
+  - component: {fileID: 4801870741227523591}
+  - component: {fileID: 5032610799490082308}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -66,8 +67,10 @@ MonoBehaviour:
     DiscussionSeconds: 60
     NightSeconds: 10
     AiNightTimeoutSeconds: 40
-    TalkIntervalMinMs: 3000
-    TalkIntervalMaxMs: 5000
+    VoteSeconds: 15
+    AiVoteTimeoutSeconds: 40
+    TalkIntervalMinMs: 1000
+    TalkIntervalMaxMs: 2000
     MoveIntervalMs: 7000
     LineDelayMs: 350
     MaxDays: 15
@@ -161,6 +164,11 @@ MonoBehaviour:
   controller: {fileID: 6406926979918794837}
   roleNameText: {fileID: 0}
   detailText: {fileID: 0}
+  roleIcon: {fileID: 0}
+  citizenIcon: {fileID: -8780785977499532577, guid: 309073ab808e54e60ac9999c283c8bf3, type: 3}
+  mafiaIcon: {fileID: -8035089288019869427, guid: 040232f9810274157889591f4081cff8, type: 3}
+  policeIcon: {fileID: 2297151748734764576, guid: 39c6a4063a5e043daadab7bb0f6a68b4, type: 3}
+  doctorIcon: {fileID: 8841583364694669585, guid: 19f643dcd32cd4ac98be8a671c2e8347, type: 3}
 --- !u!114 &4076063715021806837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,23 +186,6 @@ MonoBehaviour:
   sendButton: {fileID: 0}
   chipListRoot: {fileID: 0}
   chipPrefab: {fileID: 0}
---- !u!114 &4465809370810946607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059122760921202242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9381df217a64c0d8f5bb187f0c75e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.ChoiceOverlayUI
-  controller: {fileID: 6406926979918794837}
-  overlayRoot: {fileID: 0}
-  titleText: {fileID: 0}
-  buttonListRoot: {fileID: 0}
-  candidateButtonPrefab: {fileID: 0}
 --- !u!114 &5076677308181466845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,3 +224,50 @@ MonoBehaviour:
   phaseText: {fileID: 0}
   timerText: {fileID: 0}
   playerCountText: {fileID: 0}
+--- !u!114 &4801870741227523591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9381df217a64c0d8f5bb187f0c75e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.ChoiceOverlayUI
+  controller: {fileID: 6406926979918794837}
+  overlayRoot: {fileID: 0}
+  titleText: {fileID: 0}
+  timerText: {fileID: 0}
+  statusText: {fileID: 0}
+  candidateListRoot: {fileID: 0}
+  candidatePrefab: {fileID: 2444342686212982098, guid: 708cc3603bb414a3c8c0d05d6c7c9876, type: 3}
+  confirmButton: {fileID: 0}
+  abstainButton: {fileID: 0}
+  portraits: {fileID: 5032610799490082308}
+--- !u!114 &5032610799490082308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648dcafa71e354c289b13062bb86b7ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.PersonaPortraitLibrary
+  portraits:
+  - Name: "\uCE74\uC774"
+    Portrait: {fileID: -855298285791758126, guid: 9f0135ea335f7470ea7ea2b510e205db, type: 3}
+  - Name: "\uBBF8\uB85C"
+    Portrait: {fileID: 6937817954938267909, guid: 29656837f57614334ba952ccfc941b8e, type: 3}
+  - Name: "\uB178\uC544"
+    Portrait: {fileID: -6470460504253458178, guid: 194e51fa742d04b5d8211a5e0d106261, type: 3}
+  - Name: "\uC138\uC774"
+    Portrait: {fileID: -4178046375966092550, guid: b23a89216e2cb4051aaa183e085b6ca0, type: 3}
+  - Name: "\uC81C\uB85C"
+    Portrait: {fileID: 4130640169021434097, guid: 9c0f74bf11a8e4475b168c62be913c78, type: 3}
+  - Name: "\uD558\uB8E8"
+    Portrait: {fileID: 3465286685962602723, guid: 81afec573937242e0b4e46a0c559d9a3, type: 3}
