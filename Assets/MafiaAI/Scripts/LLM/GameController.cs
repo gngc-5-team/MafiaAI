@@ -140,11 +140,12 @@ namespace MafiaAI.LLM
         }
 
         /// <summary>지목 없이 그냥 채팅했을 때, 같은 방(=채팅이 들리는 범위)에 있는 AI 전원이 각자 반응한다.</summary>
-        async Task ReactToAmbientAsync(string room, string text, CancellationToken ct)
+        Task ReactToAmbientAsync(string room, string text, CancellationToken ct)
         {
             var listeners = State.Alive.Where(p => !p.IsHuman && GetPlayerRoom(p.Id) == room).ToList();
             foreach (var responder in listeners)
                 _ = ReactOneAsync(responder, room, text, ct);
+            return Task.CompletedTask;
         }
 
         async Task ReactOneAsync(Player responder, string room, string text, CancellationToken ct)
