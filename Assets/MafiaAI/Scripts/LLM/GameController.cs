@@ -41,6 +41,8 @@ namespace MafiaAI.LLM
         /// <summary>현재 페이즈가 끝나는 시각(Time.realtimeSinceStartup 기준). 0이면 카운트다운 없음.</summary>
         public float PhaseEndsAt { get; private set; }
 
+        public string NightStepLabel { get; private set; }
+
         /// <summary>매판 config.RoomCount 기준으로 다시 생성된다("방1".."방N").</summary>
         public string[] Rooms { get; private set; } = { "방1", "방2", "방3", "방4", "방5" };
 
@@ -103,6 +105,27 @@ namespace MafiaAI.LLM
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 인간 경찰이 공간 능력(접근+Space)으로 조사를 확정한 '즉시' 결과를 기록하고 돌려준다.
+        /// (마피아 살해/의사 보호는 새벽 정산이지만, 경찰 조사만 즉시 공개 — 기획 확정.)
+        /// 새벽의 GameRules.ResolveNight는 같은 날 같은 대상 기록이 있으면 중복 추가하지 않는다.
+        /// </summary>
+        public Faction? SubmitImmediateInvestigation(string targetId)
+        {
+            if (State == null || State.Phase != Phase.Night) return null;
+            if (HumanPlayer == null || !HumanPlayer.Alive || HumanPlayer.Role != Role.Police) return null;
+            var target = State.ById(targetId);
+            if (target == null || !target.Alive || target.Id == HumanPlayer.Id) return null;
+
+            HumanPlayer.Investigations.Add(new InvestigationResult
+            {
+                Day = State.Day,
+                TargetId = target.Id,
+                Result = target.Faction
+            });
+            return target.Faction;
         }
 
         public void SubmitHumanMessage(string text, string target)
@@ -272,28 +295,54 @@ namespace MafiaAI.LLM
 
         async Task NightPhase(CancellationToken ct)
         {
-            SetPhase(Phase.Night);
-            Emit(LogKind.System, "SYSTEM", "── Day " + State.Day + " · 밤 (" + config.NightSeconds + "초) ──");
             State.Night.Reset();
 
-            float nightEnd = Time.realtimeSinceStartup + config.NightSeconds;
-            PhaseEndsAt = nightEnd;
             var mafia = State.OfRole(Role.Mafia);
             var police = State.OfRole(Role.Police);
             var doctor = State.OfRole(Role.Doctor);
 
-            var jobs = new List<Task>();
-            if (mafia != null) jobs.Add(GatherNightInto(mafia, target => State.Night.MafiaTarget = target, nightEnd, ct));
-            if (police != null) jobs.Add(GatherNightInto(police, target => State.Night.PoliceTarget = target, nightEnd, ct));
-            if (doctor != null) jobs.Add(GatherNightInto(doctor, target => State.Night.DoctorTarget = target, nightEnd, ct));
-
-            // 사람 몫은 nightEnd(화면 타이머)에 자체적으로 묶여있고, AI 몫은 아래에서 별도의 넉넉한 시한을 쓴다 —
-            // 그래서 여기서는 전체를 다시 nightEnd로 잘라내지 않고 각 잡이 끝날 때까지 그냥 기다린다.
-            await Task.WhenAll(jobs);
+            await RunNightStep("마피아의 밤", new[] { mafia }, ct);
+            await RunNightStep("경찰/의사의 밤", new[] { police, doctor }, ct);
 
             if (mafia != null && string.IsNullOrEmpty(State.Night.MafiaTarget)) State.Night.MafiaTarget = DefaultNightTarget(mafia);
             if (police != null && string.IsNullOrEmpty(State.Night.PoliceTarget)) State.Night.PoliceTarget = DefaultNightTarget(police);
             if (doctor != null && string.IsNullOrEmpty(State.Night.DoctorTarget)) State.Night.DoctorTarget = DefaultNightTarget(doctor);
+        }
+
+        async Task RunNightStep(string label, IEnumerable<Player> actors, CancellationToken ct)
+        {
+            NightStepLabel = label;
+            SetPhase(Phase.Night);
+            Emit(LogKind.System, "SYSTEM", "── Day " + State.Day + " · " + label + " (" + config.NightSeconds + "초) ──");
+
+            float nightEnd = Time.realtimeSinceStartup + config.NightSeconds;
+            PhaseEndsAt = nightEnd;
+
+            var jobs = new List<Task>();
+            foreach (var actor in actors.Where(p => p != null && p.Alive))
+            {
+                switch (actor.Role)
+                {
+                    case Role.Mafia:
+                        jobs.Add(GatherNightInto(actor, target => State.Night.MafiaTarget = target, nightEnd, ct));
+                        break;
+                    case Role.Police:
+                        jobs.Add(GatherNightInto(actor, target => State.Night.PoliceTarget = target, nightEnd, ct));
+                        break;
+                    case Role.Doctor:
+                        jobs.Add(GatherNightInto(actor, target => State.Night.DoctorTarget = target, nightEnd, ct));
+                        break;
+                }
+            }
+
+            if (jobs.Count == 0)
+            {
+                await Task.Delay(Mathf.Max(0, (int)((nightEnd - Time.realtimeSinceStartup) * 1000)), ct);
+                return;
+            }
+
+            // 사람 몫은 nightEnd(화면 타이머)에 자체적으로 묶여있고, AI 몫은 아래에서 별도의 넉넉한 시한을 쓴다.
+            await Task.WhenAll(jobs);
         }
 
         async Task GatherNightInto(Player p, Action<string> assign, float nightEnd, CancellationToken ct)
@@ -527,6 +576,7 @@ namespace MafiaAI.LLM
         void SetPhase(Phase p)
         {
             State.Phase = p;
+            if (p != Phase.Night) NightStepLabel = null;
             PhaseEndsAt = 0f;   // 타이머 있는 페이즈(밤/낮)가 진입 직후 다시 설정한다.
             OnPhaseChanged?.Invoke(State);
         }

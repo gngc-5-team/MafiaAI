@@ -63,6 +63,24 @@ Interpretation:
 
 ## Work Already Completed
 
+### Night Spatial Ability for All Roles (2026-07-04 밤, 다른 Claude 세션)
+
+- 밤 공간 능력을 마피아 전용 → **마피아(살해)/경찰(조사)/의사(보호) 3역할 통합**. 모두 대상에게 KillRadius(1.6) 안까지 접근 후 **Space**.
+- 단일 시스템 = `NightMovementUI` (기존 K키 스크립트 개조 + **GameController.prefab에 장착** — 이전엔 스크립트만 있고 미장착이었음):
+  - 사거리 안 최근접 대상 머리 위에 **PointArrow**(3프레임 애니+바운스, sortingOrder 520) 표시, 멀어지면 숨김. 튜너블 SerializeField.
+  - 역할별 피드백: 마피아=붉은 틴트 "제거"(SMV.PlayKillFeedback), 경찰="마피아!/시민" 텍스트, 의사="보호".
+- **효과 타이밍**: 경찰=사용 즉시(`GameController.SubmitImmediateInvestigation` → Investigations 즉시 기록, `GameRules.ResolveNight`가 중복 스킵). 마피아/의사=새벽 정산. **의사 무사용=자힐**(DefaultNightTarget 기존 구현).
+- `SpriteMansionView.HandleNightKill` 삭제(Space 중복 발화 방지) — 밤 입력은 NightMovementUI가 유일한 주인.
+- AI 역할들은 기존 JSON 추상 선택 그대로(인간만 공간 능력). 실플레이 미검증.
+
+### Model Migration to gemma4:12b (2026-07-04 저녁, 다른 Claude 세션)
+
+- `config.Model` = **`gemma4:12b`** (씬 + 프리팹 + 스크립트 기본값 3곳 모두). GameConfig는 [Serializable]이라 씬/프리팹 serialized 값이 실효 — 모델 바꿀 땐 SerializedObject로 둘 다 갱신할 것.
+- **⚠️ gemma4는 thinking 모델**: 기본 상태로 호출하면 num_predict 예산을 '생각'에 다 써서 response가 **빈 문자열**로 옴(실측). `OllamaClient`가 항상 `think:false`를 보내도록 수정 — 절대 제거하지 말 것. gemma3에 보내도 에러 없음(하위호환 실측).
+- `OllamaClient`: `keep_alive:"30m"`(대형 모델 중간 언로드 방지), 기본 maxTokens 100→140.
+- 12b 실측(M5 Max 48GB): 58.7 tok/s, 발언 1~2초 — TalkInterval(3-5s)·타임아웃(40s) 변경 불필요.
+- 실플레이 장기 테스트는 아직 안 함.
+
 ### Character Skin Fixed Mapping (2026-07-04 evening, Codex)
 
 User replaced/added Aseprite character files:
@@ -300,19 +318,15 @@ Latest user correction:
   - Tunables exposed as serialized fields on `MansionLightingController` (intensity/radius/angles/color).
   - Flicker base intensities re-cached after snap.
 
-Current lighting state:
+Current lighting state (2026-07-04 오후 늦게, 최종 — 위 서술은 히스토리):
 
 - `Player Sight Light` removed.
-- `MansionLightingController` no longer has player-following light fields or logic.
-- Room lights are named like `Lamp_Room*_WallDiagonal`.
-- Room light markers are named like `Lamp_Room* WallSconce`.
-- Room lights are placed very close to wall bounds and rotated inward diagonally.
-- Odd rooms use a vertical wall mount, even rooms use a horizontal wall mount, so they do not all look identical.
-- Corridors use `Corridor*_WallLight`, one per corridor.
-- Runtime verification result:
-  - wall diagonal lights: 5
-  - corridor lights: 4
-  - player light: false
+- **방 앰버 램프(Room Lamps 그룹)와 복도 파란 조명(Corridor Fill Lights 그룹)은 사용자 요청으로 완전 삭제됨.**
+- 현행 조명 = **창문 달빛(`Lighting/Window Moonlight` 풀, Moonlight_01~14) + Global Light 낮/밤 무드**가 전부.
+  - 오토타일러가 매판 뒷벽에 랜덤 배치하는 창문(window 타일)마다 `MansionLightingController.SnapMoonlights()`가 달빛을 하나씩 스냅(인접 창 병합, 폭에 따라 원뿔 확장). 남는 풀은 꺼둠.
+  - 달빛은 낮 0.3 ↔ 밤 1.05 강도로 러프(밤에 주광). 색/각도/반경/오프셋 전부 `MansionLightingController` SerializeField.
+  - 삼각형 꼭짓점이 보이지 않게 광원을 창문 뒤로 올림(dropOffset -1.2) + 넓은각(75°)+소프트엣지(ratio 0.25).
+- `SpriteMansionView.WindowAnchors`(public)가 창문 위치를 노출 — 조명·데코가 이 앵커를 쓰면 매판 자동 정합.
 
 Preview screenshots created:
 

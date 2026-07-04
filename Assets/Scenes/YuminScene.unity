@@ -22684,6 +22684,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1156778933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1952386107896681335, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 2012932068}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!4 &1279274066 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 212060848459367339, guid: 14ae2243e7b53402d8769268c8d17681, type: 3}
@@ -22928,6 +22939,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1927913089 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2848782804397738124, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 2012932068}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &2012932068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22938,23 +22960,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
@@ -22976,6 +22998,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4991468232584003115, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2530564911472380330, guid: bd4336353b9174f2a9f1b1275c7119ed, type: 3}
     - target: {fileID: 7283973202142106128, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -23054,6 +23080,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7283973202142106128, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7908526383044841363, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8511432311449082785, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
@@ -23372,6 +23402,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 957779648}
     - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: abstainButton
+      value: 
+      objectReference: {fileID: 1156778933}
+    - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: confirmButton
+      value: 
+      objectReference: {fileID: 1927913089}
+    - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: candidateListRoot
       value: 
       objectReference: {fileID: 957779641}
@@ -23391,6 +23429,26 @@ PrefabInstance:
       propertyPath: chatPanelRoot
       value: 
       objectReference: {fileID: 957779643}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.Model
+      value: gemma4:12b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.VoteSeconds
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.NightSeconds
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.DiscussionSeconds
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.AiNightTimeoutSeconds
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: phaseText
       value: 

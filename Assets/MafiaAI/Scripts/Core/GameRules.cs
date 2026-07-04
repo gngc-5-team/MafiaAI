@@ -74,12 +74,15 @@ namespace MafiaAI.Core
                     result.HasPoliceResult = true;
                     result.PoliceTargetId = target.Id;
                     result.PoliceResult = faction;
-                    police.Investigations.Add(new InvestigationResult
-                    {
-                        Day = s.Day,
-                        TargetId = target.Id,
-                        Result = faction
-                    });
+                    // 인간 경찰이 공간 능력으로 즉시 기록한 경우(GameController.SubmitImmediateInvestigation) 중복 방지
+                    bool already = police.Investigations.Exists(r => r.Day == s.Day && r.TargetId == target.Id);
+                    if (!already)
+                        police.Investigations.Add(new InvestigationResult
+                        {
+                            Day = s.Day,
+                            TargetId = target.Id,
+                            Result = faction
+                        });
                 }
             }
 

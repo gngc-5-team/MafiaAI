@@ -103,11 +103,7 @@ namespace MafiaAI.LLM
             {
                 case Role.Mafia: return PromptBuilder.MafiaTargets(s, self);
                 case Role.Doctor:
-                {
-                    var list = new List<string>();
-                    foreach (var pl in s.Alive) list.Add(pl.Id);
-                    return list;
-                }
+                    return PromptBuilder.DoctorTargets(s, self);
                 default: return PromptBuilder.OthersAlive(s, self);
             }
         }
@@ -170,7 +166,7 @@ namespace MafiaAI.LLM
                 "각자의 직업", "직업을 명확", "직업을 밝", "직업에 대한 질문",
                 "상황의 불확실성을 줄", "답변을 드리겠습니다", "말씀에 옮겨짚",
                 "명확하게 대답", "명확히 답변", "필요성을 느끼", "정말 궁금",
-                "무슨 소리", "판단 하시는", "요청드립니다", "활동을 하셨습니까"
+                "무슨 소리", "판단 하시는", "요청드립니다", "활동을 하셨습니까", "AI 같은", "ai 같은", "지껄", "핵맺", "핵맷", "말 돌리지", "똑바로 말", "증거 대", "증거를 대", "증거 내", "시끄럽"
             };
             if (banned.Any(low.Contains)) return true;
             if (t.Length < 8) return true;
@@ -194,17 +190,17 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return targetId + ", 방금 말 돌리지 말고 왜 그 타이밍에 그 얘길 꺼냈는지 똑바로 말해.";
+                    return targetId + ", 첫날이라 단정은 안 할게. 지금 어디 있었고 누가 봤는지부터 말해.";
                 case "제로":
-                    return targetId + ", 방금 발언과 이전 태도가 맞지 않습니다. 어느 쪽이 진짜 입장입니까?";
+                    return targetId + ", 아직 확정할 근거는 부족합니다. 본인 동선과 현재 의심 기준을 말해주십시오.";
                 case "미로":
-                    return targetId + ", 방금 그 말 너무 깔끔한데요. 미리 준비한 변명은 아니죠?";
+                    return targetId + " 씨, 지금은 감으로 몰기보다 동선부터 봐야죠. 어디서 누구랑 있었어요?";
                 case "하루":
-                    return targetId + ", 나만 이상하게 느낀 거 아니죠? 방금 말이랑 전 말이 왜 달라요?";
+                    return targetId + ", 아직 잘 모르겠어요. 어디 있었는지랑 누구를 의심하는지 먼저 말해줘요.";
                 case "노아":
-                    return targetId + ", 방금 흐름을 보면 누군가 의심을 돌리고 있어요. 그 중심에 왜 당신 말이 있죠?";
+                    return targetId + ", 지금은 단정하면 안 됩니다. 동선과 목격자를 먼저 맞춰봐야 해요.";
                 case "세이":
-                    return targetId + ", 방금 피했어. 이유 말해.";
+                    return targetId + ", 아직 몰아갈 단계 아냐. 어디 있었는지 짧게 말해.";
                 default:
                     return string.IsNullOrEmpty(clue)
                         ? targetId + ", 지금 누구를 가장 의심하는지 근거까지 말해봐."
@@ -249,17 +245,17 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return target + ", 너 아까부터 핵심은 피하고 있어. 난 그게 제일 수상해.";
+                    return target + ", 아직 확신은 못 해. 네 동선이랑 목격자부터 맞춰보자.";
                 case "제로":
-                    return target + "의 발언은 근거보다 방어가 먼저 나왔습니다. 그 순서가 수상합니다.";
+                    return target + "부터 동선과 의심 기준을 확인하겠습니다. 근거 없이 몰면 마피아에게만 유리합니다.";
                 case "미로":
-                    return target + " 씨, 너무 얌전하게 빠져나가려는 거 아니에요?";
+                    return target + " 씨, 지금은 감정싸움 말고 동선부터 까보죠. 누가 봤는지가 중요해요.";
                 case "하루":
-                    return target + "이 자꾸 말을 흐리는 게 이상해요. 그냥 누구를 의심하는지 말해요.";
+                    return target + ", 누구를 의심하는지보다 왜 그렇게 보는지가 먼저예요. 근거부터 말해줘요.";
                 case "노아":
-                    return target + "의 침묵이 우연처럼 보이지 않습니다. 누군가랑 입을 맞춘 걸 수도 있어요.";
+                    return "초반 침묵만으로 몰면 위험합니다. " + target + "의 동선과 목격자부터 확인하죠.";
                 case "세이":
-                    return target + " 말이 비었어. 난 거기 걸린다.";
+                    return target + ", 말보다 동선부터. 어디 있었는지 말해.";
                 default:
                     return target + "의 말에서 근거가 빠졌어. 그 부분부터 확인해야 해.";
             }
