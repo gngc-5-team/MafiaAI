@@ -35464,6 +35464,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 75996770}
     - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: myVoteTicks
+      value: 
+      objectReference: {fileID: 1192755803}
+    - target: {fileID: 4801870741227523591, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: overlayRoot
       value: 
       objectReference: {fileID: 1397441243}
@@ -35491,6 +35495,10 @@ PrefabInstance:
       propertyPath: chatContent
       value: 
       objectReference: {fileID: 1557650576}
+    - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: phaseChip
+      value: 
+      objectReference: {fileID: 1760689550}
     - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: phaseText
       value: 
@@ -35723,6 +35731,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1192755803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 968460788649662237, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9827e37ebb3e49c3ae457336a947582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.VoteTickDisplay
 --- !u!114 &1326538740 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2848782804397738124, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
@@ -36139,6 +36158,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1760689550 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4991468232584003115, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &1807105309 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
@@ -36888,18 +36918,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468095424203386776, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1503548824332698396, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -36912,18 +36930,6 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 1807105309}
-    - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2374648563898783979, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
