@@ -65,10 +65,10 @@ MonoBehaviour:
     BaseUrl: http://localhost:11434
     Model: gemma3:4b
     RoomCount: 5
-    DiscussionSeconds: 60
-    NightSeconds: 15
+    DiscussionSeconds: 2
+    NightSeconds: 1
     AiNightTimeoutSeconds: 40
-    VoteSeconds: 30
+    VoteSeconds: 10000
     AiVoteTimeoutSeconds: 40
     TalkIntervalMinMs: 3000
     TalkIntervalMaxMs: 5000

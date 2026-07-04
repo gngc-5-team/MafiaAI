@@ -55,6 +55,10 @@ namespace MafiaAI.UI
             controller.OnPhaseChanged += HandlePhaseChanged;
             controller.OnLocationsChanged += RebuildChips;
             controller.OnPlayerQuestion += HandlePlayerQuestion;
+
+            // 이 입력창이 (투표창 안처럼) 페이즈가 바뀐 '뒤에' 켜졌다면 그 이벤트를 놓쳤을 수 있으니,
+            // 켜진 즉시 현재 페이즈를 직접 확인해서 입력 활성/비활성을 맞춘다.
+            if (controller.State != null) HandlePhaseChanged(controller.State);
         }
 
         void OnDisable()
