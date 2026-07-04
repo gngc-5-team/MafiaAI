@@ -61,6 +61,32 @@ namespace MafiaAI.UI
         [SerializeField] TileBase _carpetBR;          // carpet_3 (우하)
         [Range(0f, 1f)][SerializeField] float _carpetChance = 0.8f; // 방마다 카펫 깔릴 확률
 
+        /// <summary>도트 캐릭터 스킨 하나(aseprite에서 임포트된 idle/walk 프레임).</summary>
+        [System.Serializable]
+        public class CharacterSkin
+        {
+            public string label;          // 원본 파일 표시용 (cha_1 등)
+            public Sprite[] idleFrames;
+            public Sprite[] walkFrames;
+            public float idleFps = 8f;
+            public float walkFps = 12f;
+        }
+
+        [Header("도트 캐릭터 스킨 (비어 있으면 기존 도형 토큰 폴백)")]
+        [SerializeField] CharacterSkin[] _charSkins;
+        [SerializeField] float _charScale = 1.5f;          // PPU100 기준 약 1유닛 → 확대 배율
+        [SerializeField] float _walkSpeedThreshold = 0.15f; // 이 속도 이상이면 walk 애니메이션
+
+        class TokenAnimState
+        {
+            public SpriteRenderer Sr;
+            public CharacterSkin Skin;
+            public float Clock;
+            public Vector3 LastPos;
+            public bool Walking;
+        }
+        readonly Dictionary<string, TokenAnimState> _tokenAnims = new();
+
         /// <summary>이번 판 뒷벽에 배치된 창문 하나(인접 열 병합됨). 달빛 라이트 스냅용 앵커.</summary>
         public struct WindowAnchor
         {
@@ -133,6 +159,7 @@ namespace MafiaAI.UI
             HandleHumanMovement();
             HandleNightKill();
             UpdateTokens();
+            UpdateTokenAnimations();
             UpdateSpeechBubbles();
             FollowCamera();
             UpdateNightMaskPosition();
@@ -219,6 +246,7 @@ namespace MafiaAI.UI
             _tokens.Clear();
             _tokenVel.Clear();
             _npcTargets.Clear();
+            _tokenAnims.Clear();
 
             int roomCount = _controller.Rooms.Length;
             EnsureSlots("room", roomCount);
@@ -226,6 +254,7 @@ namespace MafiaAI.UI
             LayoutMansion();
             BindSceneMap();
 
+            int seat = 0;
             foreach (var p in _controller.State.Players)
             {
                 var token = new GameObject("Actor_" + p.Id).transform;
@@ -239,7 +268,7 @@ namespace MafiaAI.UI
                 }
                 else _npcTargets[p.Id] = token.position;
 
-                AddActorSprite(token, p.Id, p.IsHuman);
+                AddActorSprite(token, p.Id, p.IsHuman, seat++);
                 _tokens[p.Id] = token;
             }
 
@@ -548,14 +577,69 @@ namespace MafiaAI.UI
             return null;
         }
 
-        void AddActorSprite(Transform token, string id, bool isHuman)
+        void AddActorSprite(Transform token, string id, bool isHuman, int seatIndex)
         {
+            // 도트 캐릭터 스킨이 있으면 애니메이션 스프라이트 하나로 토큰 구성 (좌석 순서대로 스킨 순환 배정 — 겹침 허용)
+            if (_charSkins != null && _charSkins.Length > 0)
+            {
+                var skin = _charSkins[seatIndex % _charSkins.Length];
+                if (skin != null && skin.idleFrames != null && skin.idleFrames.Length > 0)
+                {
+                    var go = new GameObject("Body");
+                    go.transform.SetParent(token, false);
+                    go.transform.localScale = Vector3.one * _charScale;
+                    var sr = go.AddComponent<SpriteRenderer>();
+                    sr.sprite = skin.idleFrames[0];
+                    if (_litSpriteMaterial != null) sr.sharedMaterial = _litSpriteMaterial;
+                    sr.sortingOrder = 20;
+                    _tokenAnims[id] = new TokenAnimState
+                    {
+                        Sr = sr,
+                        Skin = skin,
+                        LastPos = token.position,
+                        Clock = Random.value * 10f // 전원 같은 프레임에서 시작하지 않게 위상차
+                    };
+                    AddLabel(token, id + (isHuman ? " (YOU)" : ""), new Vector3(0, 0.75f * _charScale + 0.35f, -0.05f));
+                    return;
+                }
+            }
+
+            // 폴백: 기존 도형 토큰
             AddSprite(token, "Body", Vector3.zero, new Vector2(1.05f, 1.18f), isHuman ? Player : Npc, 20);
             AddSprite(token, "Backpack", new Vector3(-0.55f, -0.04f, -0.01f), new Vector2(0.32f, 0.68f), Hex("181820"), 21);
             AddSprite(token, "Visor", new Vector3(0.18f, 0.26f, -0.02f), new Vector2(0.62f, 0.36f), Hex("BFD7E8"), 22);
             AddSprite(token, "LegL", new Vector3(-0.25f, -0.72f, -0.01f), new Vector2(0.28f, 0.36f), isHuman ? Hex("5F34C9") : Hex("9D7D43"), 21);
             AddSprite(token, "LegR", new Vector3(0.30f, -0.72f, -0.01f), new Vector2(0.28f, 0.36f), isHuman ? Hex("5F34C9") : Hex("9D7D43"), 21);
             AddLabel(token, id + (isHuman ? " (YOU)" : ""), new Vector3(0, 1.05f, -0.05f));
+        }
+
+        // 토큰 이동 여부에 따라 idle/walk 프레임을 돌리고, 이동 방향으로 좌우 반전한다.
+        void UpdateTokenAnimations()
+        {
+            foreach (var kv in _tokenAnims)
+            {
+                var a = kv.Value;
+                if (a == null || a.Sr == null) continue;
+                var tokenTr = a.Sr.transform.parent;
+                if (tokenTr == null || !tokenTr.gameObject.activeSelf) continue;
+
+                var pos = tokenTr.position;
+                var delta = pos - a.LastPos;
+                a.LastPos = pos;
+
+                bool walking = delta.magnitude / Mathf.Max(Time.deltaTime, 0.0001f) > _walkSpeedThreshold;
+                if (walking != a.Walking) { a.Walking = walking; a.Clock = 0f; }
+                if (Mathf.Abs(delta.x) > 0.0005f) a.Sr.flipX = delta.x < 0f;
+
+                var frames = walking && a.Skin.walkFrames != null && a.Skin.walkFrames.Length > 0
+                    ? a.Skin.walkFrames : a.Skin.idleFrames;
+                float fps = walking ? a.Skin.walkFps : a.Skin.idleFps;
+                if (frames == null || frames.Length == 0) continue;
+
+                a.Clock += Time.deltaTime;
+                int idx = (int)(a.Clock * Mathf.Max(1f, fps)) % frames.Length;
+                a.Sr.sprite = frames[idx];
+            }
         }
 
         SpriteRenderer AddSprite(Transform parent, string name, Vector3 pos, Vector2 scale, Color color, int order)
