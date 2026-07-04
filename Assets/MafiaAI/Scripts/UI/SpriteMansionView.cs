@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 using MafiaAI.Core;
 using MafiaAI.LLM;
 
@@ -31,6 +32,17 @@ namespace MafiaAI.UI
         GameController _controller;
         Transform _tokenRoot;
         Sprite _pixel;
+
+        [Header("타일맵 오토타일 (매판 생성되는 방 구조에 맞춰 런타임 배치)")]
+        [SerializeField] Tilemap _tilemap;
+        [SerializeField] TileBase _floorTile;         // tile11_4 (바닥, 스프라이트 꽉 참)
+        [SerializeField] TileBase _backWallTopTile;   // top_half_of_the_frontwall (뒷벽 면 위줄)
+        [SerializeField] TileBase _backWallBotTile;   // down_half_of_the_frontwall (뒷벽 면 아래줄)
+        [SerializeField] TileBase _lineWallTile;      // Straight_side_wall (선벽; 회전으로 상/하/좌/우)
+        [SerializeField] TileBase _cornerTile;        // Point_Shape_wall2 (바깥 볼록 코너)
+        [SerializeField] TileBase _cornerLTile;       // L_shape_wall (개구부 오목 코너)
+        [SerializeField] TileBase _bgTile;            // Black_background (방 밖 검정 배경)
+        [SerializeField] int _tilemapSortingOrder = 1;
 
         readonly Dictionary<string, Rect> _roomRects = new();
         readonly Dictionary<string, Transform> _tokens = new();
@@ -208,6 +220,171 @@ namespace MafiaAI.UI
                 bool vertical = ca.X == cb.X;
                 go.transform.rotation = Quaternion.Euler(0f, 0f, vertical ? 90f : 0f);
             }
+
+            PaintTiles();
+        }
+
+        // ================= 타일 오토타일 (walkable 집합 기반) =================
+        // 걷을 수 있는 칸(방 10x10 + 복도 10x4)을 바닥으로 꽉 채우고, 그 '바깥' 경계에만 벽을 세운다.
+        // → 이동 공간과 시각이 일치하고, 복도가 방을 뚫지 않으며, 개구부는 자동으로 뚫린다.
+        void PaintTiles()
+        {
+            if (_tilemap == null || _floorTile == null) return;
+            var mansion = _controller.Mansion;
+            if (mansion.GridPos == null) return;
+
+            const int Cs = (int)MansionCellSize;   // 방 중심 간격(20)
+            const int RH = 5;                      // 방 반지름(10x10)
+            const int CW = 2;                      // 복도 폭 반(4칸)
+            const int Margin = 4;
+
+            _tilemap.ClearAllTiles();
+            var tr = _tilemap.GetComponent<TilemapRenderer>();
+            if (tr != null) tr.sortingOrder = _tilemapSortingOrder;
+
+            // 1) walkable 칸 집합 W = 방(10x10) + 복도(10x4)
+            var W = new HashSet<Vector2Int>();
+            var centers = new Dictionary<string, Vector2Int>();
+            foreach (var kv in mansion.GridPos)
+            {
+                var ctr = new Vector2Int(kv.Value.X * Cs, kv.Value.Y * Cs);
+                centers[kv.Key] = ctr;
+                for (int x = ctr.x - RH; x <= ctr.x + RH - 1; x++)
+                    for (int y = ctr.y - RH; y <= ctr.y + RH - 1; y++)
+                        W.Add(new Vector2Int(x, y));
+            }
+            foreach (var pair in mansion.Corridors)
+            {
+                if (!centers.TryGetValue(pair.A, out var a) || !centers.TryGetValue(pair.B, out var b)) continue;
+                AddCorridorCells(W, a, b, RH, CW);
+            }
+            if (W.Count == 0) return;
+
+            int minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
+            foreach (var c in W) { if (c.x < minX) minX = c.x; if (c.x > maxX) maxX = c.x; if (c.y < minY) minY = c.y; if (c.y > maxY) maxY = c.y; }
+
+            // 2) 바닥(=walkable) / 검정 배경(=나머지)
+            for (int x = minX - Margin; x <= maxX + Margin; x++)
+                for (int y = minY - Margin; y <= maxY + Margin; y++)
+                    SetT(x, y, W.Contains(new Vector2Int(x, y)) ? _floorTile : _bgTile, 0);
+
+            // 3) 방/복도별 벽 링을 W 바깥에만 얹는다(개구부=W 칸은 건너뜀 → 자동으로 뚫림)
+            foreach (var c in centers.Values) PaintRoomRing(c, W);
+            foreach (var pair in mansion.Corridors)
+            {
+                if (!centers.TryGetValue(pair.A, out var a) || !centers.TryGetValue(pair.B, out var b)) continue;
+                PaintCorridorRing(a, b, W);
+            }
+
+            HideMapSprites();
+        }
+
+        // 복도 walkable 칸(방 사이 gap)을 집합에 추가. 가로=10x4, 세로=4x10.
+        void AddCorridorCells(HashSet<Vector2Int> W, Vector2Int a, Vector2Int b, int rh, int cw)
+        {
+            int cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+            if (a.y == b.y) // 가로 복도
+            {
+                int xlo = Mathf.Min(a.x, b.x) + rh, xhi = Mathf.Max(a.x, b.x) - rh - 1;
+                for (int x = xlo; x <= xhi; x++)
+                    for (int y = cy - cw; y <= cy + cw - 1; y++)
+                        W.Add(new Vector2Int(x, y));
+            }
+            else            // 세로 복도
+            {
+                int ylo = Mathf.Min(a.y, b.y) + rh, yhi = Mathf.Max(a.y, b.y) - rh - 1;
+                for (int y = ylo; y <= yhi; y++)
+                    for (int x = cx - cw; x <= cx + cw - 1; x++)
+                        W.Add(new Vector2Int(x, y));
+            }
+        }
+
+        // 방 벽 링: 바닥(10x10) 바깥을 두른다. 위=뒷벽 면(2줄), 좌/우=선벽(뒷벽 높이까지 연장해 상단코너 검정 방지), 아래=선벽+Point.
+        void PaintRoomRing(Vector2Int c, HashSet<Vector2Int> W)
+        {
+            int x0 = c.x - 5, x1 = c.x + 4, y0 = c.y - 5, y1 = c.y + 4;
+            for (int x = x0; x <= x1; x++)
+            {
+                TryWall(W, x, y1 + 1, _backWallBotTile, 0);  // 뒷벽 아래줄(바닥 바로 위)
+                TryWall(W, x, y1 + 2, _backWallTopTile, 0);  // 뒷벽 위줄
+                TryBottomLine(W, x, y0 - 1);                 // 아래 선벽(+개구부 L)
+            }
+            for (int y = y0 - 1; y <= y1 + 2; y++)            // 좌/우 선벽: 아래 코너~뒷벽 위까지
+            {
+                TryWall(W, x0 - 1, y, _lineWallTile, 180);   // 좌 선벽(검정=왼쪽)
+                TryWall(W, x1 + 1, y, _lineWallTile, 0);     // 우 선벽(검정=오른쪽)
+            }
+            TryWall(W, x0 - 1, y0 - 1, _cornerTile, 0);      // 좌하 볼록 코너
+            TryWall(W, x1 + 1, y0 - 1, _cornerTile, 90);     // 우하 볼록 코너
+        }
+
+        // 복도 벽 링. 가로=위 뒷벽 면(2줄)+아래 선벽, 세로=좌/우 선벽.
+        void PaintCorridorRing(Vector2Int a, Vector2Int b, HashSet<Vector2Int> W)
+        {
+            int cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+            if (a.y == b.y) // 가로 복도: W = x[min+5,max-6], y[cy-2,cy+1]
+            {
+                int xlo = Mathf.Min(a.x, b.x) + 5, xhi = Mathf.Max(a.x, b.x) - 6;
+                for (int x = xlo; x <= xhi; x++)
+                {
+                    TryWall(W, x, cy + 2, _backWallBotTile, 0);
+                    TryWall(W, x, cy + 3, _backWallTopTile, 0);
+                    TryWall(W, x, cy - 3, _lineWallTile, 270);
+                }
+            }
+            else            // 세로 복도: W = x[cx-2,cx+1], y[min+5,max-6]
+            {
+                int ylo = Mathf.Min(a.y, b.y) + 5, yhi = Mathf.Max(a.y, b.y) - 6;
+                for (int y = ylo; y <= yhi; y++)
+                {
+                    TryWall(W, cx - 3, y, _lineWallTile, 180);
+                    TryWall(W, cx + 2, y, _lineWallTile, 0);
+                }
+            }
+        }
+
+        // 바닥이 아니면(=개구부 아니면) 벽을 얹는다. 이미 있던 벽은 덮어씀(뒷벽 면이 접합부에서 우선).
+        void TryWall(HashSet<Vector2Int> W, int x, int y, TileBase t, int ang)
+        {
+            if (W.Contains(new Vector2Int(x, y))) return;
+            SetT(x, y, t, ang);
+        }
+
+        // 아래 선벽: 옆이 개구부(복도)면 L 오목 코너로 마감.
+        void TryBottomLine(HashSet<Vector2Int> W, int x, int y)
+        {
+            if (W.Contains(new Vector2Int(x, y))) return;
+            if (_cornerLTile != null && W.Contains(new Vector2Int(x + 1, y))) SetT(x, y, _cornerLTile, 270); // 오른쪽 개구부
+            else if (_cornerLTile != null && W.Contains(new Vector2Int(x - 1, y))) SetT(x, y, _cornerLTile, 0); // 왼쪽 개구부
+            else SetT(x, y, _lineWallTile, 270);
+        }
+
+        // 타일 배치 + z축 회전(도) 적용. 회전은 검정을 방 바깥으로, 선을 이웃 벽과 잇기 위함.
+        void SetT(int x, int y, TileBase t, int ang)
+        {
+            var p = new Vector3Int(x, y, 0);
+            _tilemap.SetTile(p, t != null ? t : _floorTile);
+            _tilemap.SetTransformMatrix(p, ang == 0
+                ? Matrix4x4.identity
+                : Matrix4x4.Rotate(Quaternion.Euler(0f, 0f, ang)));
+        }
+
+        // 방/복도 흰 사각형 스프라이트는 숨겨 타일이 보이게 한다(BindSceneMap의 bounds는 유지).
+        void HideMapSprites()
+        {
+            for (int i = 1; i <= MaxMansionSlots; i++)
+            {
+                FadeSprite(FindAny("room" + i));
+                FadeSprite(FindAny("corridor" + i));
+            }
+        }
+
+        void FadeSprite(GameObject go)
+        {
+            if (go == null) return;
+            var sr = go.GetComponent<SpriteRenderer>();
+            if (sr == null) return;
+            var col = sr.color; col.a = 0f; sr.color = col;
         }
 
         /// <summary>

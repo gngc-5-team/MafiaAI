@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 7aa91e2f53f7a46b794fc36bf78f8e84
+guid: 9b80aa961747b43ac86f392797b56dfd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7866137690268830040
-    second: tile-1_0
-  - first:
-      213: 4799979651742854930
-    second: tile-1_1
+      213: 7508834944111745397
+    second: screenshot-20260704-095956_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -54,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -75,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 16384
-    resizeAlgorithm: 1
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,45 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tile-1_0
+      name: screenshot-20260704-095956_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 38
-        width: 96
-        height: 32
+        x: 0
+        y: 0
+        width: 1821
+        height: 876
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 85909ce7d822a2d60800000000000000
-      internalID: 7866137690268830040
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: tile-1_1
-      rect:
-        serializedVersion: 2
-        x: 107
-        y: 6
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 21f6c37df04fc9240800000000000000
-      internalID: 4799979651742854930
+      spriteID: 57912d0299db43860800000000000000
+      internalID: 7508834944111745397
       vertices: []
       indices: 
       edges: []
@@ -163,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d1a347b7a32f4449fb965306c6d75985
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -171,12 +146,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      tile-1_0: 7866137690268830040
-      tile-1_1: 4799979651742854930
+      screenshot-20260704-095956_0: 7508834944111745397
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
