@@ -33,6 +33,7 @@ namespace MafiaAI.UI
         GameController _controller;
         Transform _tokenRoot;
         Sprite _pixel;
+        Material _litSpriteMaterial;
 
         [Header("타일맵 오토타일 (매판 생성되는 방 구조에 맞춰 런타임 배치)")]
         [SerializeField] Tilemap _tilemap;
@@ -84,6 +85,7 @@ namespace MafiaAI.UI
         {
             _controller = GetComponent<GameController>();
             _pixel = MakePixel();
+            _litSpriteMaterial = FindLitSpriteMaterial();
             CleanupGeneratedMap();
             BindSceneMap();
             ConfigureCamera();
@@ -472,9 +474,16 @@ namespace MafiaAI.UI
             go.transform.localScale = new Vector3(scale.x, scale.y, 1f);
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = _pixel;
+            if (_litSpriteMaterial != null) sr.sharedMaterial = _litSpriteMaterial;
             sr.color = color;
             sr.sortingOrder = order;
             return sr;
+        }
+
+        Material FindLitSpriteMaterial()
+        {
+            var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Lit-Default");
+            return shader == null ? null : new Material(shader) { name = "Runtime Sprite Lit Material" };
         }
 
         void AddLabel(Transform parent, string label, Vector3 pos)
