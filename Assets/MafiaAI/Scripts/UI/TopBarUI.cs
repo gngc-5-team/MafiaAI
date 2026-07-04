@@ -71,12 +71,13 @@ namespace MafiaAI.UI
 
             var phase = controller.State.Phase;
             float endsAt = controller.PhaseEndsAt;
-            if (endsAt > 0f && (phase == Phase.Discuss || phase == Phase.Night))
+            bool waitsOnAi = phase == Phase.Night || phase == Phase.Vote;
+            if (endsAt > 0f && (phase == Phase.Discuss || waitsOnAi))
             {
                 float remainF = endsAt - Time.realtimeSinceStartup;
-                if (phase == Phase.Night && remainF <= 0f)
+                if (waitsOnAi && remainF <= 0f)
                 {
-                    // 화면 타이머(NightSeconds)는 다 됐지만 AI 판단(최대 AiNightTimeoutSeconds)을 기다리는 중.
+                    // 화면 타이머(NightSeconds/VoteSeconds)는 다 됐지만 AI 판단(더 넉넉한 시한)을 기다리는 중.
                     // 그냥 00:00에 멈춘 것처럼 보이면 멈춘 줄 알 수 있으니 별도 문구로 알려준다.
                     timerText.text = "AI 생각 중…";
                     timerText.color = NightColor;
