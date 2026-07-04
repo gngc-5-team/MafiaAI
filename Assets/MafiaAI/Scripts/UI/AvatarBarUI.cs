@@ -9,7 +9,6 @@ namespace MafiaAI.UI
     /// 하이라키에 직접 배치한 생존자 목록 컨테이너(Vertical Layout Group 붙은 빈 오브젝트)에
     /// 플레이어 수만큼 AvatarCardView 프리팹을 찍고 생존/사망 상태를 갱신한다.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class AvatarBarUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -27,7 +26,11 @@ namespace MafiaAI.UI
         readonly Dictionary<string, AvatarCardView> _cards = new();
 
         void Reset() => controller = GetComponent<GameController>();
-        void Awake() { if (controller == null) controller = GetComponent<GameController>(); }
+        void Awake()
+        {
+            if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
+        }
 
         void OnEnable()
         {

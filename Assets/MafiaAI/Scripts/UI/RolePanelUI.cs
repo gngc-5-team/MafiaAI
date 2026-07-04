@@ -10,7 +10,6 @@ namespace MafiaAI.UI
     /// 하이라키에 직접 배치한 "내 역할" 카드에 인간 플레이어의 역할/상태를 채운다.
     /// detailText는 선택 사항 — 안 만들었으면 비워둬도 동작한다(역할 이름만 표시).
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class RolePanelUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -18,7 +17,11 @@ namespace MafiaAI.UI
         [SerializeField] TMP_Text detailText; // 현재 위치 / 조사 결과 / 사망 여부
 
         void Reset() => controller = GetComponent<GameController>();
-        void Awake() { if (controller == null) controller = GetComponent<GameController>(); }
+        void Awake()
+        {
+            if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
+        }
 
         void OnEnable()
         {
