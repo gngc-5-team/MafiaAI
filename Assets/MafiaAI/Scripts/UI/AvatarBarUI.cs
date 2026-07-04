@@ -78,7 +78,8 @@ namespace MafiaAI.UI
                 else
                 {
                     card.nameText.color = DimColor;
-                    card.statusText.text = "사망 · " + p.Role.Korean();
+                    bool reveal = controller != null && controller.State != null && controller.State.RevealRolesOnDeath;
+                    card.statusText.text = reveal ? "사망 · " + p.Role.Korean() : "사망";
                     card.statusText.color = DeathColor;
                     card.background.color = DeadBgColor;
                 }

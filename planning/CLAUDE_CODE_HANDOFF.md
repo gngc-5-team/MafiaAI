@@ -63,6 +63,19 @@ Interpretation:
 
 ## Work Already Completed
 
+### 1:1 Interrogation (VN overlay, 2026-07-05, 다른 Claude 세션)
+
+- 플레이어 전용 1:1 비공개 심문. 낮(Discuss)에 같은 방 살아있는 AI에게 다가가 **F** → VN 오버레이(배경+대상 초상+텍스트박스). 그 대상하고만 비공개 대화(방 안 다른 사람은 못 들음, 공개/방 로그에 안 남김).
+- 심문 프롬프트(`PromptBuilder.Interrogation`)는 방어 완화: 논리가 타당하면 흔들리거나 일부 인정, 마피아는 빈틈 노출. `IActor.InterrogateAsync`(AIActor 온도+0.1), `GameController.AskInterrogationAsync`(+CanInterrogate/BeginInterrogation, `_interrogationLog` 비공개).
+- UI = `InterrogationUI.cs`(GameController.prefab 장착, 코드 빌드 캔버스 sortingOrder 900). 에셋 SerializeField 와이어링: 초상 6종(kai→카이…zero→제로), 배경 3종(background_art), textbox.png, DNF SDF 폰트. PNG는 Sprite(Single) 임포트로 보정.
+- 실플레이 미검증.
+
+### 남은 대기 항목 (사용자 지적, 2026-07-04~05)
+
+- **밤 순서 분리 미구현**: 마피아 밤 15초 진행 후 경찰/의사 밤 15초 — 현재 `GameController.NightPhase`는 3역할 동시(GatherNightInto 병렬). 다음 작업 후보.
+- 의사 자힐 버그는 **이미 수정됨**(HumanActor가 `DoctorTargets`로 자신 제외, 미선택 시 timeout 자힐).
+- AI 대화 정형화/억까는 Codex가 프롬프트+`Actors.EnsureUseful` 하네스로 손봄 — 12b 모델 실플레이로 추가 관찰/튜닝 필요.
+
 ### Night Spatial Ability for All Roles (2026-07-04 밤, 다른 Claude 세션)
 
 - 밤 공간 능력을 마피아 전용 → **마피아(살해)/경찰(조사)/의사(보호) 3역할 통합**. 모두 대상에게 KillRadius(1.6) 안까지 접근 후 **Space**.

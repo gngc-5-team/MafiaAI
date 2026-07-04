@@ -128,6 +128,48 @@ namespace MafiaAI.LLM
             return target.Faction;
         }
 
+        // ── 1:1 비공개 심문(플레이어 전용) ──
+        readonly List<string> _interrogationLog = new(); // 현재 심문의 대화 기록(비공개 — 방/공개 로그에 안 남긴다)
+
+        /// <summary>현재 심문받고 있는 대상 id(없으면 null). 심문 중엔 이 NPC는 방을 떠나지 않는다.</summary>
+        public string InterrogationTargetId { get; private set; }
+
+        /// <summary>지금 이 대상을 심문할 수 있는가? (낮/투표 중 · 같은 방 · 살아있는 AI)</summary>
+        public bool CanInterrogate(string targetId)
+        {
+            if (State == null || HumanPlayer == null || !HumanPlayer.Alive) return false;
+            if (State.Phase != Phase.Discuss && State.Phase != Phase.Vote) return false;
+            var t = State.ById(targetId);
+            if (t == null || !t.Alive || t.IsHuman) return false;
+            return GetPlayerRoom(targetId) == GetPlayerRoom(HumanPlayer.Id);
+        }
+
+        /// <summary>새 심문 세션을 시작(이전 대화 기록 비움). 대상은 심문이 끝날 때까지 방에 붙잡힌다.</summary>
+        public void BeginInterrogation(string targetId)
+        {
+            _interrogationLog.Clear();
+            InterrogationTargetId = targetId;
+        }
+
+        /// <summary>심문 종료 — 대상의 이동 잠금을 푼다.</summary>
+        public void EndInterrogation() => InterrogationTargetId = null;
+
+        /// <summary>
+        /// 심문 대상 AI에게 비공개로 한 마디 던지고 답을 받는다(방/공개 로그에 남기지 않는다).
+        /// 방어가 느슨한 심문 프롬프트를 쓴다. 대상이 부적격이면 null.
+        /// </summary>
+        public async Task<string> AskInterrogationAsync(string targetId, string question, CancellationToken ct = default)
+        {
+            if (!CanInterrogate(targetId) || string.IsNullOrWhiteSpace(question)) return null;
+            var target = State.ById(targetId);
+            string q = OneSentence(question.Trim());
+            string history = string.Join("\n", _interrogationLog);
+            string reply = OneSentence(await _actors[targetId].InterrogateAsync(State, target, HumanPlayer.Id, q, history, ct));
+            _interrogationLog.Add(HumanPlayer.Id + ": " + q);
+            _interrogationLog.Add(target.Id + ": " + reply);
+            return reply;
+        }
+
         public void SubmitHumanMessage(string text, string target)
         {
             if (State == null || HumanPlayer == null || !HumanPlayer.Alive) return;
@@ -210,6 +252,7 @@ namespace MafiaAI.LLM
             _rng = new SystemRng(seed == 0 ? (int?)null : seed);
             _ollama = new OllamaClient(config.BaseUrl);
             State = new GameState();
+            State.RevealRolesOnDeath = config.RevealRolesOnDeath;
             _actors.Clear();
             _locations.Clear();
             _roomLines.Clear();
@@ -481,7 +524,8 @@ namespace MafiaAI.LLM
 
         void MoveOneNpc()
         {
-            var movers = State.Alive.Where(p => !p.IsHuman).ToList();
+            // 심문받는 중인 NPC는 방에 붙잡혀 있다(플레이어가 따로 불러낸 상태).
+            var movers = State.Alive.Where(p => !p.IsHuman && p.Id != InterrogationTargetId).ToList();
             if (movers.Count == 0) return;
             var p = movers[_rng.Next(movers.Count)];
             var next = AdjacentRooms(GetPlayerRoom(p.Id));
@@ -558,7 +602,8 @@ namespace MafiaAI.LLM
             if (ex != null)
             {
                 string tie = vr.Tie ? " (동수 추첨)" : "";
-                Emit(LogKind.Reveal, "SYSTEM", ex.Id + " 이(가) 처형되었다. 정체는 '" + ex.Role.Korean() + "'!" + tie);
+                string reveal = config.RevealRolesOnDeath ? " 정체는 '" + ex.Role.Korean() + "'!" : "";
+                Emit(LogKind.Reveal, "SYSTEM", ex.Id + " 이(가) 처형되었다." + reveal + tie);
             }
             else Emit(LogKind.System, "SYSTEM", "표가 모이지 않아 처형이 무산되었다.");
         }

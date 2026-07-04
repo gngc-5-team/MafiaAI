@@ -17,6 +17,7 @@ namespace MafiaAI.LLM
         Task<string> FreeTalkAsync(GameState s, Player self, CancellationToken ct);
         Task<string> AskRoomQuestionAsync(GameState s, Player self, Player target, string room, string localTranscript, CancellationToken ct);
         Task<string> AnswerRoomQuestionAsync(GameState s, Player self, Player asker, string question, string room, string localTranscript, CancellationToken ct);
+        Task<string> InterrogateAsync(GameState s, Player self, string playerId, string question, string history, CancellationToken ct);
     }
 
     /// <summary>Gemma로 구동되는 AI 좌석.</summary>
@@ -81,6 +82,17 @@ namespace MafiaAI.LLM
             return EnsureUseful(Sanitize(raw, self.Id), s, self, asker.Id, question, SpeechPurpose.Answer);
         }
 
+        public async Task<string> InterrogateAsync(GameState s, Player self, string playerId, string question, string history, CancellationToken ct)
+        {
+            var p = PromptBuilder.Interrogation(s, self, playerId, question, history);
+            // 심문은 방어가 느슨한 상황이라 온도를 살짝 올려 말실수/흔들림이 나오기 쉽게 한다.
+            float baseTemp = self.Temperature > 0 ? self.Temperature : _cfg.SpeechTemperature;
+            float temp = baseTemp + 0.1f;
+            if (temp > 1.3f) temp = 1.3f;
+            string raw = await _ollama.GenerateAsync(_cfg.Model, p.User, p.System, temp, false, ct);
+            return EnsureUseful(Sanitize(raw, self.Id), s, self, playerId, question, SpeechPurpose.Answer);
+        }
+
         public async Task<ActionChoice> VoteAsync(GameState s, Player self, CancellationToken ct)
         {
             var p = PromptBuilder.Vote(s, self);
@@ -138,7 +150,10 @@ namespace MafiaAI.LLM
         string EnsureUseful(string line, GameState s, Player self, string otherId, string source, SpeechPurpose purpose)
         {
             line = Sanitize(line, self.Id);
-            if (!IsWeak(line, purpose, otherId)) return line;
+            if (purpose == SpeechPurpose.Question && !string.IsNullOrEmpty(otherId) && !line.Contains(otherId))
+                line = otherId + ", " + line;
+
+            if (!NeedsRepair(line)) return line;
 
             switch (purpose)
             {
@@ -153,28 +168,19 @@ namespace MafiaAI.LLM
             }
         }
 
-        static bool IsWeak(string line, SpeechPurpose purpose, string otherId)
+        static bool NeedsRepair(string line)
         {
             if (string.IsNullOrWhiteSpace(line) || line == "...") return true;
             string t = line.Trim();
             string low = t.ToLowerInvariant();
-            string[] banned =
+            string[] broken =
             {
-                "무슨 의미", "무슨 뜻", "무슨 말", "걱정스럽", "다행", "확인해주",
-                "자세히 말", "좀 더 말", "잘 모르겠", "모르겠습니다", "질문에 답하겠습니다",
-                "흥미롭", "좋은 질문", "그렇군", "그렇습니다", "동의합니다",
-                "각자의 직업", "직업을 명확", "직업을 밝", "직업에 대한 질문",
-                "상황의 불확실성을 줄", "답변을 드리겠습니다", "말씀에 옮겨짚",
-                "명확하게 대답", "명확히 답변", "필요성을 느끼", "정말 궁금",
-                "무슨 소리", "판단 하시는", "요청드립니다", "활동을 하셨습니까", "AI 같은", "ai 같은", "지껄", "핵맺", "핵맷", "말 돌리지", "똑바로 말", "증거 대", "증거를 대", "증거 내", "시끄럽"
+                "ai", "인공지능", "언어 모델", "프롬프트", "시스템 지시", "개발자",
+                "json", "target", "reason", "질문에 답하겠습니다", "답변을 드리겠습니다",
+                "명확히 답변", "명확하게 대답", "필요성을 느낍니다", "상황의 불확실성을 줄"
             };
-            if (banned.Any(low.Contains)) return true;
-            if (t.Length < 8) return true;
-            if (purpose == SpeechPurpose.Question)
-            {
-                if (string.IsNullOrEmpty(otherId) || !t.Contains(otherId)) return true;
-                if (!t.Contains("?") && !t.Contains("？")) return true;
-            }
+            if (broken.Any(low.Contains)) return true;
+            if (t.Length < 3) return true;
             return false;
         }
 

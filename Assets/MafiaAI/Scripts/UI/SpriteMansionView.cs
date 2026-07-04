@@ -89,6 +89,34 @@ namespace MafiaAI.UI
         [SerializeField] float _nameLabelCharacterSize = 0.08f;
         [SerializeField] int _nameLabelSortingOrder = 30;
 
+        [Header("캐릭터 말풍선")]
+        [SerializeField] Sprite _speechBubbleSprite;
+        [SerializeField] Vector3 _speechBubbleOffset = new Vector3(0f, 2.05f, -0.2f);
+        [SerializeField] Vector3 _speechBubbleBackdropOffset = Vector3.zero;
+        [SerializeField] bool _speechBubbleCenterSpritePivot = true;
+        [SerializeField] Color _speechBubbleColor = Color.white;
+        [SerializeField] Vector2 _speechBubbleBaseScale = new Vector2(0.75f, 0.35f);
+        [SerializeField] bool _speechBubbleAutoWidth = true;
+        [SerializeField] float _speechBubbleReferenceWidth = 3.4f;
+        [SerializeField] float _speechBubbleMinWorldWidth = 2.4f;
+        [SerializeField] float _speechBubbleMaxWorldWidth = 5.8f;
+        [SerializeField] float _speechBubbleBaseWorldWidth = 1.9f;
+        [SerializeField] float _speechBubbleWidthPerCharacter = 0.085f;
+        [SerializeField] float _speechBubbleShowSeconds = 4.5f;
+        [SerializeField] int _speechBubbleSortingOrder = 80;
+        [SerializeField] Vector3 _speechBubbleTextOffset = new Vector3(0f, -0.02f, -0.04f);
+        [SerializeField] int _speechBubbleTextFontSize = 40;
+        [SerializeField] float _speechBubbleTextCharacterSize = 0.062f;
+        [SerializeField] Color _speechBubbleTextColor = Color.white;
+        [SerializeField] int _speechBubbleTextSortingOrder = 81;
+        [SerializeField] int _speechBubbleMaxCharacters = 72;
+        [SerializeField] bool _speechBubbleWrapText = true;
+        [SerializeField] int _speechBubbleMaxCharsPerLine = 18;
+        [SerializeField] int _speechBubbleMaxLines = 3;
+        [SerializeField] float _speechBubbleLineSpacing = 1.05f;
+        [SerializeField] float _speechBubbleHeightPerExtraLine = 0.26f;
+        [SerializeField] bool _speechBubbleEllipsisOnOverflow = true;
+
         class TokenAnimState
         {
             public SpriteRenderer Sr;
@@ -171,6 +199,7 @@ namespace MafiaAI.UI
             UpdateTokens();
             UpdateTokenAnimations();
             ApplyNameLabelSettings();
+            ApplySpeechBubbleSettings();
             UpdateSpeechBubbles();
             FollowCamera();
             UpdateNightMaskPosition();
@@ -776,20 +805,18 @@ namespace MafiaAI.UI
             if (string.IsNullOrWhiteSpace(raw)) return "";
             int colon = raw.IndexOf(':');
             string body = colon >= 0 && colon + 1 < raw.Length ? raw.Substring(colon + 1).Trim() : raw.Trim();
-            if (body.Length > 46) body = body.Substring(0, 46).Trim() + "...";
+            int max = Mathf.Max(8, _speechBubbleMaxCharacters);
+            if (body.Length > max) body = body.Substring(0, max).Trim() + "...";
             return body;
         }
 
         void ShowSpeechBubble(Transform token, string speakerId, string text)
         {
             var bubble = GetSpeechBubble(token, speakerId);
-            bubble.Text.text = text;
+            bubble.RawText = text;
             bubble.Root.SetActive(true);
-            bubble.HideAt = Time.realtimeSinceStartup + 4.5f;
-
-            int len = Mathf.Clamp(text.Length, 8, 46);
-            float width = Mathf.Clamp(1.9f + len * 0.085f, 2.4f, 5.8f);
-            bubble.Backdrop.transform.localScale = new Vector3(width, 0.72f, 1f);
+            bubble.HideAt = Time.realtimeSinceStartup + _speechBubbleShowSeconds;
+            ApplySpeechBubbleVisuals(bubble);
         }
 
         SpeechBubble GetSpeechBubble(Transform token, string speakerId)
@@ -798,25 +825,163 @@ namespace MafiaAI.UI
 
             var root = new GameObject("SpeechBubble").transform;
             root.SetParent(token, false);
-            root.localPosition = new Vector3(0f, 2.05f, -0.2f);
+            root.localPosition = _speechBubbleOffset;
 
-            var bg = AddSprite(root, "BubbleBg", Vector3.zero, new Vector2(3.4f, 0.72f), new Color(0f, 0f, 0f, 0.78f), 80);
+            var bg = AddSprite(root, "BubbleBg", Vector3.zero, _speechBubbleBaseScale, _speechBubbleColor, _speechBubbleSortingOrder);
             var textGo = new GameObject("Text");
             textGo.transform.SetParent(root, false);
-            textGo.transform.localPosition = new Vector3(0f, -0.02f, -0.04f);
+            textGo.transform.localPosition = _speechBubbleTextOffset;
             var tm = textGo.AddComponent<TextMesh>();
             tm.text = "";
-            tm.fontSize = 40;
-            tm.characterSize = 0.062f;
+            tm.fontSize = _speechBubbleTextFontSize;
+            tm.characterSize = _speechBubbleTextCharacterSize;
             tm.anchor = TextAnchor.MiddleCenter;
             tm.alignment = TextAlignment.Center;
-            tm.color = Color.white;
-            textGo.GetComponent<MeshRenderer>().sortingOrder = 81;
+            tm.color = _speechBubbleTextColor;
+            textGo.GetComponent<MeshRenderer>().sortingOrder = _speechBubbleTextSortingOrder;
 
             bubble = new SpeechBubble { Root = root.gameObject, Backdrop = bg, Text = tm, HideAt = 0f };
+            ApplySpeechBubbleVisuals(bubble);
             bubble.Root.SetActive(false);
             _bubbles[speakerId] = bubble;
             return bubble;
+        }
+
+        void ApplySpeechBubbleSettings()
+        {
+            foreach (var kv in _bubbles)
+                ApplySpeechBubbleVisuals(kv.Value);
+        }
+
+        void ApplySpeechBubbleVisuals(SpeechBubble bubble)
+        {
+            if (bubble == null || bubble.Root == null) return;
+
+            string formattedText = FormatSpeechBubbleText(bubble.RawText);
+            bubble.Root.transform.localPosition = _speechBubbleOffset;
+
+            if (bubble.Backdrop != null)
+            {
+                var sprite = _speechBubbleSprite != null ? _speechBubbleSprite : _pixel;
+                bubble.Backdrop.sprite = sprite;
+                bubble.Backdrop.color = _speechBubbleColor;
+                if (_litSpriteMaterial != null) bubble.Backdrop.sharedMaterial = _litSpriteMaterial;
+                bubble.Backdrop.sortingOrder = _speechBubbleSortingOrder;
+
+                Vector3 scale = SpeechBubbleScale(formattedText);
+                bubble.Backdrop.transform.localScale = scale;
+                bubble.Backdrop.transform.localPosition = SpeechBubbleBackdropPosition(sprite, scale);
+            }
+
+            if (bubble.Text != null)
+            {
+                bubble.Text.text = formattedText;
+                bubble.Text.transform.localPosition = _speechBubbleTextOffset;
+                bubble.Text.fontSize = _speechBubbleTextFontSize;
+                bubble.Text.characterSize = _speechBubbleTextCharacterSize;
+                bubble.Text.lineSpacing = Mathf.Max(0.85f, _speechBubbleLineSpacing);
+                bubble.Text.color = _speechBubbleTextColor;
+                var mr = bubble.Text.GetComponent<MeshRenderer>();
+                if (mr != null) mr.sortingOrder = _speechBubbleTextSortingOrder;
+            }
+        }
+
+        string FormatSpeechBubbleText(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return "";
+            text = text.Replace("\r", " ").Replace("\n", " ").Trim();
+            if (!_speechBubbleWrapText) return text;
+
+            int maxChars = Mathf.Max(4, _speechBubbleMaxCharsPerLine);
+            int maxLines = Mathf.Max(1, _speechBubbleMaxLines);
+            var lines = new List<string>();
+            int index = 0;
+            while (index < text.Length && lines.Count < maxLines)
+            {
+                while (index < text.Length && text[index] == ' ') index++;
+                if (index >= text.Length) break;
+
+                int remaining = text.Length - index;
+                int take = Mathf.Min(maxChars, remaining);
+                int cut = take;
+
+                if (remaining > maxChars)
+                {
+                    int lastSpace = text.LastIndexOf(' ', index + take - 1, take);
+                    if (lastSpace > index + Mathf.Max(3, maxChars / 2))
+                        cut = lastSpace - index;
+                }
+
+                string line = text.Substring(index, cut).Trim();
+                if (!string.IsNullOrEmpty(line)) lines.Add(line);
+                index += cut;
+                while (index < text.Length && text[index] == ' ') index++;
+            }
+
+            if (_speechBubbleEllipsisOnOverflow && index < text.Length && lines.Count > 0)
+            {
+                int last = lines.Count - 1;
+                string tail = lines[last];
+                if (tail.Length >= maxChars - 1) tail = tail.Substring(0, Mathf.Max(1, maxChars - 2)).TrimEnd();
+                lines[last] = tail + "...";
+            }
+
+            return string.Join("\n", lines);
+        }
+
+        int SpeechBubbleLineCount(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return 1;
+            int count = 1;
+            for (int i = 0; i < text.Length; i++)
+                if (text[i] == '\n') count++;
+            return Mathf.Max(1, count);
+        }
+
+        int SpeechBubbleLongestLineLength(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return 8;
+            int longest = 0;
+            int current = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == '\n')
+                {
+                    longest = Mathf.Max(longest, current);
+                    current = 0;
+                }
+                else current++;
+            }
+            return Mathf.Max(longest, current);
+        }
+
+        Vector3 SpeechBubbleScale(string formattedText)
+        {
+            float x = _speechBubbleBaseScale.x;
+            if (_speechBubbleAutoWidth)
+            {
+                int len = Mathf.Clamp(SpeechBubbleLongestLineLength(formattedText), 8, Mathf.Max(8, _speechBubbleMaxCharsPerLine));
+                float width = Mathf.Clamp(_speechBubbleBaseWorldWidth + len * _speechBubbleWidthPerCharacter, _speechBubbleMinWorldWidth, _speechBubbleMaxWorldWidth);
+                x *= width / Mathf.Max(0.001f, _speechBubbleReferenceWidth);
+            }
+            int lines = SpeechBubbleLineCount(formattedText);
+            float y = _speechBubbleBaseScale.y + Mathf.Max(0, lines - 1) * _speechBubbleHeightPerExtraLine;
+            return new Vector3(x, y, 1f);
+        }
+
+        Vector3 SpeechBubbleBackdropPosition(Sprite sprite, Vector3 scale)
+        {
+            Vector3 pos = _speechBubbleBackdropOffset;
+            if (!_speechBubbleCenterSpritePivot || sprite == null) return pos;
+
+            Vector2 rect = sprite.rect.size;
+            if (rect.x <= 0f || rect.y <= 0f) return pos;
+
+            Vector2 pivot01 = new Vector2(sprite.pivot.x / rect.x, sprite.pivot.y / rect.y);
+            float ppu = Mathf.Max(0.001f, sprite.pixelsPerUnit);
+            pos.x += (pivot01.x - 0.5f) * rect.x / ppu * scale.x;
+            pos.y += (pivot01.y - 0.5f) * rect.y / ppu * scale.y;
+            return pos;
         }
 
         void UpdateSpeechBubbles()
@@ -835,6 +1000,7 @@ namespace MafiaAI.UI
             public GameObject Root;
             public SpriteRenderer Backdrop;
             public TextMesh Text;
+            public string RawText;
             public float HideAt;
         }
 
