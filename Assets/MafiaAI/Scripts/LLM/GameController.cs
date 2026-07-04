@@ -238,13 +238,23 @@ namespace MafiaAI.LLM
 
         void OnDestroy() => _cts?.Cancel();
 
+        bool _gameRunning; // 중복 기동 방지(autoStart와 MafiaUI가 동시에 시작시키던 레이스 차단)
+
         public async Task StartGameAsync()
         {
+            if (_gameRunning) { Debug.LogWarning("[GameController] 이미 게임이 진행 중 — 중복 시작 무시"); return; }
+            _gameRunning = true;
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
             try { await RunAsync(_cts.Token); }
             catch (OperationCanceledException) { }
-            catch (Exception e) { Debug.LogException(e); }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                // 어떤 예외든 조용히 죽지 않고 화면에 알린다.
+                try { Emit(LogKind.System, "SYSTEM", "★ 오류로 게임이 중단되었습니다: " + e.Message); } catch { }
+            }
+            finally { _gameRunning = false; }
         }
 
         void Setup()
@@ -312,7 +322,35 @@ namespace MafiaAI.LLM
             OnLocationsChanged?.Invoke();
 
             Emit(LogKind.System, "SYSTEM", "게임 시작 — 6인 중 마피아는 1명. 저택 안에서 들은 말만 단서가 된다.");
-            await _ollama.GenerateAsync(config.Model, "준비됐나?", "한 단어로만 답하라.", 0.1f, false, ct);
+
+            // AI 워밍업. 실패해도 게임을 조용히 죽이지 않는다 — 재시도 후, 최종 실패면 화면에 원인을 알린다.
+            // (첫 실행은 7GB 모델 디스크 로딩으로 느린 PC에서 1~2분 걸릴 수 있다. GenerateAsync는 타임아웃이 없어 로딩을 기다려준다.)
+            Emit(LogKind.System, "SYSTEM", "로컬 AI 준비 중… 첫 실행은 모델 로딩으로 오래 걸릴 수 있습니다.");
+            Exception warmupError = null;
+            bool warm = false;
+            for (int attempt = 1; attempt <= 3 && !warm; attempt++)
+            {
+                try
+                {
+                    await _ollama.GenerateAsync(config.Model, "준비됐나?", "한 단어로만 답하라.", 0.1f, false, ct);
+                    warm = true;
+                }
+                catch (OperationCanceledException) { throw; }
+                catch (Exception e)
+                {
+                    warmupError = e;
+                    Debug.LogWarning("[GameController] AI 워밍업 실패 (시도 " + attempt + "/3): " + e.Message);
+                    await Task.Delay(4000, ct);
+                }
+            }
+            if (!warm)
+            {
+                Emit(LogKind.System, "SYSTEM", "★ 로컬 AI에 연결하지 못해 게임을 시작할 수 없습니다.");
+                Emit(LogKind.System, "SYSTEM", "★ 해결: ① PC 메모리 16GB 이상인지 확인 ② 게임 재시작 ③ StreamingAssets/ollama/win/vc_redist.x64.exe 설치 후 재시작.");
+                Debug.LogError("[GameController] AI 워밍업 최종 실패: " + warmupError);
+                return;
+            }
+            Emit(LogKind.System, "SYSTEM", "AI 준비 완료.");
 
             if (revealRolesAtStartForDebug && logToConsole)
                 Debug.Log("[DEBUG 역할] " + string.Join(", ", State.Players.Select(p => p.Id + "=" + p.Role.Korean())));
@@ -469,7 +507,15 @@ namespace MafiaAI.LLM
                              .ToList();
             if (rooms.Count == 0) return;
 
+            // 플레이어가 있는 방을 70% 확률로 우선한다 — 대화는 같은 방에서만 들리므로,
+            // 균등 추첨이면 플레이어 체감상 '아무도 말을 안 하는' 시간이 너무 길어진다.
             var pick = rooms[_rng.Next(rooms.Count)];
+            if (HumanPlayer != null && HumanPlayer.Alive && _rng.Next(100) < 70)
+            {
+                string myRoom = GetPlayerRoom(HumanPlayer.Id);
+                var mine = rooms.FirstOrDefault(x => x.Room == myRoom);
+                if (mine != null) pick = mine;
+            }
             var speakers = pick.People.Where(p => !p.IsHuman).ToList();
             var speaker = speakers[_rng.Next(speakers.Count)];
             var targets = pick.People.Where(p => p.Id != speaker.Id).ToList();

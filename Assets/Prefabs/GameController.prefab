@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 5032610799490082308}
   - component: {fileID: 445694174192622571}
   - component: {fileID: 7395236486764517638}
+  - component: {fileID: 1234076906298675349}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -57,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.LLM.GameController
   seed: 0
-  autoStart: 1
+  autoStart: 0
   logToConsole: 1
   revealRolesAtStartForDebug: 1
   includeHuman: 0
@@ -522,3 +523,30 @@ MonoBehaviour:
   arrowBobAmplitude: 0.12
   arrowBobSpeed: 3.5
   arrowSortingOrder: 520
+--- !u!114 &1234076906298675349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62414ff7324124e2c9311fc226b0492d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.GameAudioController
+  controller: {fileID: 6406926979918794837}
+  mansionView: {fileID: 1970554226434130699}
+  bgm: {fileID: 8300000, guid: 96c4a0712a40048fbb5d6346fcd04277, type: 3}
+  roleAssigned: {fileID: 8300000, guid: 7f57ac84e34d045d683ee5260b85799e, type: 3}
+  nightStart: {fileID: 8300000, guid: d3f73f86b629c40718aec901ac37e59c, type: 3}
+  dawnBirds: {fileID: 8300000, guid: 328de983dcc02446eac09f5cd2589957, type: 3}
+  voteSelect: {fileID: 8300000, guid: ef049a7881315445f90bf5ea57fcc5cc, type: 3}
+  voteConfirm: {fileID: 8300000, guid: 29c326c4f9cd147baa0bde15524bb042, type: 3}
+  gameEnd: {fileID: 8300000, guid: 50e710ae7de2e4bf69818f1353d923db, type: 3}
+  footstep: {fileID: 8300000, guid: c49573e6891a34055bb88939e258b5a0, type: 3}
+  bgmVolume: 0.3
+  sfxVolume: 0.85
+  footstepVolume: 0.5
+  bgmNightDuck: 0.45
+  footstepSpeedThreshold: 0.6

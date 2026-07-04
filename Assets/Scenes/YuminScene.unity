@@ -23012,6 +23012,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2269950931347644975, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269950931347644975, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269950931347644975, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2374648563898783979, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -23351,6 +23363,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameController
       objectReference: {fileID: 0}
+    - target: {fileID: 1234076906298675349, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: bgmVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234076906298675349, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: sfxVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234076906298675349, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: bgmNightDuck
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234076906298675349, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: footstepVolume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1631.7773
@@ -23451,6 +23479,10 @@ PrefabInstance:
       propertyPath: chatPanelRoot
       value: 
       objectReference: {fileID: 957779643}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: autoStart
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: phaseText
       value: 

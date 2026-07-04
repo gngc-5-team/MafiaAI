@@ -84,9 +84,9 @@ namespace MafiaAI.LLM
                 psi.EnvironmentVariables["OLLAMA_MODELS"] = models;
 
                 _proc = Process.Start(psi);
-                // 파이프가 가득 차 멈추지 않게 출력은 계속 비운다
-                _proc.OutputDataReceived += (_, __) => { };
-                _proc.ErrorDataReceived += (_, __) => { };
+                // 파이프를 비우면서, ollama 로그(stderr)를 Player.log로 흘려 배포 PC에서도 진단 가능하게 한다
+                _proc.OutputDataReceived += (_, a) => { if (!string.IsNullOrEmpty(a.Data)) Debug.Log("[ollama] " + a.Data); };
+                _proc.ErrorDataReceived += (_, a) => { if (!string.IsNullOrEmpty(a.Data)) Debug.Log("[ollama] " + a.Data); };
                 _proc.BeginOutputReadLine();
                 _proc.BeginErrorReadLine();
                 HookQuit();
@@ -103,7 +103,8 @@ namespace MafiaAI.LLM
             {
                 if (_proc.HasExited)
                 {
-                    Debug.LogError("[OllamaBootstrap] AI 엔진이 종료됨 (exit " + _proc.ExitCode + ")");
+                    Debug.LogError("[OllamaBootstrap] AI 엔진이 즉시 종료됨 (exit " + _proc.ExitCode + ") — " +
+                                   "윈도우라면 StreamingAssets/ollama/win/vc_redist.x64.exe 설치 후 재시도하세요.");
                     Status("AI 엔진 오류");
                     return false;
                 }

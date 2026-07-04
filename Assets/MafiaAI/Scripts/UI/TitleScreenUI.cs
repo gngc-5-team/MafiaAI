@@ -1,0 +1,144 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+using MafiaAI.LLM;
+
+namespace MafiaAI.UI
+{
+    /// <summary>
+    /// 타이틀 화면 — UI는 TitleScene 하이라키에 저작되어 있고 이 스크립트는 참조+로직만.
+    /// 타이틀이 떠 있는 동안 백그라운드로 로컬 AI(서버 기동 + 모델 예열)를 미리 준비해서,
+    /// '시작'을 누르면 YuminScene이 즉시 워밍 상태로 시작되게 한다.
+    /// 옵션: 해상도(◀▶ 순환)/전체화면 + 마스터/BGM/효과음 볼륨 — SettingsManager(PlayerPrefs)에 저장.
+    /// </summary>
+    public class TitleScreenUI : MonoBehaviour
+    {
+        [Header("씬 저작 UI 참조")]
+        [SerializeField] Button startButton;
+        [SerializeField] Button optionsButton;
+        [SerializeField] GameObject optionsPanel;      // 기본 비활성
+        [SerializeField] Button closeButton;
+        [SerializeField] Button fullscreenButton;
+        [SerializeField] TMP_Text fullscreenLabel;
+        [SerializeField] Button resPrevButton;
+        [SerializeField] Button resNextButton;
+        [SerializeField] TMP_Text resLabel;
+        [SerializeField] Slider masterSlider;
+        [SerializeField] Slider bgmSlider;
+        [SerializeField] Slider sfxSlider;
+        [SerializeField] TMP_Text aiStatusText;        // 좌하단 "AI 준비 중…" 표시
+
+        [Header("설정")]
+        [SerializeField] string gameSceneName = "YuminScene";
+
+        readonly List<Vector2Int> _resolutions = new();
+        int _resIndex;
+        static bool _aiWarm; // 씬 재방문 시 예열 반복 방지
+
+        void Awake()
+        {
+            if (startButton != null) startButton.onClick.AddListener(StartGame);
+            if (optionsButton != null) optionsButton.onClick.AddListener(() => optionsPanel.SetActive(true));
+            if (closeButton != null) closeButton.onClick.AddListener(() => { SettingsManager.Save(); optionsPanel.SetActive(false); });
+            if (fullscreenButton != null) fullscreenButton.onClick.AddListener(ToggleFullscreen);
+            if (resPrevButton != null) resPrevButton.onClick.AddListener(() => CycleResolution(-1));
+            if (resNextButton != null) resNextButton.onClick.AddListener(() => CycleResolution(+1));
+            if (masterSlider != null) masterSlider.onValueChanged.AddListener(v => SettingsManager.MasterVolume = v);
+            if (bgmSlider != null) bgmSlider.onValueChanged.AddListener(v => SettingsManager.BgmVolume = v);
+            if (sfxSlider != null) sfxSlider.onValueChanged.AddListener(v => SettingsManager.SfxVolume = v);
+
+            if (optionsPanel != null) optionsPanel.SetActive(false);
+            BuildResolutionList();
+            LoadUiFromSettings();
+            SettingsManager.ApplyAudio();
+        }
+
+        async void Start()
+        {
+            // 타이틀 노출 동안 AI 준비(서버 기동 + 모델 예열)를 끝내 둔다.
+            if (_aiWarm) { SetAiStatus("AI 준비 완료"); return; }
+
+            SetAiStatus("AI 준비 중…");
+            OllamaBootstrap.OnStatus += SetAiStatus;
+            var cfg = new GameConfig(); // Model/BaseUrl 기본값 = 게임과 동일
+            bool ok = await OllamaBootstrap.EnsureReadyAsync(cfg);
+            if (ok)
+            {
+                try
+                {
+                    // 서버만 뜨면 모델은 아직 디스크에 있다 — 여기서 한 번 호출해 RAM에 올린다(진짜 오래 걸리는 부분).
+                    SetAiStatus("AI 모델 로딩 중… (최초 1~2분)");
+                    var client = new OllamaClient(cfg.BaseUrl);
+                    await client.GenerateAsync(cfg.Model, "준비됐나?", "한 단어로만 답하라.", 0.1f, false, default, 4);
+                    _aiWarm = true;
+                    SetAiStatus("AI 준비 완료");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogWarning("[TitleScreen] 모델 예열 실패(게임에서 재시도됨): " + e.Message);
+                    SetAiStatus("AI 응답 없음 — 시작하면 재시도합니다");
+                }
+            }
+            else SetAiStatus("AI 준비 실패 — 시작하면 재시도합니다");
+            OllamaBootstrap.OnStatus -= SetAiStatus;
+        }
+
+        void OnDestroy() => OllamaBootstrap.OnStatus -= SetAiStatus;
+
+        void StartGame() => SceneManager.LoadScene(gameSceneName);
+
+        // ---------- 옵션 ----------
+
+        void BuildResolutionList()
+        {
+            foreach (var r in Screen.resolutions)
+            {
+                var v = new Vector2Int(r.width, r.height);
+                if (v.x < 1024) continue;              // 너무 작은 건 제외
+                if (!_resolutions.Contains(v)) _resolutions.Add(v);
+            }
+            if (_resolutions.Count == 0) _resolutions.Add(new Vector2Int(Screen.width, Screen.height));
+            var cur = new Vector2Int(Screen.width, Screen.height);
+            _resIndex = Mathf.Max(0, _resolutions.IndexOf(cur));
+        }
+
+        void CycleResolution(int dir)
+        {
+            _resIndex = (_resIndex + dir + _resolutions.Count) % _resolutions.Count;
+            var r = _resolutions[_resIndex];
+            SettingsManager.SetResolution(r.x, r.y);
+            RefreshLabels();
+        }
+
+        void ToggleFullscreen()
+        {
+            SettingsManager.Fullscreen = !SettingsManager.Fullscreen;
+            RefreshLabels();
+        }
+
+        void LoadUiFromSettings()
+        {
+            if (masterSlider != null) masterSlider.SetValueWithoutNotify(SettingsManager.MasterVolume);
+            if (bgmSlider != null) bgmSlider.SetValueWithoutNotify(SettingsManager.BgmVolume);
+            if (sfxSlider != null) sfxSlider.SetValueWithoutNotify(SettingsManager.SfxVolume);
+            RefreshLabels();
+        }
+
+        void RefreshLabels()
+        {
+            if (fullscreenLabel != null) fullscreenLabel.text = "전체화면: " + (SettingsManager.Fullscreen ? "켬" : "끔");
+            if (resLabel != null && _resolutions.Count > 0)
+            {
+                var r = _resolutions[Mathf.Clamp(_resIndex, 0, _resolutions.Count - 1)];
+                resLabel.text = r.x + " × " + r.y;
+            }
+        }
+
+        void SetAiStatus(string msg)
+        {
+            if (aiStatusText != null) aiStatusText.text = msg;
+        }
+    }
+}
