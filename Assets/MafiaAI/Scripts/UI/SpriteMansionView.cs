@@ -64,13 +64,6 @@ namespace MafiaAI.UI
 
         /// <summary>인간 플레이어의 현재 월드 좌표(밤 이동 스냅샷/복구용).</summary>
         public Vector3 HumanWorldPosition => _humanWorldPos;
-        
-        // ── 밤 시야(암전) + 공간 사냥 ──
-        const float MaskWorldHalf = 30f;   // 암전 스프라이트 반경(카메라 뷰를 넉넉히 덮음)
-        GameObject _nightMask;
-        SpriteRenderer _nightMaskSr;
-        float _nightMaskHole = -1f;
-        bool _killedThisNight;
 
         /// <summary>다른 플레이어(주로 AI) 토큰의 현재 화면 좌표. 근접 판정(예: 밤 이동 지목)에 쓴다.</summary>
         public bool TryGetTokenPosition(string playerId, out Vector3 pos)
