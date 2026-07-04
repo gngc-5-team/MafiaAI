@@ -852,7 +852,7 @@ MonoBehaviour:
   m_text: "\uC785\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 872ca86c3abf74de5a9224ed98d90de2, type: 2}
-  m_sharedMaterial: {fileID: 5469257384539154894, guid: c842f525de1dc4594b79c6947fe39bf3, type: 2}
+  m_sharedMaterial: {fileID: -3418536272816894569, guid: 872ca86c3abf74de5a9224ed98d90de2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -918,7 +918,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3082135550688524225
@@ -1927,7 +1927,7 @@ MonoBehaviour:
   m_text: " \uBC1C\uC5B8 \uC785\uB825..."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 872ca86c3abf74de5a9224ed98d90de2, type: 2}
-  m_sharedMaterial: {fileID: 5469257384539154894, guid: c842f525de1dc4594b79c6947fe39bf3, type: 2}
+  m_sharedMaterial: {fileID: -3418536272816894569, guid: 872ca86c3abf74de5a9224ed98d90de2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1993,7 +1993,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &6710376432519238314
@@ -4238,7 +4238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5822269963205244240
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4523,13 +4523,13 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
+  m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
 --- !u!114 &968460788649662237
