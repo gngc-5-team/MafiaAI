@@ -23429,26 +23429,6 @@ PrefabInstance:
       propertyPath: chatPanelRoot
       value: 
       objectReference: {fileID: 957779643}
-    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: config.Model
-      value: gemma4:12b
-      objectReference: {fileID: 0}
-    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: config.VoteSeconds
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: config.NightSeconds
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: config.DiscussionSeconds
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
-      propertyPath: config.AiNightTimeoutSeconds
-      value: 40
-      objectReference: {fileID: 0}
     - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
       propertyPath: phaseText
       value: 

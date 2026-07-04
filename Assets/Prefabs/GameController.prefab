@@ -67,9 +67,9 @@ MonoBehaviour:
     Model: gemma4:12b
     RoomCount: 5
     DiscussionSeconds: 2
-    NightSeconds: 1
+    NightSeconds: 2
     AiNightTimeoutSeconds: 40
-    VoteSeconds: 10000
+    VoteSeconds: 300000
     AiVoteTimeoutSeconds: 40
     TalkIntervalMinMs: 3000
     TalkIntervalMaxMs: 5000
@@ -323,10 +323,10 @@ MonoBehaviour:
   roleNameText: {fileID: 0}
   detailText: {fileID: 0}
   roleIcon: {fileID: 0}
-  citizenIcon: {fileID: -8780785977499532577, guid: 309073ab808e54e60ac9999c283c8bf3, type: 3}
-  mafiaIcon: {fileID: -8035089288019869427, guid: 040232f9810274157889591f4081cff8, type: 3}
-  policeIcon: {fileID: 2297151748734764576, guid: 39c6a4063a5e043daadab7bb0f6a68b4, type: 3}
-  doctorIcon: {fileID: 8841583364694669585, guid: 19f643dcd32cd4ac98be8a671c2e8347, type: 3}
+  citizenIcon: {fileID: 21300000, guid: c35c56349fa5040f19caf95ffcc38d55, type: 3}
+  mafiaIcon: {fileID: 21300000, guid: 53939b29bde99474d86093a0ac116dbb, type: 3}
+  policeIcon: {fileID: 21300000, guid: bbd3724eb4e7b41059db4ad0cc845075, type: 3}
+  doctorIcon: {fileID: 21300000, guid: 70c95c647545c490f9b21fc324bb057d, type: 3}
 --- !u!114 &4076063715021806837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,6 +382,7 @@ MonoBehaviour:
   phaseText: {fileID: 0}
   timerText: {fileID: 0}
   playerCountText: {fileID: 0}
+  phaseChip: {fileID: 0}
 --- !u!114 &4801870741227523591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +405,8 @@ MonoBehaviour:
   confirmButton: {fileID: 0}
   abstainButton: {fileID: 0}
   portraits: {fileID: 5032610799490082308}
+  myVotesText: {fileID: 0}
+  myVoteTicks: {fileID: 0}
 --- !u!114 &5032610799490082308
 MonoBehaviour:
   m_ObjectHideFlags: 0

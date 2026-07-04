@@ -18,7 +18,8 @@ namespace MafiaAI.UI
         public Image Background;
         public Image Portrait;
         public TMP_Text NameText;
-        public TMP_Text VoteCountText;
+        public TMP_Text VoteCountText;     // 숫자로 표 표시(선택). 이미지로 하려면 VoteTicks 사용
+        public VoteTickDisplay VoteTicks;  // 이미지(체크)로 표 표시(선택). 안 넣으면 숫자만
         public GameObject DeadOverlay;     // 사망 표시(X 마크). 프리팹에 이미 있는 X UI를 연결하면 됨
         public GameObject SelectedOverlay; // 선택 표시(체크). 프리팹에 만든 체크 UI를 연결하면 됨
 

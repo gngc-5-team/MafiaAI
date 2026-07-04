@@ -1,0 +1,715 @@
+fileFormatVersion: 2
+guid: c35c56349fa5040f19caf95ffcc38d55
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7749395267196790961
+    second: icon_citizen_0
+  - first:
+      213: 2802384945451208
+    second: icon_citizen_1
+  - first:
+      213: 4824385778407478323
+    second: icon_citizen_2
+  - first:
+      213: -6177295271494855971
+    second: icon_citizen_3
+  - first:
+      213: -1609967777142275487
+    second: icon_citizen_4
+  - first:
+      213: 1509244337442189212
+    second: icon_citizen_5
+  - first:
+      213: 3254827165043125456
+    second: icon_citizen_6
+  - first:
+      213: 1086493833999584297
+    second: icon_citizen_7
+  - first:
+      213: 2264444662136997338
+    second: icon_citizen_8
+  - first:
+      213: -2384599803617474036
+    second: icon_citizen_9
+  - first:
+      213: -9082680262146445421
+    second: icon_citizen_10
+  - first:
+      213: -1821297089124740047
+    second: icon_citizen_11
+  - first:
+      213: -2485529348906934427
+    second: icon_citizen_12
+  - first:
+      213: -1814437496147902263
+    second: icon_citizen_13
+  - first:
+      213: 1961976503000624622
+    second: icon_citizen_14
+  - first:
+      213: 3018132756986926312
+    second: icon_citizen_15
+  - first:
+      213: -7429633557333844434
+    second: icon_citizen_16
+  - first:
+      213: -3232729856705253158
+    second: icon_citizen_17
+  - first:
+      213: 4448678675136009303
+    second: icon_citizen_18
+  - first:
+      213: 6596661752784209828
+    second: icon_citizen_19
+  - first:
+      213: -8266982644601094345
+    second: icon_citizen_20
+  - first:
+      213: -6013824154099407666
+    second: icon_citizen_21
+  - first:
+      213: -1485987078490413242
+    second: icon_citizen_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: icon_citizen_0
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 693
+        width: 59
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4754a2001e947490800000000000000
+      internalID: -7749395267196790961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_1
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 793
+        width: 89
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c0923711c4f90000800000000000000
+      internalID: 2802384945451208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_2
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 691
+        width: 63
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3349c650e49a3f240800000000000000
+      internalID: 4824385778407478323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_3
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 309
+        width: 128
+        height: 379
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd259d5eda6d54aa0800000000000000
+      internalID: -6177295271494855971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_4
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 631
+        width: 79
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1620c9f26de38a9e0800000000000000
+      internalID: -1609967777142275487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_5
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 615
+        width: 120
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9fe2848ab9e1f410800000000000000
+      internalID: 1509244337442189212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_6
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 630
+        width: 78
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dcefa1df087b2d20800000000000000
+      internalID: 3254827165043125456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_7
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 309
+        width: 128
+        height: 378
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92c8232b260041f00800000000000000
+      internalID: 1086493833999584297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_8
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 344
+        width: 103
+        height: 274
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad584343c6cec6f10800000000000000
+      internalID: 2264444662136997338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_9
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 438
+        width: 104
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0a0aeddc1338eed0800000000000000
+      internalID: -2384599803617474036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_10
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 285
+        width: 198
+        height: 317
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39f2f467c66d3f180800000000000000
+      internalID: -9082680262146445421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_11
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 439
+        width: 90
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 134544472f379b6e0800000000000000
+      internalID: -1821297089124740047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_12
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 345
+        width: 100
+        height: 273
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56f189fd930a18dd0800000000000000
+      internalID: -2485529348906934427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_13
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 264
+        width: 74
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c084f6e5b2d1d6e0800000000000000
+      internalID: -1814437496147902263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_14
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 249
+        width: 56
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eede3070c375a3b10800000000000000
+      internalID: 1961976503000624622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_15
+      rect:
+        serializedVersion: 2
+        x: 703
+        y: 265
+        width: 74
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e41d2170cf82e920800000000000000
+      internalID: 3018132756986926312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_16
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 126
+        width: 73
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2e5bcbb4a3a4e890800000000000000
+      internalID: -7429633557333844434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_17
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 126
+        width: 28
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad0b844b2590323d0800000000000000
+      internalID: -3232729856705253158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_18
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 126
+        width: 73
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75456575fa1ecbd30800000000000000
+      internalID: 4448678675136009303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_19
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 126
+        width: 28
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a7cb1ed9ec0c8b50800000000000000
+      internalID: 6596661752784209828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_20
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 126
+        width: 73
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73f7b38c517c54d80800000000000000
+      internalID: -8266982644601094345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_21
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 126
+        width: 73
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec4ad316bca9a8ca0800000000000000
+      internalID: -6013824154099407666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_citizen_22
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 126
+        width: 73
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64722cd00a6b06be0800000000000000
+      internalID: -1485987078490413242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      icon_citizen_0: -7749395267196790961
+      icon_citizen_1: 2802384945451208
+      icon_citizen_10: -9082680262146445421
+      icon_citizen_11: -1821297089124740047
+      icon_citizen_12: -2485529348906934427
+      icon_citizen_13: -1814437496147902263
+      icon_citizen_14: 1961976503000624622
+      icon_citizen_15: 3018132756986926312
+      icon_citizen_16: -7429633557333844434
+      icon_citizen_17: -3232729856705253158
+      icon_citizen_18: 4448678675136009303
+      icon_citizen_19: 6596661752784209828
+      icon_citizen_2: 4824385778407478323
+      icon_citizen_20: -8266982644601094345
+      icon_citizen_21: -6013824154099407666
+      icon_citizen_22: -1485987078490413242
+      icon_citizen_3: -6177295271494855971
+      icon_citizen_4: -1609967777142275487
+      icon_citizen_5: 1509244337442189212
+      icon_citizen_6: 3254827165043125456
+      icon_citizen_7: 1086493833999584297
+      icon_citizen_8: 2264444662136997338
+      icon_citizen_9: -2384599803617474036
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
