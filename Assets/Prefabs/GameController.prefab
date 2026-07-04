@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 7021528774289023853}
   - component: {fileID: 4076063715021806837}
   - component: {fileID: 4465809370810946607}
+  - component: {fileID: 5076677308181466845}
+  - component: {fileID: 6805265625977110828}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -63,6 +65,7 @@ MonoBehaviour:
     RoomCount: 5
     DiscussionSeconds: 60
     NightSeconds: 10
+    AiNightTimeoutSeconds: 40
     TalkIntervalMinMs: 3000
     TalkIntervalMaxMs: 5000
     MoveIntervalMs: 7000
@@ -192,3 +195,41 @@ MonoBehaviour:
   titleText: {fileID: 0}
   buttonListRoot: {fileID: 0}
   candidateButtonPrefab: {fileID: 0}
+--- !u!114 &5076677308181466845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ff0c36ef189412796ce4e808b6a75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.MapUI
+  controller: {fileID: 6406926979918794837}
+  mapRoot: {fileID: 0}
+  roomNodePrefab: {fileID: 4531978718890189554, guid: 4a5d2466196dd43649a7c66e83e936d4, type: 3}
+  corridorLinePrefab: {fileID: 3759391803528150022, guid: 89e943f715c6c4c59ac9dcca1e5ea7e7, type: 3}
+  toggleButton: {fileID: 0}
+  cellSize: 44
+  fillRatio: 0.8
+  roomColor: {r: 0.16470589, g: 0.16470589, b: 0.20784314, a: 1}
+  myRoomColor: {r: 0.60784316, g: 0.9019608, b: 0.42745098, a: 1}
+  corridorColor: {r: 0.33333334, g: 0.33333334, b: 0.3764706, a: 1}
+--- !u!114 &6805265625977110828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73c359ffd5d6498b969e5360cbcccb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.TopBarUI
+  controller: {fileID: 6406926979918794837}
+  phaseText: {fileID: 0}
+  timerText: {fileID: 0}
+  playerCountText: {fileID: 0}

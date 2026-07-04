@@ -77,7 +77,7 @@ namespace MafiaAI.UI
                 case LogKind.Death: text = "[사망] " + e.Text; col = DeathColor; break;
                 case LogKind.Reveal: text = "◆ " + e.Text; col = RevealColor; break;
                 case LogKind.Vote: text = "· " + e.Text; col = DimColor; break;
-                default: text = "> " + e.Text; col = DimColor; break;
+                default: text = "- " + e.Text; col = DimColor; break;
             }
             AddLine(text, col);
         }
