@@ -19,14 +19,26 @@ namespace MafiaAI.UI
         public Image Portrait;
         public TMP_Text NameText;
         public TMP_Text VoteCountText;
+        public GameObject DeadOverlay;     // 사망 표시(X 마크). 프리팹에 이미 있는 X UI를 연결하면 됨
+        public GameObject SelectedOverlay; // 선택 표시(체크). 프리팹에 만든 체크 UI를 연결하면 됨
 
         /// <summary>이 카드에 마우스가 들어오거나 나갈 때(자기 자신, 들어옴 여부).</summary>
         public event Action<VoteCandidateView, bool> OnHoverChanged;
+
+        /// <summary>호버로 인한 크기 변화를 받지 않는 상태(예: 죽은 카드). true면 항상 기본 크기.</summary>
+        public bool HoverLocked { get; set; }
 
         const float LerpSpeed = 12f;
         float _targetScale = 1f;
 
         public void SetTargetScale(float scale) => _targetScale = scale;
+
+        public void SetDead(bool dead)
+        {
+            HoverLocked = dead;
+            if (DeadOverlay != null) DeadOverlay.SetActive(dead);
+            if (dead) _targetScale = 1f;
+        }
 
         void Update()
         {
@@ -34,7 +46,16 @@ namespace MafiaAI.UI
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * _targetScale, Time.deltaTime * LerpSpeed);
         }
 
-        public void OnPointerEnter(PointerEventData eventData) => OnHoverChanged?.Invoke(this, true);
-        public void OnPointerExit(PointerEventData eventData) => OnHoverChanged?.Invoke(this, false);
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (HoverLocked) return;
+            OnHoverChanged?.Invoke(this, true);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (HoverLocked) return;
+            OnHoverChanged?.Invoke(this, false);
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace MafiaAI.UI
         void RefreshPlayerCount()
         {
             if (playerCountText == null || controller.State == null) return;
-            string label = "생존자";
+            string label = "생존자 ";
             playerCountText.text = label +controller.State.AliveList.Count + "/" + controller.State.Players.Count;
         }
 
