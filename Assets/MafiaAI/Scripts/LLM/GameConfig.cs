@@ -13,6 +13,8 @@ namespace MafiaAI.LLM
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간
         public int NightSeconds = 15;       // 밤 지속 시간(화면에 보이는 카운트다운, 인간의 결정 시한)
         public float AiNightTimeoutSeconds = 40f; // AI의 밤 판단(LLM 호출) 시한 — NightSeconds와 별개로 넉넉하게
+        public int VoteSeconds = 15;              // 투표 화면 타이머(인간의 결정 시한)
+        public float AiVoteTimeoutSeconds = 40f;  // AI의 투표 판단(LLM 호출) 시한 — VoteSeconds와 별개로 넉넉하게
         public int TalkIntervalMinMs = 3000; // AI 문답 최소 간격
         public int TalkIntervalMaxMs = 5000; // AI 문답 최대 간격
         public int MoveIntervalMs = 7000;    // NPC 방 이동 간격
