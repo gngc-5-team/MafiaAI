@@ -381,6 +381,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &203590261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 765582503818301588, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &246769945
 GameObject:
   m_ObjectHideFlags: 0
@@ -35468,11 +35479,127 @@ Transform:
   - {fileID: 1964742995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &926652683 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2949792504158782800, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &985280509 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8672594018779638667, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
   m_PrefabInstance: {fileID: 6496532811849135916}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1006129854
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1059122760921202242, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_Name
+      value: GameController
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1631.7773
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 605.62366
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874157047823980070, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970554226434130699, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: _tilemap
+      value: 
+      objectReference: {fileID: 832152492}
+    - target: {fileID: 4076063715021806837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: input
+      value: 
+      objectReference: {fileID: 1338321203}
+    - target: {fileID: 4076063715021806837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: sendButton
+      value: 
+      objectReference: {fileID: 1032192115}
+    - target: {fileID: 5076677308181466845, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: mapRoot
+      value: 
+      objectReference: {fileID: 985280509}
+    - target: {fileID: 6087592030236848429, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: scrollRect
+      value: 
+      objectReference: {fileID: 1063691819}
+    - target: {fileID: 6087592030236848429, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: chatContent
+      value: 
+      objectReference: {fileID: 1557650576}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.TalkIntervalMaxMs
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406926979918794837, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: config.TalkIntervalMinMs
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: phaseText
+      value: 
+      objectReference: {fileID: 926652683}
+    - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 1659407758}
+    - target: {fileID: 6805265625977110828, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: playerCountText
+      value: 
+      objectReference: {fileID: 203590261}
+    - target: {fileID: 7021528774289023853, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
+      propertyPath: roleNameText
+      value: 
+      objectReference: {fileID: 1601362152}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9f8ea92a76c8b4ceaaba1303ae7bcbab, type: 3}
 --- !u!114 &1032192115 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2207056554341859429, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
@@ -36194,221 +36321,17 @@ Transform:
   - {fileID: 832152490}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1629661763
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1629661765}
-  - component: {fileID: 1629661764}
-  - component: {fileID: 1629661767}
-  - component: {fileID: 1629661768}
-  - component: {fileID: 1629661772}
-  - component: {fileID: 1629661771}
-  - component: {fileID: 1629661770}
-  - component: {fileID: 1629661769}
-  - component: {fileID: 1629661773}
-  - component: {fileID: 1629661774}
-  m_Layer: 0
-  m_Name: GameController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1629661764
+--- !u!114 &1659407758 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 3278586430150536895, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+  m_PrefabInstance: {fileID: 6496532811849135916}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1862783ce70864952abcf2353c6e6412, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.LLM.GameController
-  seed: 0
-  autoStart: 1
-  logToConsole: 1
-  revealRolesAtStartForDebug: 1
-  includeHuman: 0
-  humanSeat: 0
-  config:
-    BaseUrl: http://localhost:11434
-    Model: gemma3:4b
-    RoomCount: 5
-    DiscussionSeconds: 60
-    NightSeconds: 10
-    TalkIntervalMinMs: 3000
-    TalkIntervalMaxMs: 5000
-    MoveIntervalMs: 7000
-    LineDelayMs: 350
-    MaxDays: 15
-    SpeechTemperature: 0.95
-    ActionTemperature: 0.4
-    RevealRolesOnDeath: 1
-    SpatialNightHunt: 1
-    KillRadius: 1.6
-    MafiaNightVision: 6
-    CitizenNightVision: 2.3
---- !u!4 &1629661765
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1629661767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8cc602d0016744949c6db7904db9bd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.SpriteMansionView
-  _tilemap: {fileID: 832152492}
-  _floorTile: {fileID: 11400000, guid: 69575409aff3e4163990999e84d7a581, type: 2}
-  _backWallTopTile: {fileID: 11400000, guid: d41bd17d0bdef4ab1a869598b0ab6957, type: 2}
-  _backWallBotTile: {fileID: 11400000, guid: 46e5f03dfeeb54a699d5f876f596af4a, type: 2}
-  _lineWallTile: {fileID: 11400000, guid: a6c4f32750fd7435f8f052ccf48df5a7, type: 2}
-  _cornerTile: {fileID: 11400000, guid: 996af35dcd7bc4e0fa635d433f275f22, type: 2}
-  _cornerLTile: {fileID: 11400000, guid: cb5e9aa655df04ae9aafc190afd16a90, type: 2}
-  _bgTile: {fileID: 11400000, guid: 72ce7b58d95e04b19a0457fa7d1a23fc, type: 2}
-  _tilemapSortingOrder: -10
---- !u!114 &1629661768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 147c3e987da8a4abe9dc5e4b6859ffcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.MafiaUI
-  enableHumanSeat: 1
---- !u!114 &1629661769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d46a333de357844298074216232bfd6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.InputBarUI
-  controller: {fileID: 1629661764}
-  input: {fileID: 1338321203}
-  sendButton: {fileID: 1032192115}
-  chipListRoot: {fileID: 0}
-  chipPrefab: {fileID: 0}
---- !u!114 &1629661770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa862b6b1a83a41e9a6df9356d9f54e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.RolePanelUI
-  controller: {fileID: 1629661764}
-  roleNameText: {fileID: 1601362152}
-  detailText: {fileID: 0}
---- !u!114 &1629661771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f627be7a152f045ecb683e91a79c9c72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.AvatarBarUI
-  controller: {fileID: 1629661764}
-  cardListRoot: {fileID: 0}
-  cardPrefab: {fileID: 0}
---- !u!114 &1629661772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f341215c109c740e9ab0443ef607b023, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.ChatLogUI
-  controller: {fileID: 1629661764}
-  scrollRect: {fileID: 1063691819}
-  chatContent: {fileID: 1557650576}
-  chatLinePrefab: {fileID: 7784835141134084661, guid: 8d895ecf442b74c9e8613c1defebb9b7, type: 3}
-  chatPanelRoot: {fileID: 0}
-  toggleButton: {fileID: 0}
-  toggleButtonLabel: {fileID: 0}
---- !u!114 &1629661773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9381df217a64c0d8f5bb187f0c75e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.ChoiceOverlayUI
-  controller: {fileID: 1629661764}
-  overlayRoot: {fileID: 0}
-  titleText: {fileID: 0}
-  buttonListRoot: {fileID: 0}
-  candidateButtonPrefab: {fileID: 0}
---- !u!114 &1629661774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629661763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70ff0c36ef189412796ce4e808b6a75b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.MapUI
-  controller: {fileID: 1629661764}
-  mapRoot: {fileID: 985280509}
-  roomNodePrefab: {fileID: 4531978718890189554, guid: 4a5d2466196dd43649a7c66e83e936d4, type: 3}
-  corridorLinePrefab: {fileID: 3759391803528150022, guid: 89e943f715c6c4c59ac9dcca1e5ea7e7, type: 3}
-  toggleButton: {fileID: 0}
-  cellSize: 44
-  fillRatio: 0.8
-  roomColor: {r: 0.16470589, g: 0.16470589, b: 0.20784314, a: 1}
-  myRoomColor: {r: 0.60784316, g: 0.9019608, b: 0.42745098, a: 1}
-  corridorColor: {r: 0.33333334, g: 0.33333334, b: 0.3764706, a: 1}
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1671198416
 GameObject:
   m_ObjectHideFlags: 0
@@ -37513,6 +37436,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685788784852346569, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2374648563898783979, guid: 1976a5e7ca2fd4d7a9ed6266ee2d0d78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -37616,7 +37551,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 1629661765}
   - {fileID: 1583627534}
   - {fileID: 86175740}
   - {fileID: 850266522}
@@ -37632,3 +37566,4 @@ SceneRoots:
   - {fileID: 6496532811849135916}
   - {fileID: 246769948}
   - {fileID: 1621041668}
+  - {fileID: 1006129854}

@@ -35,6 +35,7 @@ namespace MafiaAI.LLM
         class Options
         {
             public float temperature;
+            public int num_predict;
         }
 
         [Serializable]
@@ -53,8 +54,12 @@ namespace MafiaAI.LLM
             string system = null,
             float temperature = 0.8f,
             bool jsonFormat = false,
-            CancellationToken ct = default)
+            CancellationToken ct = default,
+            int maxTokens = 100)
         {
+            // 프롬프트가 "2문장 이내"/"한 문장만"으로 답을 제한해도 Ollama 자체엔 길이 제한이 없어서
+            // 모델이 그보다 훨씬 길게 계속 생성하고, 우리는 OneSentence()로 첫 문장만 잘라 쓰고 나머지는 버렸다.
+            // num_predict로 딱 그만큼만 생성하게 막아서, 버려질 뒷부분을 기다리는 시간을 없앤다.
             var payload = new GenerateRequest
             {
                 model = model,
@@ -62,7 +67,7 @@ namespace MafiaAI.LLM
                 system = system ?? string.Empty,
                 stream = false,
                 format = jsonFormat ? "json" : string.Empty,
-                options = new Options { temperature = temperature }
+                options = new Options { temperature = temperature, num_predict = maxTokens }
             };
 
             string body = JsonUtility.ToJson(payload);

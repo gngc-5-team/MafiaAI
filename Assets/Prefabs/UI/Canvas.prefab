@@ -225,8 +225,6 @@ GameObject:
   - component: {fileID: 64464415011703980}
   - component: {fileID: 7206722410110082755}
   - component: {fileID: 5298724346382365769}
-  - component: {fileID: 7167278322856988738}
-  - component: {fileID: 2843400723372394175}
   m_Layer: 5
   m_Name: TopBar
   m_TagString: Untagged
@@ -294,58 +292,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7167278322856988738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2652531186838133312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1862783ce70864952abcf2353c6e6412, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.LLM.GameController
-  seed: 0
-  autoStart: 1
-  logToConsole: 1
-  revealRolesAtStartForDebug: 1
-  includeHuman: 0
-  humanSeat: -1
-  config:
-    BaseUrl: http://localhost:11434
-    Model: gemma3:4b
-    RoomCount: 5
-    DiscussionSeconds: 60
-    NightSeconds: 10
-    TalkIntervalMinMs: 3000
-    TalkIntervalMaxMs: 5000
-    MoveIntervalMs: 7000
-    LineDelayMs: 350
-    MaxDays: 15
-    SpeechTemperature: 0.95
-    ActionTemperature: 0.4
-    RevealRolesOnDeath: 1
-    SpatialNightHunt: 1
-    KillRadius: 1.6
-    MafiaNightVision: 6
-    CitizenNightVision: 2.3
---- !u!114 &2843400723372394175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2652531186838133312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f73c359ffd5d6498b969e5360cbcccb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.TopBarUI
-  controller: {fileID: 7167278322856988738}
-  phaseText: {fileID: 2949792504158782800}
-  timerText: {fileID: 3278586430150536895}
-  playerCountText: {fileID: 765582503818301588}
 --- !u!1 &2714109547462977946
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +485,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 90}
+  m_SizeDelta: {x: 250, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1932100930542346081
 CanvasRenderer:

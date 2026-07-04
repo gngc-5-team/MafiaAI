@@ -73,7 +73,16 @@ namespace MafiaAI.UI
             float endsAt = controller.PhaseEndsAt;
             if (endsAt > 0f && (phase == Phase.Discuss || phase == Phase.Night))
             {
-                int remain = Mathf.Max(0, Mathf.CeilToInt(endsAt - Time.realtimeSinceStartup));
+                float remainF = endsAt - Time.realtimeSinceStartup;
+                if (phase == Phase.Night && remainF <= 0f)
+                {
+                    // 화면 타이머(NightSeconds)는 다 됐지만 AI 판단(최대 AiNightTimeoutSeconds)을 기다리는 중.
+                    // 그냥 00:00에 멈춘 것처럼 보이면 멈춘 줄 알 수 있으니 별도 문구로 알려준다.
+                    timerText.text = "AI 생각 중…";
+                    timerText.color = NightColor;
+                    return;
+                }
+                int remain = Mathf.Max(0, Mathf.CeilToInt(remainF));
                 timerText.text = string.Format("{0:00}:{1:00}", remain / 60, remain % 60);
                 timerText.color = remain <= 5 ? UrgentColor : (phase == Phase.Night ? NightColor : DayColor);
             }

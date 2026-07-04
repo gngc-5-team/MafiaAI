@@ -120,9 +120,10 @@ namespace MafiaAI.LLM
             // WaitForHumanAnswer(AI가 직접 물었을 때 대답을 기다리는 로직)가 가져갈 수 있게 큐에도 넣는다.
             _humanMsgs.Enqueue(new HumanMessage { Text = clean, Target = pressTarget, Room = room });
 
-            // 특정 인물을 콕 집었다면, 낮 토론 루프의 다른 순서를 기다리지 않고 즉시 그 AI가 반응한다.
-            if (pressTarget != null)
-                _ = ReactToPressAsync(pressTarget, room, clean, _cts?.Token ?? default);
+            // 특정 인물을 콕 집었으면 그 AI만, 안 집었으면 같은 방에 있는 AI 전원이 즉시 반응한다.
+            var ct = _cts?.Token ?? default;
+            if (pressTarget != null) _ = ReactToPressAsync(pressTarget, room, clean, ct);
+            else _ = ReactToAmbientAsync(room, clean, ct);
         }
 
         async Task ReactToPressAsync(string targetId, string room, string text, CancellationToken ct)
@@ -133,6 +134,25 @@ namespace MafiaAI.LLM
                 if (pressed == null || !pressed.Alive || pressed.IsHuman || GetPlayerRoom(pressed.Id) != room) return;
                 string reply = OneSentence(await _actors[pressed.Id].RebuttalAsync(State, pressed, HumanPlayer.Id, text, ct));
                 EmitRoomSpeech(room, pressed.Id, HumanPlayer.Id, reply);
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception e) { Debug.LogException(e); }
+        }
+
+        /// <summary>지목 없이 그냥 채팅했을 때, 같은 방(=채팅이 들리는 범위)에 있는 AI 전원이 각자 반응한다.</summary>
+        async Task ReactToAmbientAsync(string room, string text, CancellationToken ct)
+        {
+            var listeners = State.Alive.Where(p => !p.IsHuman && GetPlayerRoom(p.Id) == room).ToList();
+            foreach (var responder in listeners)
+                _ = ReactOneAsync(responder, room, text, ct);
+        }
+
+        async Task ReactOneAsync(Player responder, string room, string text, CancellationToken ct)
+        {
+            try
+            {
+                string reply = OneSentence(await _actors[responder.Id].ReactAsync(State, responder, HumanPlayer.Id, text, ct));
+                EmitRoomSpeech(room, responder.Id, HumanPlayer.Id, reply);
             }
             catch (OperationCanceledException) { }
             catch (Exception e) { Debug.LogException(e); }
@@ -265,8 +285,9 @@ namespace MafiaAI.LLM
             if (police != null) jobs.Add(GatherNightInto(police, target => State.Night.PoliceTarget = target, nightEnd, ct));
             if (doctor != null) jobs.Add(GatherNightInto(doctor, target => State.Night.DoctorTarget = target, nightEnd, ct));
 
-            int ms = Mathf.Max(0, (int)((nightEnd - Time.realtimeSinceStartup) * 1000));
-            await Task.WhenAny(Task.WhenAll(jobs), Task.Delay(ms, ct));
+            // 사람 몫은 nightEnd(화면 타이머)에 자체적으로 묶여있고, AI 몫은 아래에서 별도의 넉넉한 시한을 쓴다 —
+            // 그래서 여기서는 전체를 다시 nightEnd로 잘라내지 않고 각 잡이 끝날 때까지 그냥 기다린다.
+            await Task.WhenAll(jobs);
 
             if (mafia != null && string.IsNullOrEmpty(State.Night.MafiaTarget)) State.Night.MafiaTarget = DefaultNightTarget(mafia);
             if (police != null && string.IsNullOrEmpty(State.Night.PoliceTarget)) State.Night.PoliceTarget = DefaultNightTarget(police);
@@ -276,12 +297,15 @@ namespace MafiaAI.LLM
         async Task GatherNightInto(Player p, Action<string> assign, float nightEnd, CancellationToken ct)
         {
             var task = _actors[p.Id].NightAsync(State, p, ct);
-            int ms = Mathf.Max(0, (int)((nightEnd - Time.realtimeSinceStartup) * 1000));
+            // 사람은 화면에 보이는 밤 타이머(nightEnd)를 지켜야 하지만, AI는 LLM 응답을 기다리는 거라
+            // 그 타이머와 무관하게 훨씬 넉넉한 자기만의 시한(AiNightTimeoutSeconds)을 준다.
+            float deadline = p.IsHuman ? nightEnd : Time.realtimeSinceStartup + config.AiNightTimeoutSeconds;
+            int ms = Mathf.Max(0, (int)((deadline - Time.realtimeSinceStartup) * 1000));
             var finished = await Task.WhenAny(task, Task.Delay(ms, ct));
             if (finished != task)
             {
                 if (p.IsHuman && _actors[p.Id] is HumanActor ha) ha.ForceResolveChoice(DefaultNightTarget(p));
-                else return;
+                else return; // AI가 넉넉한 시한마저 넘기면 그때는 정말 포기 처리(DefaultNightTarget)
             }
 
             var choice = await task;

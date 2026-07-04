@@ -11,7 +11,8 @@ namespace MafiaAI.LLM
 
         public int RoomCount = 5;           // 저택 방 개수(복도는 항상 방 개수-1개, 신장 트리 간선 수와 같음)
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간
-        public int NightSeconds = 15;       // 밤 지속 시간(공간 사냥 이동 여유)
+        public int NightSeconds = 15;       // 밤 지속 시간(화면에 보이는 카운트다운, 인간의 결정 시한)
+        public float AiNightTimeoutSeconds = 40f; // AI의 밤 판단(LLM 호출) 시한 — NightSeconds와 별개로 넉넉하게
         public int TalkIntervalMinMs = 3000; // AI 문답 최소 간격
         public int TalkIntervalMaxMs = 5000; // AI 문답 최대 간격
         public int MoveIntervalMs = 7000;    // NPC 방 이동 간격
