@@ -44,6 +44,9 @@ namespace MafiaAI.Core
         public Phase Phase = Phase.Night;
         public Winner Winner = Winner.None;
 
+        /// <summary>사망/처형 시 역할 공개 여부(GameConfig에서 복사). false면 로그·프롬프트·UI 어디에도 죽은 자의 역할이 드러나지 않는다.</summary>
+        public bool RevealRolesOnDeath;
+
         public readonly List<Player> Players = new();
         public readonly List<LogEntry> PublicLog = new();
         public readonly NightActions Night = new();

@@ -21,10 +21,10 @@ namespace MafiaAI.LLM
         public int LineDelayMs = 350;        // 짧은 UI 갱신 여유
         public int MaxDays = 15;            // 안전 상한
 
-        public float SpeechTemperature = 0.95f; // 자유 발언 온도(페르소나가 덮어씀)
-        public float ActionTemperature = 0.4f;  // 투표/밤 판단 온도(안정적으로)
+        public float SpeechTemperature = 1.05f; // 자유 발언 온도(12B 모델은 페르소나 자율성을 살림)
+        public float ActionTemperature = 0.5f;  // 투표/밤 판단은 JSON 파싱을 위해 발언보다 낮게 유지
 
-        public bool RevealRolesOnDeath = true;  // 사망/처형 시 역할 공개(기획서 기준)
+        public bool RevealRolesOnDeath = false; // 사망/처형 시 역할 공개. 2026-07-05 기획 변경: 비공개(추리 난이도·긴장 유지)
 
         // ── 밤 공간 사냥(인간 마피아 전용) ──
         public bool SpatialNightHunt = true;      // 인간이 마피아면 밤에 직접 접근해 Space로 살해

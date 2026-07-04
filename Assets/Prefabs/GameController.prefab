@@ -66,10 +66,10 @@ MonoBehaviour:
     BaseUrl: http://localhost:11434
     Model: gemma4:12b
     RoomCount: 5
-    DiscussionSeconds: 2
-    NightSeconds: 1
+    DiscussionSeconds: 60
+    NightSeconds: 15
     AiNightTimeoutSeconds: 40
-    VoteSeconds: 10000
+    VoteSeconds: 30
     AiVoteTimeoutSeconds: 40
     TalkIntervalMinMs: 3000
     TalkIntervalMaxMs: 5000
@@ -260,6 +260,32 @@ MonoBehaviour:
   _nameLabelFontSize: 42
   _nameLabelCharacterSize: 0.08
   _nameLabelSortingOrder: 30
+  _speechBubbleSprite: {fileID: -1332972905532017551, guid: 4d0402fc2354144d9a53b3559a431bf5, type: 3}
+  _speechBubbleOffset: {x: 0, y: 3.5, z: 1}
+  _speechBubbleBackdropOffset: {x: 0, y: 0, z: 0}
+  _speechBubbleCenterSpritePivot: 1
+  _speechBubbleColor: {r: 0, g: 0, b: 0, a: 0.7058824}
+  _speechBubbleBaseScale: {x: 0.75, y: 0.75}
+  _speechBubbleAutoWidth: 0
+  _speechBubbleReferenceWidth: 3.4
+  _speechBubbleMinWorldWidth: 2.4
+  _speechBubbleMaxWorldWidth: 5.8
+  _speechBubbleBaseWorldWidth: 1.9
+  _speechBubbleWidthPerCharacter: 0.085
+  _speechBubbleShowSeconds: 4.5
+  _speechBubbleSortingOrder: 80
+  _speechBubbleTextOffset: {x: 0, y: -0.02, z: -0.04}
+  _speechBubbleTextFontSize: 40
+  _speechBubbleTextCharacterSize: 0.062
+  _speechBubbleTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _speechBubbleTextSortingOrder: 81
+  _speechBubbleMaxCharacters: 72
+  _speechBubbleWrapText: 1
+  _speechBubbleMaxCharsPerLine: 18
+  _speechBubbleMaxLines: 3
+  _speechBubbleLineSpacing: 1.05
+  _speechBubbleHeightPerExtraLine: 0.26
+  _speechBubbleEllipsisOnOverflow: 1
 --- !u!114 &8246017650035750141
 MonoBehaviour:
   m_ObjectHideFlags: 0

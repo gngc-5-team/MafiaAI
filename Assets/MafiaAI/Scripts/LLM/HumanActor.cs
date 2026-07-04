@@ -58,6 +58,10 @@ namespace MafiaAI.LLM
         public Task<string> AnswerRoomQuestionAsync(GameState s, Player self, Player asker, string question, string room, string localTranscript, CancellationToken ct)
             => Task.FromResult("...");
 
+        // 인간은 심문의 '주체'이지 대상이 아니다(플레이어 전용 기능이라 인간 좌석은 심문받지 않는다).
+        public Task<string> InterrogateAsync(GameState s, Player self, string playerId, string question, string history, CancellationToken ct)
+            => Task.FromResult("...");
+
         /// <summary>밤 제한시간 초과 시 컨트롤러가 자동 대상으로 대기 중인 선택을 마감.</summary>
         public void ForceResolveChoice(string targetId)
         {
