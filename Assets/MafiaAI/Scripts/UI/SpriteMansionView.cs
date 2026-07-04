@@ -9,7 +9,6 @@ using UnityEngine.Tilemaps;
 using TMPro;
 using MafiaAI.Core;
 using MafiaAI.LLM;
-using TMPro;
 
 namespace MafiaAI.UI
 {
@@ -51,6 +50,7 @@ namespace MafiaAI.UI
         readonly Dictionary<string, Vector3> _tokenVel = new();
         readonly List<Rect> _walkableAreas = new();
         readonly Dictionary<string, Vector3> _npcTargets = new();
+        readonly Dictionary<string, SpeechBubble> _bubbles = new();
 
         Vector3 _humanWorldPos;
         string _humanRoom;
@@ -91,7 +91,13 @@ namespace MafiaAI.UI
             _controller.OnLocationsChanged += RefreshTargets;
             _controller.OnPhaseChanged += delegate { RefreshTargets(); };
             _controller.OnPhaseChanged += HandleNightPhase;
+            _controller.OnLog += HandleWorldSpeech;
             EnsureNightMask();
+        }
+
+        void OnDestroy()
+        {
+            if (_controller != null) _controller.OnLog -= HandleWorldSpeech;
         }
 
         void Update()
@@ -99,6 +105,7 @@ namespace MafiaAI.UI
             HandleHumanMovement();
             HandleNightKill();
             UpdateTokens();
+            UpdateSpeechBubbles();
             FollowCamera();
             UpdateNightMaskPosition();
         }
@@ -484,6 +491,83 @@ namespace MafiaAI.UI
             tm.color = Text;
             var mr = go.GetComponent<MeshRenderer>();
             mr.sortingOrder = 30;
+        }
+
+        void HandleWorldSpeech(LogEntry e)
+        {
+            if (e.Kind != LogKind.Speech) return;
+            if (!_tokens.TryGetValue(e.Speaker, out var token) || token == null) return;
+
+            string line = ExtractSpeechBody(e.Text);
+            if (string.IsNullOrWhiteSpace(line)) return;
+            ShowSpeechBubble(token, e.Speaker, line);
+        }
+
+        string ExtractSpeechBody(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw)) return "";
+            int colon = raw.IndexOf(':');
+            string body = colon >= 0 && colon + 1 < raw.Length ? raw.Substring(colon + 1).Trim() : raw.Trim();
+            if (body.Length > 46) body = body.Substring(0, 46).Trim() + "...";
+            return body;
+        }
+
+        void ShowSpeechBubble(Transform token, string speakerId, string text)
+        {
+            var bubble = GetSpeechBubble(token, speakerId);
+            bubble.Text.text = text;
+            bubble.Root.SetActive(true);
+            bubble.HideAt = Time.realtimeSinceStartup + 4.5f;
+
+            int len = Mathf.Clamp(text.Length, 8, 46);
+            float width = Mathf.Clamp(1.9f + len * 0.085f, 2.4f, 5.8f);
+            bubble.Backdrop.transform.localScale = new Vector3(width, 0.72f, 1f);
+        }
+
+        SpeechBubble GetSpeechBubble(Transform token, string speakerId)
+        {
+            if (_bubbles.TryGetValue(speakerId, out var bubble) && bubble.Root != null) return bubble;
+
+            var root = new GameObject("SpeechBubble").transform;
+            root.SetParent(token, false);
+            root.localPosition = new Vector3(0f, 2.05f, -0.2f);
+
+            var bg = AddSprite(root, "BubbleBg", Vector3.zero, new Vector2(3.4f, 0.72f), new Color(0f, 0f, 0f, 0.78f), 80);
+            var textGo = new GameObject("Text");
+            textGo.transform.SetParent(root, false);
+            textGo.transform.localPosition = new Vector3(0f, -0.02f, -0.04f);
+            var tm = textGo.AddComponent<TextMesh>();
+            tm.text = "";
+            tm.fontSize = 40;
+            tm.characterSize = 0.062f;
+            tm.anchor = TextAnchor.MiddleCenter;
+            tm.alignment = TextAlignment.Center;
+            tm.color = Color.white;
+            textGo.GetComponent<MeshRenderer>().sortingOrder = 81;
+
+            bubble = new SpeechBubble { Root = root.gameObject, Backdrop = bg, Text = tm, HideAt = 0f };
+            bubble.Root.SetActive(false);
+            _bubbles[speakerId] = bubble;
+            return bubble;
+        }
+
+        void UpdateSpeechBubbles()
+        {
+            float now = Time.realtimeSinceStartup;
+            foreach (var kv in _bubbles)
+            {
+                var bubble = kv.Value;
+                if (bubble.Root == null || !bubble.Root.activeSelf) continue;
+                if (now >= bubble.HideAt) bubble.Root.SetActive(false);
+            }
+        }
+
+        class SpeechBubble
+        {
+            public GameObject Root;
+            public SpriteRenderer Backdrop;
+            public TextMesh Text;
+            public float HideAt;
         }
 
         void RefreshTargets()

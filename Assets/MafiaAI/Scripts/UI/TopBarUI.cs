@@ -10,7 +10,6 @@ namespace MafiaAI.UI
     /// GameController 상태에 맞춰 갱신한다. MafiaUI.cs의 헤더/타이머 로직을 그대로 옮긴 것 —
     /// UI는 코드로 만들지 않고 참조만 한다.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class TopBarUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -30,6 +29,7 @@ namespace MafiaAI.UI
         void Awake()
         {
             if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
         }
 
         void OnEnable()

@@ -13,7 +13,6 @@ namespace MafiaAI.UI
     /// 하이라키에 직접 배치한 발언 입력창 + 대상 칩(@이름) + 전송 버튼을 GameController에 연결한다.
     /// 같은 방에 있는 사람 수만큼 chipPrefab을 찍고, 클릭해서 선택한 사람에게 콕 집어 말을 건다.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class InputBarUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -33,6 +32,7 @@ namespace MafiaAI.UI
         void Awake()
         {
             if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (sendButton != null) sendButton.onClick.AddListener(SubmitSpeech);
             if (input != null) input.onSubmit.AddListener(delegate { SubmitSpeech(); });
             SetInputActive(false, "지금은 발언할 수 없습니다");

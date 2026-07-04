@@ -13,7 +13,6 @@ namespace MafiaAI.UI
     /// 밤에는 AI 위치를 갱신하지 않으므로 따로 처리하지 않아도 이미 그렇게 보인다.
     /// 밤이 끝나(새벽) 인간 플레이어 위치는 밤 시작 직전(낮 토론 마지막) 위치로 되돌린다.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class NightMovementUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -38,7 +37,9 @@ namespace MafiaAI.UI
         void Awake()
         {
             if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (mansionView == null) mansionView = GetComponent<SpriteMansionView>();
+            if (mansionView == null) mansionView = FindFirstObjectByType<SpriteMansionView>();
         }
 
         void OnEnable()

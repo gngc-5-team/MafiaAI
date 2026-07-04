@@ -15,7 +15,6 @@ namespace MafiaAI.UI
     /// 방/복도 개수가 게임마다 달라서(GameConfig.RoomCount), room1..N 스프라이트처럼
     /// 코드에서 Instantiate로 필요한 만큼 찍어낸다. UI는 하이라키(패널)+프리팹 2개만 준비하면 됨.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class MapUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -38,6 +37,7 @@ namespace MafiaAI.UI
         void Awake()
         {
             if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (toggleButton != null) toggleButton.onClick.AddListener(ToggleMap);
         }
 

@@ -11,7 +11,6 @@ namespace MafiaAI.UI
     /// 하이라키에 직접 배치한 채팅 로그(ScrollRect + Content)에 GameController.OnLog를 그대로 찍는다.
     /// UI는 코드로 만들지 않는다 — chatLinePrefab(텍스트 한 줄짜리 프리팹)만 미리 만들어두면 된다.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class ChatLogUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -34,6 +33,7 @@ namespace MafiaAI.UI
         void Awake()
         {
             if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (toggleButton != null) toggleButton.onClick.AddListener(ToggleChatPanel);
         }
 
@@ -73,7 +73,7 @@ namespace MafiaAI.UI
             string text;
             switch (e.Kind)
             {
-                case LogKind.Speech: text = "<b>" + e.Speaker + "</b>   " + e.Text; col = TextColor; break;
+                case LogKind.Speech: text = e.Text; col = TextColor; break;
                 case LogKind.Death: text = "[사망] " + e.Text; col = DeathColor; break;
                 case LogKind.Reveal: text = "◆ " + e.Text; col = RevealColor; break;
                 case LogKind.Vote: text = "· " + e.Text; col = DimColor; break;
@@ -102,6 +102,12 @@ namespace MafiaAI.UI
             var line = Instantiate(chatLinePrefab, chatContent);
             line.text = text;
             line.color = color;
+            line.enableWordWrapping = true;
+            line.overflowMode = TextOverflowModes.Overflow;
+            var rt = line.rectTransform;
+            rt.anchorMin = new Vector2(0f, rt.anchorMin.y);
+            rt.anchorMax = new Vector2(1f, rt.anchorMax.y);
+            rt.sizeDelta = new Vector2(0f, rt.sizeDelta.y);
             Canvas.ForceUpdateCanvases();
             if (scrollRect != null) scrollRect.verticalNormalizedPosition = 0f;
         }
