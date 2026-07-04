@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using TMPro;
 using MafiaAI.Core;
 using MafiaAI.LLM;
 using TMPro;
@@ -53,6 +54,13 @@ namespace MafiaAI.UI
 
         Vector3 _humanWorldPos;
         string _humanRoom;
+
+        // ── 밤 시야(암전) + 공간 사냥 (머지 때 유실됐던 필드 복구) ──
+        const float MaskWorldHalf = 30f;   // 암전 스프라이트 반경(카메라 뷰를 넉넉히 덮음)
+        GameObject _nightMask;
+        SpriteRenderer _nightMaskSr;
+        float _nightMaskHole = -1f;
+        bool _killedThisNight;
 
         /// <summary>인간 플레이어의 현재 월드 좌표(밤 이동 스냅샷/복구용).</summary>
         public Vector3 HumanWorldPosition => _humanWorldPos;
@@ -354,7 +362,9 @@ namespace MafiaAI.UI
             else            // 세로 복도: W = x[cx-2,cx+1], y[min+5,max-6]
             {
                 int ylo = Mathf.Min(a.y, b.y) + 5, yhi = Mathf.Max(a.y, b.y) - 6;
-                for (int y = ylo; y <= yhi; y++)
+                // 측벽은 방 벽(아래방 뒷벽 2줄 / 위방 바닥선 1줄)에는 겹치지 않고 '순수 gap'에만 세운다.
+                // → 방 벽이 입구를 직접 감싸므로 측벽 타일의 검정이 뒷벽과 복도 사이를 가르지 않는다.
+                for (int y = ylo + 2; y <= yhi - 1; y++)
                 {
                     TryWall(W, cx - 3, y, _lineWallTile, 180);
                     TryWall(W, cx + 2, y, _lineWallTile, 0);

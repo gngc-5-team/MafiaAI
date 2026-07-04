@@ -1,0 +1,194 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1059122760921202242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1874157047823980070}
+  - component: {fileID: 6406926979918794837}
+  - component: {fileID: 1970554226434130699}
+  - component: {fileID: 8246017650035750141}
+  - component: {fileID: 6087592030236848429}
+  - component: {fileID: 4381711470279274661}
+  - component: {fileID: 7021528774289023853}
+  - component: {fileID: 4076063715021806837}
+  - component: {fileID: 4465809370810946607}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1874157047823980070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6406926979918794837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862783ce70864952abcf2353c6e6412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.LLM.GameController
+  seed: 0
+  autoStart: 1
+  logToConsole: 1
+  revealRolesAtStartForDebug: 1
+  includeHuman: 0
+  humanSeat: 0
+  config:
+    BaseUrl: http://localhost:11434
+    Model: gemma3:4b
+    RoomCount: 5
+    DiscussionSeconds: 60
+    NightSeconds: 10
+    TalkIntervalMinMs: 3000
+    TalkIntervalMaxMs: 5000
+    MoveIntervalMs: 7000
+    LineDelayMs: 350
+    MaxDays: 15
+    SpeechTemperature: 0.95
+    ActionTemperature: 0.4
+    RevealRolesOnDeath: 1
+    SpatialNightHunt: 1
+    KillRadius: 1.6
+    MafiaNightVision: 6
+    CitizenNightVision: 2.3
+--- !u!114 &1970554226434130699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8cc602d0016744949c6db7904db9bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.SpriteMansionView
+  _tilemap: {fileID: 0}
+  _floorTile: {fileID: 11400000, guid: 69575409aff3e4163990999e84d7a581, type: 2}
+  _backWallTopTile: {fileID: 11400000, guid: d41bd17d0bdef4ab1a869598b0ab6957, type: 2}
+  _backWallBotTile: {fileID: 11400000, guid: 46e5f03dfeeb54a699d5f876f596af4a, type: 2}
+  _lineWallTile: {fileID: 11400000, guid: a6c4f32750fd7435f8f052ccf48df5a7, type: 2}
+  _cornerTile: {fileID: 11400000, guid: 825a11623739d49e48239ca80bb04f88, type: 2}
+  _cornerLTile: {fileID: 11400000, guid: cb5e9aa655df04ae9aafc190afd16a90, type: 2}
+  _bgTile: {fileID: 11400000, guid: 72ce7b58d95e04b19a0457fa7d1a23fc, type: 2}
+  _tilemapSortingOrder: 1
+--- !u!114 &8246017650035750141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147c3e987da8a4abe9dc5e4b6859ffcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.MafiaUI
+  enableHumanSeat: 1
+--- !u!114 &6087592030236848429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f341215c109c740e9ab0443ef607b023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.ChatLogUI
+  controller: {fileID: 6406926979918794837}
+  scrollRect: {fileID: 0}
+  chatContent: {fileID: 0}
+  chatLinePrefab: {fileID: 7784835141134084661, guid: 8d895ecf442b74c9e8613c1defebb9b7, type: 3}
+  chatPanelRoot: {fileID: 0}
+  toggleButton: {fileID: 0}
+  toggleButtonLabel: {fileID: 0}
+--- !u!114 &4381711470279274661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f627be7a152f045ecb683e91a79c9c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.AvatarBarUI
+  controller: {fileID: 6406926979918794837}
+  cardListRoot: {fileID: 0}
+  cardPrefab: {fileID: 0}
+--- !u!114 &7021528774289023853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa862b6b1a83a41e9a6df9356d9f54e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.RolePanelUI
+  controller: {fileID: 6406926979918794837}
+  roleNameText: {fileID: 0}
+  detailText: {fileID: 0}
+--- !u!114 &4076063715021806837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46a333de357844298074216232bfd6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.InputBarUI
+  controller: {fileID: 6406926979918794837}
+  input: {fileID: 0}
+  sendButton: {fileID: 0}
+  chipListRoot: {fileID: 0}
+  chipPrefab: {fileID: 0}
+--- !u!114 &4465809370810946607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059122760921202242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9381df217a64c0d8f5bb187f0c75e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MafiaAI.UI.ChoiceOverlayUI
+  controller: {fileID: 6406926979918794837}
+  overlayRoot: {fileID: 0}
+  titleText: {fileID: 0}
+  buttonListRoot: {fileID: 0}
+  candidateButtonPrefab: {fileID: 0}
