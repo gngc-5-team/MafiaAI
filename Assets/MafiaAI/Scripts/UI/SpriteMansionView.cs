@@ -65,6 +65,7 @@ namespace MafiaAI.UI
         [System.Serializable]
         public class CharacterSkin
         {
+            public string playerId;       // 이 스킨을 고정 적용할 인물 이름(카이/미로/노아/세이/제로/하루)
             public string label;          // 원본 파일 표시용 (cha_1 등)
             public Sprite[] idleFrames;
             public Sprite[] walkFrames;
@@ -76,6 +77,17 @@ namespace MafiaAI.UI
         [SerializeField] CharacterSkin[] _charSkins;
         [SerializeField] float _charScale = 1.5f;          // PPU100 기준 약 1유닛 → 확대 배율
         [SerializeField] float _walkSpeedThreshold = 0.15f; // 이 속도 이상이면 walk 애니메이션
+
+        enum NameLabelAnchor { AboveHead, BelowFeet, Custom }
+
+        [Header("캐릭터 이름표")]
+        [SerializeField] NameLabelAnchor _nameLabelAnchor = NameLabelAnchor.AboveHead;
+        [SerializeField] Vector3 _nameLabelCustomOffset = new Vector3(0f, 1.48f, -0.05f);
+        [SerializeField] float _nameLabelAboveHeadY = 1.48f;
+        [SerializeField] float _nameLabelBelowFeetY = -0.95f;
+        [SerializeField] int _nameLabelFontSize = 42;
+        [SerializeField] float _nameLabelCharacterSize = 0.08f;
+        [SerializeField] int _nameLabelSortingOrder = 30;
 
         class TokenAnimState
         {
@@ -160,6 +172,7 @@ namespace MafiaAI.UI
             HandleNightKill();
             UpdateTokens();
             UpdateTokenAnimations();
+            ApplyNameLabelSettings();
             UpdateSpeechBubbles();
             FollowCamera();
             UpdateNightMaskPosition();
@@ -579,10 +592,11 @@ namespace MafiaAI.UI
 
         void AddActorSprite(Transform token, string id, bool isHuman, int seatIndex)
         {
-            // 도트 캐릭터 스킨이 있으면 애니메이션 스프라이트 하나로 토큰 구성 (좌석 순서대로 스킨 순환 배정 — 겹침 허용)
+            // 도트 캐릭터 스킨이 있으면 애니메이션 스프라이트 하나로 토큰 구성.
+            // playerId가 지정된 스킨은 인물 이름에 고정 매핑하고, 없으면 기존 좌석 순서 폴백을 쓴다.
             if (_charSkins != null && _charSkins.Length > 0)
             {
-                var skin = _charSkins[seatIndex % _charSkins.Length];
+                var skin = FindSkinForPlayer(id, seatIndex);
                 if (skin != null && skin.idleFrames != null && skin.idleFrames.Length > 0)
                 {
                     var go = new GameObject("Body");
@@ -599,7 +613,7 @@ namespace MafiaAI.UI
                         LastPos = token.position,
                         Clock = Random.value * 10f // 전원 같은 프레임에서 시작하지 않게 위상차
                     };
-                    AddLabel(token, id + (isHuman ? " (YOU)" : ""), new Vector3(0, 0.75f * _charScale + 0.35f, -0.05f));
+                    AddLabel(token, id + (isHuman ? " (YOU)" : ""));
                     return;
                 }
             }
@@ -610,7 +624,45 @@ namespace MafiaAI.UI
             AddSprite(token, "Visor", new Vector3(0.18f, 0.26f, -0.02f), new Vector2(0.62f, 0.36f), Hex("BFD7E8"), 22);
             AddSprite(token, "LegL", new Vector3(-0.25f, -0.72f, -0.01f), new Vector2(0.28f, 0.36f), isHuman ? Hex("5F34C9") : Hex("9D7D43"), 21);
             AddSprite(token, "LegR", new Vector3(0.30f, -0.72f, -0.01f), new Vector2(0.28f, 0.36f), isHuman ? Hex("5F34C9") : Hex("9D7D43"), 21);
-            AddLabel(token, id + (isHuman ? " (YOU)" : ""), new Vector3(0, 1.05f, -0.05f));
+            AddLabel(token, id + (isHuman ? " (YOU)" : ""));
+        }
+
+        CharacterSkin FindSkinForPlayer(string playerId, int seatIndex)
+        {
+            if (_charSkins == null || _charSkins.Length == 0) return null;
+
+            foreach (var skin in _charSkins)
+            {
+                if (skin == null) continue;
+                if (!string.IsNullOrWhiteSpace(skin.playerId) && skin.playerId == playerId)
+                    return skin;
+            }
+
+            string expectedLabel = DefaultSkinLabel(playerId);
+            if (!string.IsNullOrEmpty(expectedLabel))
+            {
+                foreach (var skin in _charSkins)
+                {
+                    if (skin == null) continue;
+                    if (skin.label == expectedLabel) return skin;
+                }
+            }
+
+            return _charSkins[seatIndex % _charSkins.Length];
+        }
+
+        static string DefaultSkinLabel(string playerId)
+        {
+            switch (playerId)
+            {
+                case "카이": return "cha_1";
+                case "미로": return "cha_2-2";
+                case "노아": return "cha_3";
+                case "세이": return "cha_4";
+                case "제로": return "cha_5";
+                case "하루": return "cha_6";
+                default: return null;
+            }
         }
 
         // 토큰 이동 여부에 따라 idle/walk 프레임을 돌리고, 이동 방향으로 좌우 반전한다.
@@ -662,20 +714,53 @@ namespace MafiaAI.UI
             return shader == null ? null : new Material(shader) { name = "Runtime Sprite Lit Material" };
         }
 
-        void AddLabel(Transform parent, string label, Vector3 pos)
+        void AddLabel(Transform parent, string label)
         {
             var go = new GameObject("Label_" + label);
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = pos;
+            go.transform.localPosition = NameLabelOffset();
             var tm = go.AddComponent<TextMesh>();
             tm.text = label;
-            tm.fontSize = 42;
-            tm.characterSize = 0.10f;
+            tm.fontSize = _nameLabelFontSize;
+            tm.characterSize = _nameLabelCharacterSize;
             tm.anchor = TextAnchor.MiddleCenter;
             tm.alignment = TextAlignment.Center;
             tm.color = Text;
             var mr = go.GetComponent<MeshRenderer>();
-            mr.sortingOrder = 30;
+            mr.sortingOrder = _nameLabelSortingOrder;
+        }
+
+        Vector3 NameLabelOffset()
+        {
+            switch (_nameLabelAnchor)
+            {
+                case NameLabelAnchor.BelowFeet:
+                    return new Vector3(0f, _nameLabelBelowFeetY, -0.05f);
+                case NameLabelAnchor.Custom:
+                    return _nameLabelCustomOffset;
+                default:
+                    return new Vector3(0f, _nameLabelAboveHeadY, -0.05f);
+            }
+        }
+
+        void ApplyNameLabelSettings()
+        {
+            if (_tokenRoot == null) return;
+            var offset = NameLabelOffset();
+            foreach (Transform token in _tokenRoot)
+            {
+                var label = token.Cast<Transform>().FirstOrDefault(t => t.name.StartsWith("Label_"));
+                if (label == null) continue;
+                label.localPosition = offset;
+                var tm = label.GetComponent<TextMesh>();
+                if (tm != null)
+                {
+                    tm.fontSize = _nameLabelFontSize;
+                    tm.characterSize = _nameLabelCharacterSize;
+                }
+                var mr = label.GetComponent<MeshRenderer>();
+                if (mr != null) mr.sortingOrder = _nameLabelSortingOrder;
+            }
         }
 
         void HandleWorldSpeech(LogEntry e)
