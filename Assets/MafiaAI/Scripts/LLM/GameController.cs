@@ -451,7 +451,8 @@ namespace MafiaAI.LLM
 
         string LocalTranscript(string room)
         {
-            var lines = _roomLines.Where(l => l.Room == room && l.Day == State.Day).Skip(Mathf.Max(0, _roomLines.Count - 10)).ToList();
+            var roomLines = _roomLines.Where(l => l.Room == room && l.Day == State.Day).ToList();
+            var lines = roomLines.Skip(Mathf.Max(0, roomLines.Count - 10)).ToList();
             if (lines.Count == 0) return "";
             return string.Join("\n", lines.Select(l => "  " + l.Speaker + (string.IsNullOrEmpty(l.Target) ? "" : "→" + l.Target) + ": " + l.Text));
         }
@@ -462,9 +463,17 @@ namespace MafiaAI.LLM
             text = text.Replace("\n", " ").Replace("\r", " ").Trim();
             if (text == "...") return "...";
             char[] stops = { '.', '!', '?', '。', '！', '？' };
-            int cut = text.IndexOfAny(stops);
+            int cut = -1;
+            int start = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                int next = text.IndexOfAny(stops, start);
+                if (next < 0) break;
+                cut = next;
+                start = next + 1;
+            }
             if (cut >= 0 && cut + 1 < text.Length) text = text.Substring(0, cut + 1);
-            if (text.Length > 90) text = text.Substring(0, 90).Trim() + "...";
+            if (text.Length > 150) text = text.Substring(0, 150).Trim() + "...";
             return text;
         }
 

@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 6805265625977110828}
   - component: {fileID: 4801870741227523591}
   - component: {fileID: 5032610799490082308}
-  - component: {fileID: 7572344028111951968}
+  - component: {fileID: 445694174192622571}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -115,7 +115,8 @@ MonoBehaviour:
   _carpetBR: {fileID: 11400000, guid: 1f6d198512e3341998db7f0931d5ec83, type: 2}
   _carpetChance: 0.2
   _charSkins:
-  - label: cha_1
+  - playerId: "\uCE74\uC774"
+    label: cha_1
     idleFrames:
     - {fileID: 1959816543577808894, guid: 2dda8b0751fa748a2bd1697b0b48e55f, type: 3}
     - {fileID: -5696108439615742672, guid: 2dda8b0751fa748a2bd1697b0b48e55f, type: 3}
@@ -136,30 +137,54 @@ MonoBehaviour:
     - {fileID: 2133168839299375596, guid: 2dda8b0751fa748a2bd1697b0b48e55f, type: 3}
     - {fileID: 6730073871498188536, guid: 2dda8b0751fa748a2bd1697b0b48e55f, type: 3}
     - {fileID: 6730073871498188536, guid: 2dda8b0751fa748a2bd1697b0b48e55f, type: 3}
-    idleFps: 11.111111
-    walkFps: 11.428571
-  - label: cha_2
-    idleFrames:
-    - {fileID: 3953590263812315711, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3094042419416190482, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3988192824878837223, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: -2022400161013067121, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 829582093324631388, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: -4034802084165255866, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 1044433936497547759, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3826247572000963034, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3826247572000963034, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    walkFrames:
-    - {fileID: -5578323462999565132, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: -7963169386717016228, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3501061215077296287, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 8411533000888180466, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: -9114095603294215179, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3808409383627523062, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
-    - {fileID: 3808409383627523062, guid: 4e5e1752d34504823b9d81079446237a, type: 3}
     idleFps: 11.25
-    walkFps: 11.666667
-  - label: cha_4
+    walkFps: 11.5
+  - playerId: "\uBBF8\uB85C"
+    label: cha_2-2
+    idleFrames:
+    - {fileID: 534710486848714816, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -5483476025559562233, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -7295348017744890639, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 2289710822628658309, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 8029026898399642775, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 2326792669516502451, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -2955684227517079055, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 8125750819777560483, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 8125750819777560483, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    walkFrames:
+    - {fileID: -658161055679170146, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 4112552223679888745, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: 5854788926373905051, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -1066204162113279968, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -4598842265990570242, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -3163442907790767571, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    - {fileID: -3163442907790767571, guid: 0a47407c2dc684bedb5a1317641bfb01, type: 3}
+    idleFps: 11.25
+    walkFps: 11.5
+  - playerId: "\uB178\uC544"
+    label: cha_3
+    idleFrames:
+    - {fileID: 1220644387196779371, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -3075451869883491901, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -5970015078648282441, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -4930378291616415734, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -7465610666318219823, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -1512458181168770440, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: 8347134048922995174, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -2235923407008997802, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -2235923407008997802, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    walkFrames:
+    - {fileID: 4154643598947202529, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -7252389129139126411, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -4658739558191854604, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: 693619447394589931, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -7391707945520523994, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -3441431203525278036, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    - {fileID: -3441431203525278036, guid: 4c9458576e9464414bae73485526d9d8, type: 3}
+    idleFps: 11.25
+    walkFps: 11.5
+  - playerId: "\uC138\uC774"
+    label: cha_4
     idleFrames:
     - {fileID: 561694336570414002, guid: 146df21002e144cd99396cb7a68d0aed, type: 3}
     - {fileID: -7135519462232962493, guid: 146df21002e144cd99396cb7a68d0aed, type: 3}
@@ -180,8 +205,31 @@ MonoBehaviour:
     - {fileID: 7347044472790021588, guid: 146df21002e144cd99396cb7a68d0aed, type: 3}
     - {fileID: 7347044472790021588, guid: 146df21002e144cd99396cb7a68d0aed, type: 3}
     idleFps: 11.25
-    walkFps: 11.428572
-  - label: cha_6
+    walkFps: 11.5
+  - playerId: "\uC81C\uB85C"
+    label: cha_5
+    idleFrames:
+    - {fileID: 6851702531712451859, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: 6536192031826913704, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: 5707437756981594908, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -6361270361121874631, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: 2898280138974810525, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: 3495324686474878033, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -6060821327432201339, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -2182988737486961363, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -2182988737486961363, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    walkFrames:
+    - {fileID: 8914020049877580232, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: 2590496056921914571, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -4984541927934413639, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -8521404939150674236, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -3222432431711925385, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -4637595212970388869, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    - {fileID: -4637595212970388869, guid: 001e9e4cffcdb478190cc47492ad7a6b, type: 3}
+    idleFps: 11.25
+    walkFps: 11.5
+  - playerId: "\uD558\uB8E8"
+    label: cha_6
     idleFrames:
     - {fileID: -1258728720786023033, guid: 4a7ff58c85956433a856aae0141ecf41, type: 3}
     - {fileID: -1528100396463492710, guid: 4a7ff58c85956433a856aae0141ecf41, type: 3}
@@ -201,9 +249,16 @@ MonoBehaviour:
     - {fileID: -8647454900101095879, guid: 4a7ff58c85956433a856aae0141ecf41, type: 3}
     - {fileID: -8647454900101095879, guid: 4a7ff58c85956433a856aae0141ecf41, type: 3}
     idleFps: 11.25
-    walkFps: 11.666667
+    walkFps: 11.5
   _charScale: 1.5
   _walkSpeedThreshold: 0.15
+  _nameLabelAnchor: 0
+  _nameLabelCustomOffset: {x: 0, y: 1.48, z: -0.05}
+  _nameLabelAboveHeadY: 1.48
+  _nameLabelBelowFeetY: -0.95
+  _nameLabelFontSize: 42
+  _nameLabelCharacterSize: 0.08
+  _nameLabelSortingOrder: 30
 --- !u!114 &8246017650035750141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,7 +428,7 @@ MonoBehaviour:
     Portrait: {fileID: 4130640169021434097, guid: 9c0f74bf11a8e4475b168c62be913c78, type: 3}
   - Name: "\uD558\uB8E8"
     Portrait: {fileID: 3465286685962602723, guid: 81afec573937242e0b4e46a0c559d9a3, type: 3}
---- !u!114 &7572344028111951968
+--- !u!114 &445694174192622571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
