@@ -20,7 +20,7 @@ namespace MafiaAI.UI
         GameController _controller;
         HumanActor _human;
 
-        void Start()
+        async void Start()
         {
             EnsureEventSystem();
 
@@ -35,6 +35,11 @@ namespace MafiaAI.UI
                 _human = new HumanActor();
                 _controller.humanActor = _human;
             }
+
+            // 심사위원 배포: 외부 설치 없이 동봉 Ollama+모델을 자동 기동(개발 머신에선 기존 서버 재사용).
+            bool ready = await OllamaBootstrap.EnsureReadyAsync(_controller.config);
+            if (!ready)
+                Debug.LogError("[MafiaUI] 로컬 AI 준비 실패 — StreamingAssets/ollama 동봉 여부를 확인하세요.");
 
             _ = _controller.StartGameAsync();
         }

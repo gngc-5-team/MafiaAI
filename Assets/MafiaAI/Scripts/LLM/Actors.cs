@@ -196,21 +196,21 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return targetId + ", 첫날이라 단정은 안 할게. 지금 어디 있었고 누가 봤는지부터 말해.";
+                    return targetId + ", 너 말이야. 촉이 안 좋아. 뭐라도 말해봐, 들어보고 정할게.";
                 case "제로":
-                    return targetId + ", 아직 확정할 근거는 부족합니다. 본인 동선과 현재 의심 기준을 말해주십시오.";
+                    return targetId + ", 어제와 오늘 발언을 비교하면 어긋나는 지점이 있습니다. 본인 입으로 정리해 보시죠.";
                 case "미로":
-                    return targetId + " 씨, 지금은 감으로 몰기보다 동선부터 봐야죠. 어디서 누구랑 있었어요?";
+                    return targetId + "~ 심심한데 우리 게임 하나 할까? 네가 마피아면 뭐부터 할 건지 말해봐.";
                 case "하루":
-                    return targetId + ", 아직 잘 모르겠어요. 어디 있었는지랑 누구를 의심하는지 먼저 말해줘요.";
+                    return targetId + ", 저기… 다들 무섭게 구는데, 넌 아니지? 아니라고 해줘요.";
                 case "노아":
-                    return targetId + ", 지금은 단정하면 안 됩니다. 동선과 목격자를 먼저 맞춰봐야 해요.";
+                    return targetId + ", 당신의 어젯밤 침묵이 제 그림의 빈칸과 정확히 겹칩니다. 설명해 주시겠어요?";
                 case "세이":
-                    return targetId + ", 아직 몰아갈 단계 아냐. 어디 있었는지 짧게 말해.";
+                    return targetId + ". …할 말 있으면 해.";
                 default:
                     return string.IsNullOrEmpty(clue)
-                        ? targetId + ", 지금 누구를 가장 의심하는지 근거까지 말해봐."
-                        : targetId + ", 방금 \"" + clue + "\" 이 말의 근거가 뭐야?";
+                        ? targetId + ", 넌 지금 누구 편이야?"
+                        : targetId + ", 방금 \"" + clue + "\" 그거 무슨 뜻이야?";
             }
         }
 
@@ -225,19 +225,19 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return "나 몰아가려는 건 좋은데, " + otherId + " 네 질문엔 근거가 없어.";
+                    return "웃기네. " + otherId + ", 나 건드리지 말고 네 걱정이나 해.";
                 case "제로":
-                    return "제 입장은 분명합니다. 지금 이상한 건 제 답보다 " + otherId + "의 지목 근거가 비어 있다는 점입니다.";
+                    return "질문의 전제부터 틀렸습니다. " + otherId + " 씨, 제 발언 기록 어디에 그런 내용이 있었죠?";
                 case "미로":
-                    return "저를 찍는 건 편하죠, 그런데 " + otherId + " 씨가 왜 지금 저한테 시선을 고정하는지가 더 수상한데요?";
+                    return "오~ 나 지목당한 거야? 영광인데? " + otherId + ", 근데 너 지금 표정 관리 안 되는 거 알아?";
                 case "하루":
-                    return "아니, 난 숨긴 게 없어요. 오히려 " + otherId + "가 나한테만 몰아붙이는 이유가 이상해요.";
+                    return "네?! 저 아니에요… 진짜예요. " + otherId + "까지 절 그렇게 보면 저 어떡해요.";
                 case "노아":
-                    return "이건 단순한 질문이 아니라 시선 돌리기일 수 있어요. " + otherId + "가 판을 먼저 짠 건 아닌지 봐야 합니다.";
+                    return "저를 지목하는 것도 예상 범위입니다. " + otherId + ", 당신이 그 말을 하도록 유도된 걸 수도 있어요.";
                 case "세이":
-                    return "난 안 피했어. 근데 " + otherId + ", 너는 계속 찔러만 보고 있네.";
+                    return "아니야. …끝.";
                 default:
-                    return "내 답은 명확해. 지금은 " + otherId + "의 지목 근거부터 검증해야 해.";
+                    return "그건 아니야. " + otherId + ", 넌 왜 그렇게 생각했는데?";
             }
         }
 
@@ -251,19 +251,19 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return target + ", 아직 확신은 못 해. 네 동선이랑 목격자부터 맞춰보자.";
+                    return "난 " + target + "이(가) 제일 걸려. 촉이야. 오늘 얘 좀 보자.";
                 case "제로":
-                    return target + "부터 동선과 의심 기준을 확인하겠습니다. 근거 없이 몰면 마피아에게만 유리합니다.";
+                    return "지금까지의 발언을 정리하면 " + target + "의 위치가 가장 설명이 안 됩니다. 반박은 근거로 하십시오.";
                 case "미로":
-                    return target + " 씨, 지금은 감정싸움 말고 동선부터 까보죠. 누가 봤는지가 중요해요.";
+                    return "심심하다~ " + target + ", 네가 마피아라고 치고 얘기 짜보자. 의외로 맞을지도?";
                 case "하루":
-                    return target + ", 누구를 의심하는지보다 왜 그렇게 보는지가 먼저예요. 근거부터 말해줘요.";
+                    return "방금 얘기 듣고 보니… " + target + "이(가) 좀 걸리는 것 같기도 해요. 다들 어떻게 생각해요?";
                 case "노아":
-                    return "초반 침묵만으로 몰면 위험합니다. " + target + "의 동선과 목격자부터 확인하죠.";
+                    return "제 그림에서는 " + target + "이(가) 중심에 있습니다. 어제부터의 흐름이 전부 그쪽으로 모여요.";
                 case "세이":
-                    return target + ", 말보다 동선부터. 어디 있었는지 말해.";
+                    return "몰라. 굳이 고르면 " + target + ".";
                 default:
-                    return target + "의 말에서 근거가 빠졌어. 그 부분부터 확인해야 해.";
+                    return target + " 얘기 좀 해보자. 다들 어떻게 봐?";
             }
         }
 
@@ -317,19 +317,19 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return targetId + ", 직업 캐묻는 거 경찰 찾는 마피아 무브잖아. 왜 지금 그걸 꺼냈어?";
+                    return targetId + ", 직업 타령할 시간에 똑바로 서. 넌 그 질문부터가 재수없어.";
                 case "제로":
-                    return targetId + ", 초반 직공 요구는 시민보다 마피아에게 유리합니다. 그 질문의 목적을 설명하십시오.";
+                    return targetId + ", 초반 직업 공개 요구는 통계적으로 마피아에게 유리합니다. 질문의 목적을 설명하십시오.";
                 case "미로":
-                    return targetId + " 씨, 직업 털자는 말 너무 달콤한데요. 경찰 찾으려는 건 아니고?";
+                    return "직업 공개? 좋지~ " + targetId + " 너부터 까. 아, 싫어? 그럼 왜 시켰어?";
                 case "하루":
-                    return targetId + ", 왜 지금 직업부터 까라고 해요? 그거 마피아한테 정보 주는 거잖아요.";
+                    return targetId + "… 그거 물어봐도 되는 거예요? 왠지 무서운데…";
                 case "노아":
-                    return targetId + ", 직업 공개를 유도하는 순간 경찰과 의사가 드러납니다. 그걸 노린 건 아니죠?";
+                    return targetId + ", 직업을 물은 그 순간이 제 그림의 시작점입니다. 경찰을 찾고 있죠, 지금?";
                 case "세이":
-                    return targetId + ", 직공 유도하지 마. 그거 마피아한테 좋아.";
+                    return "안 까. " + targetId + ", 너나 까.";
                 default:
-                    return targetId + ", 왜 지금 직업 공개를 요구했는지부터 설명해.";
+                    return targetId + ", 그 질문 왜 했어?";
             }
         }
 
@@ -339,19 +339,19 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return targetId + ", 방금 어디 있었는지만 말하지 말고 누구랑 있었는지도 말해. 혼자였으면 그게 더 수상해.";
+                    return targetId + ", 동선이고 뭐고 얼굴 보고 말해. 너 지금 떨고 있잖아.";
                 case "제로":
-                    return targetId + ", 동선을 시간순으로 말하십시오. 중간에 빈 시간이 있으면 그 부분을 의심하겠습니다.";
+                    return targetId + ", 동선을 시간순으로 말하십시오. 빈 시간이 있으면 그 구간을 의심하겠습니다.";
                 case "미로":
-                    return targetId + " 씨, 동선 예쁘게 포장하지 말고 누구랑 마주쳤는지부터 말해봐요.";
+                    return targetId + "~ 어디 있었는지 맞혀볼까? 틀리면 네가 말해주기. 콜?";
                 case "하루":
-                    return targetId + ", 어디 있었는지랑 누가 봤는지 같이 말해요. 혼자 있었다고 하면 믿기 어렵잖아요.";
+                    return targetId + "이(가) 어디 있었는지 누가 봤어요? 봤다는 사람 있으면 전 믿을래요.";
                 case "노아":
-                    return targetId + ", 동선에 증인이 없으면 그 빈칸이 살해 타이밍이 됩니다. 누가 당신을 봤죠?";
+                    return targetId + ", 당신 동선의 빈칸이 제 서사의 잃어버린 조각과 일치합니다. 우연일까요?";
                 case "세이":
-                    return targetId + ", 동선 말해. 증인 없으면 의심할게.";
+                    return targetId + ", 어디 있었어. …궁금해서는 아니고.";
                 default:
-                    return targetId + ", 어디 있었고 누가 봤는지 같이 말해.";
+                    return targetId + ", 어디 있었어?";
             }
         }
 
@@ -361,19 +361,19 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return "내 동선 캐는 건 좋아. 근데 " + otherId + ", 너는 네 동선 먼저 안 깔고 왜 남부터 찔러?";
+                    return "하, 나 취조하냐? " + otherId + ", 기억 안 나. 됐어?";
                 case "제로":
-                    return "동선 검증은 필요합니다. 다만 " + otherId + "도 같은 기준으로 본인 위치와 목격자를 말해야 공평합니다.";
+                    return "말씀드리죠. 다만 " + otherId + "도 같은 기준으로 본인 위치를 말해야 공평합니다.";
                 case "미로":
-                    return "동선 물어보는 건 괜찮죠. 그런데 " + otherId + " 씨가 자기 동선은 숨기고 남만 캐면 그게 더 냄새납니다.";
+                    return "내 동선? 비밀~ 이라고 하면 화낼 거지? " + otherId + " 반응 보고 싶었어.";
                 case "하루":
-                    return "내 동선은 말할 수 있어요. 대신 " + otherId + "도 어디 있었는지 같이 말해야죠.";
+                    return "저요? 어… 기억이 잘… 아, 맞다, 방에 있었어요! 진짜예요, " + otherId + " 믿어줘요.";
                 case "노아":
-                    return "동선 공개는 서로 대칭이어야 합니다. " + otherId + "만 질문하고 자기 위치를 숨기면 그게 더 큰 단서예요.";
+                    return "제 동선을 물으셨군요. 좋습니다, 그것도 기록해 두죠. " + otherId + "의 질문 순서까지 전부 자료입니다.";
                 case "세이":
-                    return "동선 깔 수 있어. 근데 " + otherId + "도 같이 까.";
+                    return "있던 데 있었어.";
                 default:
-                    return "동선 검증은 좋아. 대신 " + otherId + "도 같은 기준으로 말해야 해.";
+                    return "말해줄게. 대신 " + otherId + "도 말해.";
             }
         }
 
@@ -383,19 +383,19 @@ namespace MafiaAI.LLM
             switch (self.Id)
             {
                 case "카이":
-                    return "직업부터 까자는 건 마피아한테 밥 주는 거야. " + otherId + ", 너 왜 경찰 찾는 질문을 해?";
+                    return "내 직업? 알 거 없어. " + otherId + ", 너 그 질문 하는 순간부터 내 리스트에 올랐어.";
                 case "제로":
-                    return "지금 직업 공개는 시민 이득보다 마피아 이득이 큽니다. " + otherId + "의 질문 의도부터 검증해야 합니다.";
+                    return "공개하지 않겠습니다. 지금 직업 공개는 시민 이득보다 마피아 이득이 큽니다. 그게 답의 전부입니다.";
                 case "미로":
-                    return "직업은 그렇게 쉽게 안 까죠. " + otherId + " 씨가 왜 그 정보를 먼저 원했는지가 더 재밌는데요?";
+                    return "나? 백수야~ 아 게임 안에서? 그건 비밀이지, " + otherId + " 넌 뭔데?";
                 case "하루":
-                    return "아니, 지금 직업 까면 경찰이나 의사만 위험해져요. " + otherId + "가 그걸 모른 척하는 게 이상해요.";
+                    return "저… 말해도 돼요? 아, 안 되는 거구나… 미안해요, " + otherId + ", 말 못 해요.";
                 case "노아":
-                    return "직공 유도는 정보 수집입니다. " + otherId + "가 시민을 돕는 척하면서 역할을 골라내는 걸 수도 있어요.";
+                    return "제 역할을 궁금해하는 사람이 나타났다 — 이것도 그림의 일부입니다. " + otherId + ", 기록해 두겠습니다.";
                 case "세이":
-                    return "직업 안 까. " + otherId + ", 그 질문이 더 수상해.";
+                    return "안 알려줘.";
                 default:
-                    return "직업 공개는 지금 이득이 적어. 먼저 " + otherId + "의 질문 의도부터 봐야 해.";
+                    return "그건 말 안 할래. " + otherId + ", 왜 궁금한데?";
             }
         }
     }

@@ -104,3 +104,8 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# 빌드 동봉용 LLM(약 8GB) — tools/package_llm.sh 가 생성. 저장소엔 올리지 않는다.
+Assets/StreamingAssets/ollama/
+Assets/StreamingAssets/ollama.meta
+mafia_prototype/
