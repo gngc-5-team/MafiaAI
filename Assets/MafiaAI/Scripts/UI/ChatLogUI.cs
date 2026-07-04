@@ -85,6 +85,8 @@ namespace MafiaAI.UI
         bool CanHear(string text)
         {
             if (controller.HumanPlayer == null) return true;
+            // 투표 페이즈는 방 구분 없이 전원이 함께 대화한다(방 필터 해제).
+            if (controller.State != null && controller.State.Phase == Phase.Vote) return true;
             string room = controller.GetPlayerRoom(controller.HumanPlayer.Id);
             if (string.IsNullOrEmpty(room)) return true;
             return text.StartsWith("[" + room + "]");

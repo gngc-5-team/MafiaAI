@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using MafiaAI.Core;
 using MafiaAI.LLM;
@@ -16,10 +17,15 @@ namespace MafiaAI.UI
         [SerializeField] TMP_Text phaseText;
         [SerializeField] TMP_Text timerText;
         [SerializeField] TMP_Text playerCountText;
+        [SerializeField] Image phaseChip; // 낮/밤에 따라 배경색이 바뀌는 알약(PhaseChip). 안 넣으면 색 안 바뀜
 
         static readonly Color NightColor = new Color32(0x6F, 0xA8, 0xDC, 0xFF);
         static readonly Color DayColor = new Color32(0xE0, 0xA0, 0x30, 0xFF);
         static readonly Color UrgentColor = new Color32(0xE0, 0x50, 0x3A, 0xFF);
+
+        // PhaseChip 배경색: 낮은 따뜻한 주황, 밤은 어둡고 차분한 파랑
+        static readonly Color DayChip = new Color32(0xFF, 0xBC, 0x75, 0xFF);
+        static readonly Color NightChip = new Color32(0x3A, 0x5A, 0x8C, 0xFF);
 
         void Reset()
         {
@@ -54,6 +60,8 @@ namespace MafiaAI.UI
         void HandlePhaseChanged(GameState s)
         {
             if (phaseText != null) phaseText.text = "DAY " + s.Day + " · " + PhaseLabel(s.Phase);
+            if (phaseChip != null)
+                phaseChip.color = s.Phase == Phase.Night ? NightChip : DayChip; // 밤=파랑, 그 외=주황
             RefreshPlayerCount();
         }
 

@@ -197,7 +197,10 @@ namespace MafiaAI.LLM
             try
             {
                 var pressed = State.ById(targetId);
-                if (pressed == null || !pressed.Alive || pressed.IsHuman || GetPlayerRoom(pressed.Id) != room) return;
+                if (pressed == null || !pressed.Alive || pressed.IsHuman) return;
+                // 투표 페이즈는 방 구분 없이 전체 대화 — 다른 방이어도 지목 반응 허용.
+                bool sameRoomOk = State.Phase == Phase.Vote || GetPlayerRoom(pressed.Id) == room;
+                if (!sameRoomOk) return;
                 string reply = OneSentence(await _actors[pressed.Id].RebuttalAsync(State, pressed, HumanPlayer.Id, text, ct));
                 EmitRoomSpeech(room, pressed.Id, HumanPlayer.Id, reply);
             }
@@ -205,10 +208,13 @@ namespace MafiaAI.LLM
             catch (Exception e) { Debug.LogException(e); }
         }
 
-        /// <summary>지목 없이 그냥 채팅했을 때, 같은 방(=채팅이 들리는 범위)에 있는 AI 전원이 각자 반응한다.</summary>
+        /// <summary>지목 없이 그냥 채팅했을 때 AI들이 반응한다. 낮 토론은 같은 방만, 투표는 전체가 반응.</summary>
         Task ReactToAmbientAsync(string room, string text, CancellationToken ct)
         {
-            var listeners = State.Alive.Where(p => !p.IsHuman && GetPlayerRoom(p.Id) == room).ToList();
+            bool wholeMap = State.Phase == Phase.Vote; // 투표는 방 구분 없이 전원 대화
+            var listeners = State.Alive
+                .Where(p => !p.IsHuman && (wholeMap || GetPlayerRoom(p.Id) == room))
+                .ToList();
             foreach (var responder in listeners)
                 _ = ReactOneAsync(responder, room, text, ct);
             return Task.CompletedTask;

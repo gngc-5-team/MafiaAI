@@ -25,6 +25,8 @@ namespace MafiaAI.UI
         [SerializeField] Button confirmButton;
         [SerializeField] Button abstainButton;
         [SerializeField] PersonaPortraitLibrary portraits; // 이름→초상화 매핑. 안 만들었으면 비워둬도 동작
+        [SerializeField] TMP_Text myVotesText;         // "나에게 온 표: N" 숫자 표시(선택)
+        [SerializeField] VoteTickDisplay myVoteTicks;  // 나에게 온 표를 큰 체크 이미지로 표시(선택)
 
         static readonly Color IdleColor = new Color32(0x11, 0x10, 0x10, 0x00);
         static readonly Color DeadColor = new Color32(0x33, 0x33, 0x38, 0xFF); // 죽은 카드(회색, 초상화에 적용)
@@ -111,10 +113,12 @@ namespace MafiaAI.UI
             foreach (Transform child in candidateListRoot) Destroy(child.gameObject);
             _cards.Clear();
 
-            // 전원(죽은 사람 포함)을 카드로 보여준다. 죽은 카드는 회색+X 처리하고 선택 불가.
-            // 내 카드는 살아있어도 선택만 막는다(자기 자신 투표 불가).
+            // 나 자신은 어차피 투표 못 하니 카드 목록에서 뺀다(나한테 온 표는 별도 텍스트로 표시).
+            // 나머지 전원(죽은 사람 포함)을 카드로. 죽은 카드는 회색+X 처리하고 선택 불가.
             foreach (var p in controller.State.Players)
             {
+                if (controller.HumanPlayer != null && p.Id == controller.HumanPlayer.Id) continue; // 본인 카드 제외
+
                 string id = p.Id;
                 bool dead = !p.Alive;
                 var card = Instantiate(candidatePrefab, candidateListRoot);
@@ -125,8 +129,7 @@ namespace MafiaAI.UI
                     if (sprite != null) card.Portrait.sprite = sprite;
                 }
 
-                bool selfCard = controller.HumanPlayer != null && id == controller.HumanPlayer.Id;
-                bool selectable = !dead && !selfCard;
+                bool selectable = !dead;
                 if (selectable && card.Button != null) card.Button.onClick.AddListener(() => SelectCandidate(id));
                 card.OnHoverChanged += HandleCardHover;
                 card.SetDead(dead); // 죽었으면 X 오버레이 켜고 호버 잠금
@@ -154,7 +157,7 @@ namespace MafiaAI.UI
 
         void SelectCandidate(string id)
         {
-            if (!_myTurn || _hasVoted) return; // 내 차례 아니면 선택 불가
+            if (_hasVoted) return; // 이미 투표했으면 변경 불가(내 차례 전이라도 미리 골라둘 수는 있음)
             _selected = id;
             ApplyVisuals(null); // 선택한 카드가 (마우스를 떼도) 커진 채로 유지되게
             RefreshTally();
@@ -236,6 +239,14 @@ namespace MafiaAI.UI
                 _tally[v] = c + 1;
             }
 
+            // 나에게 온 표는 카드가 없으니 별도로 보여준다(숫자 + 큰 체크 이미지 둘 다 지원).
+            if (controller.HumanPlayer != null)
+            {
+                int myVotes = TallyOf(controller.HumanPlayer.Id);
+                if (myVotesText != null) myVotesText.text = "나: " + myVotes;
+                if (myVoteTicks != null) myVoteTicks.SetCount(myVotes);
+            }
+
             foreach (var kv in _cards)
             {
                 var pl = controller.State.ById(kv.Key);
@@ -244,6 +255,8 @@ namespace MafiaAI.UI
                 int count = TallyOf(kv.Key);
                 if (kv.Value.VoteCountText != null)
                     kv.Value.VoteCountText.text = mine ? ("내 표 · " + count) : count.ToString();
+                if (kv.Value.VoteTicks != null)
+                    kv.Value.VoteTicks.SetCount(count); // 후보 카드는 작은 체크 이미지로 표 표시
                 if (kv.Value.Background != null)
                     kv.Value.Background.color = IdleColor; // 선택 표시는 배경색이 아니라 체크 오버레이로 한다
                 if (kv.Value.Portrait != null)
@@ -257,7 +270,9 @@ namespace MafiaAI.UI
                 if (_hasVoted)
                     statusText.text = "투표 완료 · 다른 사람 투표를 기다리는 중…";
                 else if (!_myTurn)
-                    statusText.text = "다른 사람이 투표 중…";
+                    statusText.text = string.IsNullOrEmpty(_selected)
+                        ? "다른 사람이 투표 중… (미리 골라둘 수 있어요)"
+                        : _selected + " 찜 · 내 차례를 기다리는 중…";
                 else if (string.IsNullOrEmpty(_selected))
                     statusText.text = "처형할 대상을 고르세요";
                 else
