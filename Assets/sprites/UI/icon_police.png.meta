@@ -1,0 +1,637 @@
+fileFormatVersion: 2
+guid: bbd3724eb4e7b41059db4ad0cc845075
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7363186097877593234
+    second: icon_police_0
+  - first:
+      213: -4142356146882810470
+    second: icon_police_1
+  - first:
+      213: 2738684562191507568
+    second: icon_police_2
+  - first:
+      213: 6019943786227515924
+    second: icon_police_3
+  - first:
+      213: 426431750248437856
+    second: icon_police_4
+  - first:
+      213: 4197676833014374039
+    second: icon_police_5
+  - first:
+      213: -858390690758440869
+    second: icon_police_6
+  - first:
+      213: 2331426780887469640
+    second: icon_police_7
+  - first:
+      213: -373939534136237026
+    second: icon_police_8
+  - first:
+      213: -821591589800137750
+    second: icon_police_9
+  - first:
+      213: 527142773284988653
+    second: icon_police_10
+  - first:
+      213: 5262247195357646743
+    second: icon_police_11
+  - first:
+      213: 788269782931775340
+    second: icon_police_12
+  - first:
+      213: -2668786122822078906
+    second: icon_police_13
+  - first:
+      213: 3815783591194628429
+    second: icon_police_14
+  - first:
+      213: 3176975304932128708
+    second: icon_police_15
+  - first:
+      213: 8390888504350604261
+    second: icon_police_16
+  - first:
+      213: -1942493920627964983
+    second: icon_police_17
+  - first:
+      213: 4439603876104648896
+    second: icon_police_18
+  - first:
+      213: 1023020821288882780
+    second: icon_police_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: icon_police_0
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 292
+        width: 244
+        height: 403
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29ca6138eba4f2660800000000000000
+      internalID: 7363186097877593234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_1
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 611
+        width: 180
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9de4e318056386c0800000000000000
+      internalID: -4142356146882810470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_2
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 467
+        width: 258
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07065416913c10620800000000000000
+      internalID: 2738684562191507568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_3
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 609
+        width: 259
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41249e18af22b8350800000000000000
+      internalID: 6019943786227515924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_4
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 292
+        width: 247
+        height: 400
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0689182ea6dfae500800000000000000
+      internalID: 426431750248437856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_5
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 611
+        width: 180
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79e55b1e6d4214a30800000000000000
+      internalID: 4197676833014374039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_6
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 449
+        width: 154
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5847d6f6326614f0800000000000000
+      internalID: -858390690758440869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_7
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 358
+        width: 153
+        height: 127
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84e41a60e44ea5020800000000000000
+      internalID: 2331426780887469640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_8
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 453
+        width: 154
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e14a55499ff7fcaf0800000000000000
+      internalID: -373939534136237026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_9
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 426
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeba3835dce1994f0800000000000000
+      internalID: -821591589800137750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_10
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 425
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de6e0933f89c05700800000000000000
+      internalID: 527142773284988653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_11
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 263
+        width: 184
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79f869f81f1470940800000000000000
+      internalID: 5262247195357646743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_12
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 247
+        width: 201
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6f92dee03f70fa00800000000000000
+      internalID: 788269782931775340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_13
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 263
+        width: 183
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64ea2bf392196fad0800000000000000
+      internalID: -2668786122822078906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_14
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 156
+        width: 70
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d419be495f264f430800000000000000
+      internalID: 3815783591194628429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_15
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 156
+        width: 70
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c7faae1532e61c20800000000000000
+      internalID: 3176975304932128708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_16
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 156
+        width: 71
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ebf9bb43ac627470800000000000000
+      internalID: 8390888504350604261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_17
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 156
+        width: 28
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c34d9a2210ea05e0800000000000000
+      internalID: -1942493920627964983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_18
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 156
+        width: 71
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c83aaa0434ac9d30800000000000000
+      internalID: 4439603876104648896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icon_police_19
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 156
+        width: 71
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5290ca4400823e00800000000000000
+      internalID: 1023020821288882780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      icon_police_0: 7363186097877593234
+      icon_police_1: -4142356146882810470
+      icon_police_10: 527142773284988653
+      icon_police_11: 5262247195357646743
+      icon_police_12: 788269782931775340
+      icon_police_13: -2668786122822078906
+      icon_police_14: 3815783591194628429
+      icon_police_15: 3176975304932128708
+      icon_police_16: 8390888504350604261
+      icon_police_17: -1942493920627964983
+      icon_police_18: 4439603876104648896
+      icon_police_19: 1023020821288882780
+      icon_police_2: 2738684562191507568
+      icon_police_3: 6019943786227515924
+      icon_police_4: 426431750248437856
+      icon_police_5: 4197676833014374039
+      icon_police_6: -858390690758440869
+      icon_police_7: 2331426780887469640
+      icon_police_8: -373939534136237026
+      icon_police_9: -821591589800137750
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
