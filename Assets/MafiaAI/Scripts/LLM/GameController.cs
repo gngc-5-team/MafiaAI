@@ -480,8 +480,7 @@ namespace MafiaAI.LLM
             var entry = State.PublicLog[State.PublicLog.Count - 1];
             if (logToConsole)
             {
-                string who = kind == LogKind.Speech ? speaker : "◆";
-                Debug.Log(who + " " + text);
+                Debug.Log(kind == LogKind.Speech ? text : "◆ " + text);
             }
             OnLog?.Invoke(entry);
         }

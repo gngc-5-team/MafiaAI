@@ -12,7 +12,6 @@ namespace MafiaAI.UI
     /// UI는 하이라키에 직접 배치해두고 이 스크립트는 참조만 한다(런타임에 UI를 코드로 만들지 않음).
     /// HumanActor.OnNeedChoice가 오면 후보만큼 candidateButtonPrefab을 buttonListRoot 밑에 찍는다.
     /// </summary>
-    [RequireComponent(typeof(GameController))]
     public class ChoiceOverlayUI : MonoBehaviour
     {
         [SerializeField] GameController controller;
@@ -31,6 +30,7 @@ namespace MafiaAI.UI
         void Awake()
         {
             if (controller == null) controller = GetComponent<GameController>();
+            if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (overlayRoot != null) overlayRoot.SetActive(false);
         }
 
