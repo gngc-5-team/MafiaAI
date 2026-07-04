@@ -1,12 +1,13 @@
-# AI 마피아 - 로컬 AI(Ollama + gemma4:latest) 자동 세팅 (Windows PowerShell)
+# AI 마피아 - 로컬 AI(Ollama + gemma4:12b) 자동 세팅 (Windows PowerShell)
 # 사용법(PowerShell):
 #   Set-ExecutionPolicy -Scope Process Bypass -Force ; ./setup.ps1
 
 $ErrorActionPreference = "Stop"
-$MODEL = "gemma4:latest"
+$MODEL = "gemma4:12b"
+$SIZE = "약 7.6GB"
 
 Write-Host "=============================================="
-Write-Host "  AI 마피아 - 로컬 AI 환경 세팅"
+Write-Host "  AI 마피아 - 로컬 AI 환경 세팅 ($MODEL)"
 Write-Host "=============================================="
 
 # 1) Ollama 설치 확인
@@ -46,17 +47,18 @@ if (-not $serverUp) {
 }
 
 # 3) 모델 다운로드 + 워밍업
-$have = (ollama list | Select-String $MODEL)
+# 주의: 부분 일치로 검사하면 gemma4:latest 등 다른 태그에 오탐되므로 태그 전체를 정확히 비교한다.
+$have = (ollama list) -split "`n" | ForEach-Object { ($_ -split "\s+")[0] } | Where-Object { $_ -eq $MODEL }
 if ($have) {
     Write-Host "[3/3] 모델 $MODEL 이미 있음"
 } else {
-    Write-Host "[3/3] 모델 $MODEL 다운로드 (약 9.6GB, 수 분 소요)..."
+    Write-Host "[3/3] 모델 $MODEL 다운로드 ($SIZE, 수 분 소요)..."
     ollama pull $MODEL
 }
 
-Write-Host "  워밍업 중..."
+Write-Host "  워밍업 중... (첫 로딩 수 초)"
 try { ollama run $MODEL "준비됐나? 한 단어로만." | Out-Null } catch {}
 
 Write-Host ""
-Write-Host "완료! 이제 Unity에서 SampleScene을 열고 Play 하세요."
+Write-Host "완료! 이제 Unity에서 Assets/Scenes/YuminScene.unity 를 열고 Play 하세요."
 Write-Host "필요 Unity 버전: 6000.3.19f1 (Unity Hub에서 동일 버전 설치 권장)"
