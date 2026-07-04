@@ -46,6 +46,32 @@ namespace MafiaAI.UI
         [SerializeField] TileBase _bgTile;            // Black_background (방 밖 검정 배경)
         [SerializeField] int _tilemapSortingOrder = 1;
 
+        [Header("뒷벽 변형 (기본 frontwall 쌍, 확률로 framewall/window 쌍)")]
+        [SerializeField] TileBase _frameWallTopTile;  // top_of_framewall
+        [SerializeField] TileBase _frameWallBotTile;  // down_of_framewall
+        [SerializeField] TileBase _windowTopTile;     // top_of_the_window
+        [SerializeField] TileBase _windowBotTile;     // down_of_the_window
+        [Range(0f, 1f)][SerializeField] float _backWallVariantChance = 0.2f; // 열 단위 변형 확률(변형 시 frame/window 반반)
+
+        [Header("카펫 데코 (별도 TilemapDecor, 바닥 위)")]
+        [SerializeField] Tilemap _decorTilemap;       // Grid/TilemapDecor (sortingOrder = 바닥+1)
+        [SerializeField] TileBase _carpetTL;          // carpet_0 (좌상, 각 조각 2x2유닛)
+        [SerializeField] TileBase _carpetTR;          // carpet_1 (우상)
+        [SerializeField] TileBase _carpetBL;          // carpet_2 (좌하)
+        [SerializeField] TileBase _carpetBR;          // carpet_3 (우하)
+        [Range(0f, 1f)][SerializeField] float _carpetChance = 0.8f; // 방마다 카펫 깔릴 확률
+
+        /// <summary>이번 판 뒷벽에 배치된 창문 하나(인접 열 병합됨). 달빛 라이트 스냅용 앵커.</summary>
+        public struct WindowAnchor
+        {
+            public Vector2 Pos;   // 창문 세그먼트 중앙(월드, 창 아래줄 셀 기준)
+            public int Width;     // 병합된 열 수(1=한 칸짜리 창)
+        }
+
+        /// <summary>PaintTiles가 매판 갱신. MansionLightingController가 달빛을 여기에 스냅한다.</summary>
+        public readonly List<WindowAnchor> WindowAnchors = new();
+        readonly List<Vector2Int> _windowCells = new(); // 창문 아래줄 셀 수집(앵커 병합 전 원본)
+
         readonly Dictionary<string, Rect> _roomRects = new();
         readonly Dictionary<string, Transform> _tokens = new();
         readonly Dictionary<string, Vector3> _tokenVel = new();
@@ -268,6 +294,7 @@ namespace MafiaAI.UI
             const int Margin = 4;
 
             _tilemap.ClearAllTiles();
+            _windowCells.Clear();
             var tr = _tilemap.GetComponent<TilemapRenderer>();
             if (tr != null) tr.sortingOrder = _tilemapSortingOrder;
 
@@ -305,7 +332,32 @@ namespace MafiaAI.UI
                 PaintCorridorRing(a, b, W);
             }
 
+            PaintCarpets(centers);
+            BuildWindowAnchors();
             HideMapSprites();
+        }
+
+        // 카펫: 방마다 _carpetChance 확률로 1장, 방 안 랜덤 위치. 데코 타일맵(바닥 위)에 얹는다.
+        // 각 조각이 2x2유닛(64px@32PPU)이라 4분면을 2칸 간격으로 놓으면 4x4유닛 러그가 이음새 없이 완성된다.
+        void PaintCarpets(Dictionary<string, Vector2Int> centers)
+        {
+            if (_decorTilemap == null) return;
+            _decorTilemap.ClearAllTiles();
+            var dr = _decorTilemap.GetComponent<TilemapRenderer>();
+            if (dr != null) dr.sortingOrder = _tilemapSortingOrder + 1;
+            if (_carpetTL == null || _carpetTR == null || _carpetBL == null || _carpetBR == null) return;
+
+            foreach (var c in centers.Values)
+            {
+                if (Random.value > _carpetChance) continue;
+                // 러그(4x4)가 방(10x10) 안쪽에 여유 1칸을 두고 들어오도록 원점(좌하 셀) 범위 제한
+                int ox = Random.Range(c.x - 4, c.x + 2);   // [x0+1, x0+6]
+                int oy = Random.Range(c.y - 4, c.y + 2);
+                _decorTilemap.SetTile(new Vector3Int(ox,     oy + 2, 0), _carpetTL);
+                _decorTilemap.SetTile(new Vector3Int(ox + 2, oy + 2, 0), _carpetTR);
+                _decorTilemap.SetTile(new Vector3Int(ox,     oy,     0), _carpetBL);
+                _decorTilemap.SetTile(new Vector3Int(ox + 2, oy,     0), _carpetBR);
+            }
         }
 
         // 복도 walkable 칸(방 사이 gap)을 집합에 추가. 가로=10x4, 세로=4x10.
@@ -334,8 +386,7 @@ namespace MafiaAI.UI
             int x0 = c.x - 5, x1 = c.x + 4, y0 = c.y - 5, y1 = c.y + 4;
             for (int x = x0; x <= x1; x++)
             {
-                TryWall(W, x, y1 + 1, _backWallBotTile, 0);  // 뒷벽 아래줄(바닥 바로 위)
-                TryWall(W, x, y1 + 2, _backWallTopTile, 0);  // 뒷벽 위줄
+                PaintBackWallColumn(W, x, y1 + 1, y1 + 2);   // 뒷벽 한 열(아래+위 쌍, 확률 변형)
                 TryBottomLine(W, x, y0 - 1);                 // 아래 선벽(+개구부 L)
             }
             for (int y = y0 - 1; y <= y1 + 2; y++)            // 좌/우 선벽: 아래 코너~뒷벽 위까지
@@ -356,8 +407,7 @@ namespace MafiaAI.UI
                 int xlo = Mathf.Min(a.x, b.x) + 5, xhi = Mathf.Max(a.x, b.x) - 6;
                 for (int x = xlo; x <= xhi; x++)
                 {
-                    TryWall(W, x, cy + 2, _backWallBotTile, 0);
-                    TryWall(W, x, cy + 3, _backWallTopTile, 0);
+                    PaintBackWallColumn(W, x, cy + 2, cy + 3);
                     TryWall(W, x, cy - 3, _lineWallTile, 270);
                 }
             }
@@ -371,6 +421,48 @@ namespace MafiaAI.UI
                     TryWall(W, cx - 3, y, _lineWallTile, 180);
                     TryWall(W, cx + 2, y, _lineWallTile, 0);
                 }
+            }
+        }
+
+        // 뒷벽 한 열(아래줄+위줄 쌍). 기본은 frontwall 쌍, _backWallVariantChance 확률로 framewall 또는 window 쌍(반반).
+        // 쌍은 반드시 같은 종류로 맞춰야 하므로 열 단위로 한 번만 굴린다.
+        void PaintBackWallColumn(HashSet<Vector2Int> W, int x, int yBot, int yTop)
+        {
+            TileBase top = _backWallTopTile, bot = _backWallBotTile;
+            bool window = false;
+            if (_frameWallTopTile != null && _frameWallBotTile != null &&
+                _windowTopTile != null && _windowBotTile != null &&
+                Random.value < _backWallVariantChance)
+            {
+                bool frame = Random.value < 0.5f;
+                window = !frame;
+                top = frame ? _frameWallTopTile : _windowTopTile;
+                bot = frame ? _frameWallBotTile : _windowBotTile;
+            }
+            TryWall(W, x, yBot, bot, 0);
+            TryWall(W, x, yTop, top, 0);
+            // 실제로 창문이 그려진 열만 달빛 앵커 후보(개구부는 TryWall이 스킵하므로 제외)
+            if (window && !W.Contains(new Vector2Int(x, yBot)))
+                _windowCells.Add(new Vector2Int(x, yBot));
+        }
+
+        // 인접한 창문 열을 하나의 창 세그먼트로 병합해 달빛 앵커를 만든다.
+        void BuildWindowAnchors()
+        {
+            WindowAnchors.Clear();
+            if (_windowCells.Count == 0) return;
+            var sorted = _windowCells.OrderBy(c => c.y).ThenBy(c => c.x).ToList();
+            int runStart = sorted[0].x, runLen = 1, runY = sorted[0].y;
+            for (int i = 1; i <= sorted.Count; i++)
+            {
+                bool cont = i < sorted.Count && sorted[i].y == runY && sorted[i].x == runStart + runLen;
+                if (cont) { runLen++; continue; }
+                WindowAnchors.Add(new WindowAnchor
+                {
+                    Pos = new Vector2(runStart + runLen * 0.5f, runY + 0.5f),
+                    Width = runLen
+                });
+                if (i < sorted.Count) { runStart = sorted[i].x; runLen = 1; runY = sorted[i].y; }
             }
         }
 
