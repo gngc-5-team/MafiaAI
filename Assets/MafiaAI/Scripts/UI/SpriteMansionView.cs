@@ -629,7 +629,7 @@ namespace MafiaAI.UI
 
                 bool walking = delta.magnitude / Mathf.Max(Time.deltaTime, 0.0001f) > _walkSpeedThreshold;
                 if (walking != a.Walking) { a.Walking = walking; a.Clock = 0f; }
-                if (Mathf.Abs(delta.x) > 0.0005f) a.Sr.flipX = delta.x < 0f;
+                if (Mathf.Abs(delta.x) > 0.0005f) a.Sr.flipX = delta.x > 0f;
 
                 var frames = walking && a.Skin.walkFrames != null && a.Skin.walkFrames.Length > 0
                     ? a.Skin.walkFrames : a.Skin.idleFrames;
