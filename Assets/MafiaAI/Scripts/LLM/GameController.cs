@@ -239,6 +239,7 @@ namespace MafiaAI.LLM
         void OnDestroy() => _cts?.Cancel();
 
         bool _gameRunning; // 중복 기동 방지(autoStart와 MafiaUI가 동시에 시작시키던 레이스 차단)
+        bool _playerRoomTurn = true; // 방 대화 추첨 교대(플레이어 방 ↔ 다른 방)
 
         public async Task StartGameAsync()
         {
@@ -507,14 +508,25 @@ namespace MafiaAI.LLM
                              .ToList();
             if (rooms.Count == 0) return;
 
-            // 플레이어가 있는 방을 70% 확률로 우선한다 — 대화는 같은 방에서만 들리므로,
-            // 균등 추첨이면 플레이어 체감상 '아무도 말을 안 하는' 시간이 너무 길어진다.
+            // 방 선택은 '플레이어 방 ↔ 다른 방' 교대. 대화는 같은 방에서만 들리므로
+            // 균등 추첨이면 플레이어 체감상 침묵이 길어지고, 플레이어 방만 편애하면
+            // 다른 방 AI들끼리의 대화(=AI들이 서로 의심을 쌓는 시뮬레이션)가 굶는다.
+            // 교대로 절반은 플레이어 앞에서, 절반은 저택 어딘가에서 AI끼리 굴러가게 한다.
             var pick = rooms[_rng.Next(rooms.Count)];
-            if (HumanPlayer != null && HumanPlayer.Alive && _rng.Next(100) < 70)
+            if (HumanPlayer != null && HumanPlayer.Alive)
             {
                 string myRoom = GetPlayerRoom(HumanPlayer.Id);
-                var mine = rooms.FirstOrDefault(x => x.Room == myRoom);
-                if (mine != null) pick = mine;
+                if (_playerRoomTurn)
+                {
+                    var mine = rooms.FirstOrDefault(x => x.Room == myRoom);
+                    if (mine != null) pick = mine;
+                }
+                else
+                {
+                    var others = rooms.Where(x => x.Room != myRoom).ToList();
+                    if (others.Count > 0) pick = others[_rng.Next(others.Count)];
+                }
+                _playerRoomTurn = !_playerRoomTurn;
             }
             var speakers = pick.People.Where(p => !p.IsHuman).ToList();
             var speaker = speakers[_rng.Next(speakers.Count)];
@@ -619,7 +631,7 @@ namespace MafiaAI.LLM
                 start = next + 1;
             }
             if (cut >= 0 && cut + 1 < text.Length) text = text.Substring(0, cut + 1);
-            if (text.Length > 150) text = text.Substring(0, 150).Trim() + "...";
+            if (text.Length > 110) text = text.Substring(0, 110).Trim() + "..."; // 테스터 피드백: 문장이 너무 길다
             return text;
         }
 

@@ -33,6 +33,12 @@ namespace MafiaAI.UI
         [SerializeField] Slider sfxSlider;
         [SerializeField] TMP_Text aiStatusText;        // 좌하단 "AI 준비 중…" 표시
 
+        [Header("AI 리소스 셋업(동봉 실패 시 폴백)")]
+        [SerializeField] GameObject setupPanel;        // 기본 비활성 — AI 준비 실패 시 표시
+        [SerializeField] Button downloadButton;        // setup_ai.bat/.command 실행
+        [SerializeField] Button recheckButton;         // 다시 확인
+        [SerializeField] TMP_Text setupStatusText;     // 패널 안 상태 문구
+
         [Header("설정")]
         [SerializeField] string gameSceneName = "YuminScene";
 
@@ -54,18 +60,28 @@ namespace MafiaAI.UI
             if (bgmSlider != null) bgmSlider.onValueChanged.AddListener(v => SettingsManager.BgmVolume = v);
             if (sfxSlider != null) sfxSlider.onValueChanged.AddListener(v => SettingsManager.SfxVolume = v);
 
+            if (downloadButton != null) downloadButton.onClick.AddListener(RunSetupScript);
+            if (recheckButton != null) recheckButton.onClick.AddListener(() => { _ = TryPrepareAi(); });
+
             if (optionsPanel != null) optionsPanel.SetActive(false);
+            if (setupPanel != null) setupPanel.SetActive(false);
             BuildResolutionList();
             LoadUiFromSettings();
             SettingsManager.ApplyAudio();
         }
 
-        async void Start()
+        void Start()
         {
-            // 타이틀 노출 동안 AI 준비(서버 기동 + 모델 예열)를 끝내 둔다.
+            _ = TryPrepareAi();
+        }
+
+        /// <summary>AI 준비 시도: 설치된 Ollama → 동봉 엔진 순. 둘 다 실패하면 셋업 패널(다운로드/다시 확인) 표시.</summary>
+        async System.Threading.Tasks.Task TryPrepareAi()
+        {
             if (_aiWarm) { SetAiStatus("AI 준비 완료"); return; }
 
             SetAiStatus("AI 준비 중…");
+            SetSetupStatus("AI 확인 중…");
             OllamaBootstrap.OnStatus += SetAiStatus;
             var cfg = new GameConfig(); // Model/BaseUrl 기본값 = 게임과 동일
             bool ok = await OllamaBootstrap.EnsureReadyAsync(cfg);
@@ -79,15 +95,52 @@ namespace MafiaAI.UI
                     await client.GenerateAsync(cfg.Model, "준비됐나?", "한 단어로만 답하라.", 0.1f, false, default, 4);
                     _aiWarm = true;
                     SetAiStatus("AI 준비 완료");
+                    if (setupPanel != null) setupPanel.SetActive(false);
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogWarning("[TitleScreen] 모델 예열 실패(게임에서 재시도됨): " + e.Message);
-                    SetAiStatus("AI 응답 없음 — 시작하면 재시도합니다");
+                    Debug.LogWarning("[TitleScreen] 모델 예열 실패: " + e.Message);
+                    ShowSetupPanel("AI가 응답하지 않습니다. 아래 버튼으로 리소스를 설치해 주세요.");
                 }
             }
-            else SetAiStatus("AI 준비 실패 — 시작하면 재시도합니다");
+            else ShowSetupPanel("AI 리소스가 없습니다. 아래 버튼으로 설치해 주세요. (인터넷 필요, 약 7.6GB)");
             OllamaBootstrap.OnStatus -= SetAiStatus;
+        }
+
+        void ShowSetupPanel(string msg)
+        {
+            SetAiStatus("AI 리소스 필요");
+            SetSetupStatus(msg);
+            if (setupPanel != null) setupPanel.SetActive(true);
+        }
+
+        /// <summary>플랫폼별 설치 스크립트를 눈에 보이는 콘솔로 실행(사용자가 진행 상황을 본다).</summary>
+        void RunSetupScript()
+        {
+            try
+            {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+                string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.bat");
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                { FileName = script, UseShellExecute = true });
+#else
+                string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.command");
+                try { System.Diagnostics.Process.Start("/bin/chmod", "+x \"" + script + "\""); } catch { }
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                { FileName = "/usr/bin/open", Arguments = "\"" + script + "\"", UseShellExecute = false });
+#endif
+                SetSetupStatus("설치 창이 열렸습니다. '완료!'가 뜨면 [다시 확인]을 누르세요.");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("[TitleScreen] 설치 스크립트 실행 실패: " + e.Message);
+                SetSetupStatus("실행 실패 — 게임 폴더의 StreamingAssets/setup_ai 파일을 직접 실행해 주세요.");
+            }
+        }
+
+        void SetSetupStatus(string msg)
+        {
+            if (setupStatusText != null) setupStatusText.text = msg;
         }
 
         void OnDestroy() => OllamaBootstrap.OnStatus -= SetAiStatus;
