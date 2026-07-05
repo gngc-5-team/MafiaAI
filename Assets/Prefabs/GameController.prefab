@@ -545,8 +545,8 @@ MonoBehaviour:
   voteConfirm: {fileID: 8300000, guid: 29c326c4f9cd147baa0bde15524bb042, type: 3}
   gameEnd: {fileID: 8300000, guid: 50e710ae7de2e4bf69818f1353d923db, type: 3}
   footstep: {fileID: 8300000, guid: c49573e6891a34055bb88939e258b5a0, type: 3}
-  bgmVolume: 0.3
-  sfxVolume: 0.85
-  footstepVolume: 0.5
-  bgmNightDuck: 0.45
+  bgmVolume: 1
+  sfxVolume: 1
+  footstepVolume: 1
+  bgmNightDuck: 1
   footstepSpeedThreshold: 0.6

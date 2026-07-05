@@ -20,6 +20,9 @@ namespace MafiaAI.UI
         [SerializeField] Button optionsButton;
         [SerializeField] GameObject optionsPanel;      // 기본 비활성
         [SerializeField] Button closeButton;
+        [SerializeField] Button creditsButton;         // 크레딧 열기
+        [SerializeField] CreditsRoll creditsRoll;      // 크레딧 롤(위로 흐르는 연출)
+        [SerializeField] Button quitButton;            // 게임 종료
         [SerializeField] Button fullscreenButton;
         [SerializeField] TMP_Text fullscreenLabel;
         [SerializeField] Button resPrevButton;
@@ -42,6 +45,8 @@ namespace MafiaAI.UI
             if (startButton != null) startButton.onClick.AddListener(StartGame);
             if (optionsButton != null) optionsButton.onClick.AddListener(() => optionsPanel.SetActive(true));
             if (closeButton != null) closeButton.onClick.AddListener(() => { SettingsManager.Save(); optionsPanel.SetActive(false); });
+            if (creditsButton != null && creditsRoll != null) creditsButton.onClick.AddListener(() => creditsRoll.Open());
+            if (quitButton != null) quitButton.onClick.AddListener(QuitGame);
             if (fullscreenButton != null) fullscreenButton.onClick.AddListener(ToggleFullscreen);
             if (resPrevButton != null) resPrevButton.onClick.AddListener(() => CycleResolution(-1));
             if (resNextButton != null) resNextButton.onClick.AddListener(() => CycleResolution(+1));
@@ -88,6 +93,16 @@ namespace MafiaAI.UI
         void OnDestroy() => OllamaBootstrap.OnStatus -= SetAiStatus;
 
         void StartGame() => SceneManager.LoadScene(gameSceneName);
+
+        void QuitGame()
+        {
+#if UNITY_EDITOR
+            // 에디터에선 Application.Quit이 안 먹으니 플레이 모드를 멈춘다.
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
 
         // ---------- 옵션 ----------
 
