@@ -323,6 +323,7 @@ namespace MafiaAI.LLM
             OnLocationsChanged?.Invoke();
 
             Emit(LogKind.System, "SYSTEM", "게임 시작 — 6인 중 마피아는 1명. 저택 안에서 들은 말만 단서가 된다.");
+            Emit(LogKind.System, "SYSTEM", "특수직업들은 스페이스바로 특수능력을 사용할 수 있습니다.");
 
             // AI 워밍업. 실패해도 게임을 조용히 죽이지 않는다 — 재시도 후, 최종 실패면 화면에 원인을 알린다.
             // (첫 실행은 7GB 모델 디스크 로딩으로 느린 PC에서 1~2분 걸릴 수 있다. GenerateAsync는 타임아웃이 없어 로딩을 기다려준다.)

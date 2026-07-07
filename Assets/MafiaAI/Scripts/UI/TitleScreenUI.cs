@@ -120,9 +120,10 @@ namespace MafiaAI.UI
             try
             {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+                // cmd /k: 스크립트가 끝나든 에러가 나든 콘솔 창이 닫히지 않는다 — 진행 상황/실패 원인이 항상 보인다.
                 string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.bat");
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                { FileName = script, UseShellExecute = true });
+                { FileName = "cmd.exe", Arguments = "/k \"\"" + script + "\"\"", UseShellExecute = true });
 #else
                 string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.command");
                 try { System.Diagnostics.Process.Start("/bin/chmod", "+x \"" + script + "\""); } catch { }
