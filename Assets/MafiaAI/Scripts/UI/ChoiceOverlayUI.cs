@@ -158,6 +158,7 @@ namespace MafiaAI.UI
         void SelectCandidate(string id)
         {
             if (_hasVoted) return; // 이미 투표했으면 변경 불가(내 차례 전이라도 미리 골라둘 수는 있음)
+            GameAudioController.PlayVoteSelectClick(); // 카드 고르는 소리
             _selected = id;
             ApplyVisuals(null); // 선택한 카드가 (마우스를 떼도) 커진 채로 유지되게
             RefreshTally();

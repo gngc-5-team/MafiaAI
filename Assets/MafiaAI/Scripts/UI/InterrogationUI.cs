@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -65,7 +66,9 @@ namespace MafiaAI.UI
         {
             if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (mansionView == null) mansionView = FindFirstObjectByType<SpriteMansionView>();
-            if (input != null) input.onSubmit.AddListener(SubmitQuestion);
+            // Enter 시점엔 한글 마지막 글자가 아직 IME 조합 중이라 input.text가 깨진다.
+            // 한 프레임 미뤄 조합이 확정된 뒤 읽어 보낸다(한글 마지막 글자 누락/단일 글자 전송 버그 방지).
+            if (input != null) input.onSubmit.AddListener(delegate { SubmitQuestionDeferred(); });
             if (overlayRoot != null) overlayRoot.SetActive(false);
             if (hintRoot != null) hintRoot.SetActive(false);
         }
@@ -186,6 +189,26 @@ namespace MafiaAI.UI
         }
 
         // ---------- 대화 ----------
+
+        bool _submittingQ;
+
+        /// <summary>Enter 전송: IME 조합 확정을 기다렸다가(한 프레임) 텍스트를 읽는다.</summary>
+        void SubmitQuestionDeferred()
+        {
+            if (_submittingQ) return;   // Enter 연타로 인한 이중 전송 방지
+            _submittingQ = true;
+            StartCoroutine(SubmitQuestionAfterImeCommit());
+        }
+
+        IEnumerator SubmitQuestionAfterImeCommit()
+        {
+            // 조합 중이던 마지막 글자를 강제로 확정시킨다 — 비활성화하면 IME 조합이 input.text에 반영된다.
+            if (input != null) input.DeactivateInputField();
+            yield return null;                       // 다음 프레임까지 양보
+            yield return new WaitForEndOfFrame();     // 그 프레임의 입력/IME 처리가 끝난 뒤 읽도록
+            _submittingQ = false;
+            SubmitQuestion("");
+        }
 
         async void SubmitQuestion(string _)
         {

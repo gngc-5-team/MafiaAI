@@ -33,6 +33,9 @@ namespace MafiaAI.UI
         [SerializeField] float arrowBobSpeed = 3.5f;
         [SerializeField] int arrowSortingOrder = 520;   // 밤 암전(500) 위
 
+        [Tooltip("켜면 새벽에 플레이어를 밤 시작 위치로 되돌린다. 테스터 피드백('강제 워프가 어색하다')으로 기본 꺼짐 — 밤에 이동한 자리에서 아침을 맞는다.")]
+        [SerializeField] bool returnToPreNightPosition = false;
+
         HumanActor _human;
         List<string> _candidates;
 
@@ -107,8 +110,17 @@ namespace MafiaAI.UI
             }
             else if (s.Phase == Phase.Dawn && _hasPreNightSnapshot)
             {
-                mansionView.SetHumanPosition(_preNightPos, _preNightRoom);
-                controller.MoveHumanToRoom(_preNightRoom);
+                if (returnToPreNightPosition)
+                {
+                    mansionView.SetHumanPosition(_preNightPos, _preNightRoom);
+                    controller.MoveHumanToRoom(_preNightRoom);
+                }
+                else
+                {
+                    // 밤에 이동한 현재 위치를 그대로 인정 — 방 소속만 실제 위치와 동기화한다.
+                    string room = controller.GetPlayerRoom(controller.HumanPlayer.Id);
+                    if (!string.IsNullOrEmpty(room)) controller.MoveHumanToRoom(room);
+                }
                 _hasPreNightSnapshot = false;
             }
 

@@ -45,6 +45,7 @@ namespace MafiaAI.UI
 
         void Awake()
         {
+            _inst = this;
             if (controller == null) controller = FindFirstObjectByType<GameController>();
             if (mansionView == null) mansionView = FindFirstObjectByType<SpriteMansionView>();
 
@@ -104,13 +105,17 @@ namespace MafiaAI.UI
                 _bgmSrc.volume = s.Phase == Phase.Night ? bgmVolume * bgmNightDuck : bgmVolume;
         }
 
-        void HandleVoteCast() => PlayOneShot(voteSelect);          // 표 1건 집계
+        // 표 아이콘이 생길 때마다(누군가의 표가 집계될 때마다) 확정 소리
+        void HandleVoteCast() => PlayOneShot(voteConfirm);
 
-        void HandleLog(LogEntry e)
+        void HandleLog(LogEntry e) { } // (구독 유지용 — 현재 로그 기반 사운드 없음)
+
+        static GameAudioController _inst;
+
+        /// <summary>투표 UI에서 후보 카드를 클릭(선택)했을 때 — ChoiceOverlayUI가 호출.</summary>
+        public static void PlayVoteSelectClick()
         {
-            // 투표 결과 확정(처형/무산 모두)
-            if (e.Text != null && e.Text.Contains("처형") && (e.Kind == LogKind.Reveal || e.Kind == LogKind.System))
-                PlayOneShot(voteConfirm);
+            if (_inst != null) _inst.PlayOneShot(_inst.voteSelect);
         }
 
         void HandleGameEnd(Winner w) => PlayOneShot(gameEnd);      // 승패 결정

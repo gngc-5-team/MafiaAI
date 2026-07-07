@@ -72,8 +72,8 @@ MonoBehaviour:
     AiNightTimeoutSeconds: 40
     VoteSeconds: 30
     AiVoteTimeoutSeconds: 40
-    TalkIntervalMinMs: 3000
-    TalkIntervalMaxMs: 5000
+    TalkIntervalMinMs: 1500
+    TalkIntervalMaxMs: 2600
     MoveIntervalMs: 7000
     LineDelayMs: 350
     MaxDays: 15
@@ -523,6 +523,7 @@ MonoBehaviour:
   arrowBobAmplitude: 0.12
   arrowBobSpeed: 3.5
   arrowSortingOrder: 520
+  returnToPreNightPosition: 0
 --- !u!114 &1234076906298675349
 MonoBehaviour:
   m_ObjectHideFlags: 0

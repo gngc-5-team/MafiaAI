@@ -59,7 +59,7 @@ namespace MafiaAI.LLM
             float temperature = 0.8f,
             bool jsonFormat = false,
             CancellationToken ct = default,
-            int maxTokens = 140) // gemma4 기준: 한국어 2문장(OneSentence 150자 컷) ≈ 80~120토큰, 여유 포함
+            int maxTokens = 100) // 한국어 1~2문장(OneSentence 110자 컷) ≈ 60~90토큰. 크면 느려지고 어차피 잘려서 버려진다
         {
             // 프롬프트가 "2문장 이내"/"한 문장만"으로 답을 제한해도 Ollama 자체엔 길이 제한이 없어서
             // 모델이 그보다 훨씬 길게 계속 생성하고, 우리는 OneSentence()로 첫 문장만 잘라 쓰고 나머지는 버렸다.

@@ -18,7 +18,7 @@ namespace MafiaAI.LLM
     /// </summary>
     public static class PromptBuilder
     {
-        const int RecentLogLines = 16;
+        const int RecentLogLines = 12; // 프리필(프롬프트 처리) 시간 절감 — 저사양 PC에서 응답 지연의 주범
 
         public static Prompt Discussion(GameState s, Player self)
         {
