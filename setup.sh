@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# AI 마피아 — 로컬 AI(Ollama + gemma4:12b) 자동 세팅 (macOS / Linux)
+# AI 마피아 — 로컬 AI(Ollama + gemma4:e4b-it-qat) 자동 세팅 (macOS / Linux)
 # 사용법:  bash setup.sh   또는   ./setup.sh
 set -e
 
-MODEL="gemma4:12b"
-SIZE="약 7.6GB"
+MODEL="gemma4:e4b-it-qat"
+SIZE="약 6.1GB"
 echo "=============================================="
 echo "  AI 마피아 - 로컬 AI 환경 세팅 ($MODEL)"
 echo "=============================================="

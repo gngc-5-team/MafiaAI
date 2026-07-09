@@ -124,7 +124,7 @@ namespace MafiaAI.UI
                     ShowSetupPanel("AI가 응답하지 않습니다. 아래 버튼으로 리소스를 설치해 주세요.");
                 }
             }
-            else ShowSetupPanel("AI 리소스가 없습니다. 아래 버튼으로 설치해 주세요. (인터넷 필요, 약 7.6GB)");
+            else ShowSetupPanel("AI 리소스가 없습니다. 아래 버튼으로 설치해 주세요. (인터넷 필요, 약 6.1GB)");
             OllamaBootstrap.OnStatus -= SetAiStatus;
         }
 
@@ -159,7 +159,7 @@ namespace MafiaAI.UI
     System.Diagnostics.Process.Start(startInfo);
 #else
                 string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.command");
-                try { System.Diagnostics.Process.Start("/bin/chmod", "+k \"" + script + "\""); } catch { }
+                try { System.Diagnostics.Process.Start("/bin/chmod", "+x \"" + script + "\""); } catch { }
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                 { FileName = "/usr/bin/open", Arguments = "\"" + script + "\"", UseShellExecute = false });
 #endif

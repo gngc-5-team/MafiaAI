@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# 빌드 동봉용 LLM 패키징 — Ollama 바이너리(맥/윈) + gemma4:12b 모델을 StreamingAssets에 채운다.
+# 빌드 동봉용 LLM 패키징 — Ollama 바이너리(맥/윈) + gemma4:e4b-it-qat 모델을 StreamingAssets에 채운다.
 # 사용법:  bash tools/package_llm.sh [ollama버전]   (기본 v0.20.0 — gemma4 최소 요구 버전)
-# 결과:   Assets/StreamingAssets/ollama/{mac,win,models}  (총 약 8GB)
+# 결과:   Assets/StreamingAssets/ollama/{mac,win,models}  (총 약 6.5GB)
 # 주의:   이 폴더는 .gitignore 대상. 빌드 직전 각자 로컬에서 실행한다. 모델은 로컬 ~/.ollama 에서 복사하므로
-#         먼저 `ollama pull gemma4:12b` 가 되어 있어야 한다(setup.sh 가 이미 해줌).
+#         먼저 `ollama pull gemma4:e4b-it-qat` 가 되어 있어야 한다(setup.sh 가 이미 해줌).
 set -e
 
 VER="${1:-v0.20.0}"
 MODEL_NAME="gemma4"
-MODEL_TAG="12b"
+MODEL_TAG="e4b-it-qat"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$ROOT/Assets/StreamingAssets/ollama"
 SRC_MODELS="$HOME/.ollama/models"

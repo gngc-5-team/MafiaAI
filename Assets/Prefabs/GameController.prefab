@@ -65,7 +65,7 @@ MonoBehaviour:
   humanSeat: 0
   config:
     BaseUrl: http://localhost:11434
-    Model: gemma4:12b
+    Model: gemma4:e4b-it-qat
     RoomCount: 5
     DiscussionSeconds: 60
     NightSeconds: 15

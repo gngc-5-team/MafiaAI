@@ -7,7 +7,7 @@ echo ===== %date% %time% ===== > "%LOG%"
 
 echo ==============================================
 echo   AI Mafia - AI Resource Setup
-echo   Installing Ollama + gemma4:12b (about 7.6GB)
+echo   Installing Ollama + gemma4:e4b-it-qat (about 6.1GB)
 echo ==============================================
 echo.
 
@@ -52,11 +52,11 @@ if exist "%OLLAMA_PATH%" (
 
 :pull
 echo [DEBUG] OLLAMA=%OLLAMA% >> "%LOG%"
-echo [DEBUG] running: %OLLAMA% pull gemma4:12b >> "%LOG%"
+echo [DEBUG] running: %OLLAMA% pull gemma4:e4b-it-qat >> "%LOG%"
 
 echo.
-echo [2/2] Downloading AI model (about 7.6GB, may take several minutes)...
-call "%OLLAMA%" pull gemma4:12b
+echo [2/2] Downloading AI model (about 6.1GB, may take several minutes)...
+call "%OLLAMA%" pull gemma4:e4b-it-qat
 set "PULLRESULT=%errorlevel%"
 echo [DEBUG] pull exit code = %PULLRESULT% >> "%LOG%"
 

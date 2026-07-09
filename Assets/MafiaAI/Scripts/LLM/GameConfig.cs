@@ -7,7 +7,7 @@ namespace MafiaAI.LLM
     public class GameConfig
     {
         public string BaseUrl = "http://localhost:11434";
-        public string Model = "gemma4:12b"; // 심리전용 상위 모델(M5 Max 실측 58.7tok/s). 주의: 씬/프리팹 serialized 값이 실효값
+        public string Model = "gemma4:e4b-it-qat"; // 저VRAM 특화(로드 5.7GB, 8GB 카드 대응·M5 Max 실측 ~113tok/s). 주의: 씬/프리팹 serialized 값이 실효값
 
         public int RoomCount = 5;           // 저택 방 개수(복도는 항상 방 개수-1개, 신장 트리 간선 수와 같음)
         public int DiscussionSeconds = 60;  // 낮 자유 토론 지속 시간
@@ -21,7 +21,7 @@ namespace MafiaAI.LLM
         public int LineDelayMs = 350;        // 짧은 UI 갱신 여유
         public int MaxDays = 15;            // 안전 상한
 
-        public float SpeechTemperature = 1.05f; // 자유 발언 온도(12B 모델은 페르소나 자율성을 살림)
+        public float SpeechTemperature = 1.05f; // 자유 발언 온도(페르소나 자율성 확보 — e4b-it-qat 0.8~1.1 검증됨)
         public float ActionTemperature = 0.5f;  // 투표/밤 판단은 JSON 파싱을 위해 발언보다 낮게 유지
 
         public bool RevealRolesOnDeath = false; // 사망/처형 시 역할 공개. 2026-07-05 기획 변경: 비공개(추리 난이도·긴장 유지)
