@@ -39,11 +39,16 @@ namespace MafiaAI.UI
         [SerializeField] Button recheckButton;         // 다시 확인
         [SerializeField] TMP_Text setupStatusText;     // 패널 안 상태 문구
 
+        [Header("타이틀 BGM")]
+        [SerializeField] AudioClip titleBgm;                 // Assets/MafiaAI/Audio/title_music
+        [Range(0f, 1f)][SerializeField] float titleBgmVolume = 0.30f;  // 디자이너 기본 볼륨(BGM 슬라이더가 이 값에 배율)
+
         [Header("설정")]
         [SerializeField] string gameSceneName = "YuminScene";
 
         readonly List<Vector2Int> _resolutions = new();
         int _resIndex;
+        AudioSource _bgmSrc;  // 타이틀 루프 BGM
         static bool _aiWarm; // 씬 재방문 시 예열 반복 방지
 
         void Awake()
@@ -57,7 +62,7 @@ namespace MafiaAI.UI
             if (resPrevButton != null) resPrevButton.onClick.AddListener(() => CycleResolution(-1));
             if (resNextButton != null) resNextButton.onClick.AddListener(() => CycleResolution(+1));
             if (masterSlider != null) masterSlider.onValueChanged.AddListener(v => SettingsManager.MasterVolume = v);
-            if (bgmSlider != null) bgmSlider.onValueChanged.AddListener(v => SettingsManager.BgmVolume = v);
+            if (bgmSlider != null) bgmSlider.onValueChanged.AddListener(v => { SettingsManager.BgmVolume = v; ApplyBgmVolume(); });
             if (sfxSlider != null) sfxSlider.onValueChanged.AddListener(v => SettingsManager.SfxVolume = v);
 
             if (downloadButton != null) downloadButton.onClick.AddListener(RunSetupScript);
@@ -68,6 +73,22 @@ namespace MafiaAI.UI
             BuildResolutionList();
             LoadUiFromSettings();
             SettingsManager.ApplyAudio();
+
+            // 타이틀 씬엔 카메라(=AudioListener)가 없어 소리가 전혀 안 난다 — 없으면 여기서 붙인다.
+            if (FindFirstObjectByType<AudioListener>() == null)
+                gameObject.AddComponent<AudioListener>();
+
+            // 타이틀 BGM — 게임 씬(GameAudioController)과 같은 방식. 마스터=AudioListener 전역, BGM 슬라이더=이 소스 배율.
+            _bgmSrc = gameObject.AddComponent<AudioSource>();
+            _bgmSrc.loop = true; _bgmSrc.playOnAwake = false; _bgmSrc.clip = titleBgm;
+            _bgmSrc.spatialBlend = 0f;  // 2D(거리 무관) — 클립이 3D로 임포트돼 있어도 확실히 들리게
+            ApplyBgmVolume();
+            if (titleBgm != null) _bgmSrc.Play();
+        }
+
+        void ApplyBgmVolume()
+        {
+            if (_bgmSrc != null) _bgmSrc.volume = titleBgmVolume * SettingsManager.BgmVolume;
         }
 
         void Start()
@@ -103,7 +124,7 @@ namespace MafiaAI.UI
                     ShowSetupPanel("AI가 응답하지 않습니다. 아래 버튼으로 리소스를 설치해 주세요.");
                 }
             }
-            else ShowSetupPanel("AI 리소스가 없습니다. 아래 버튼으로 설치해 주세요. (인터넷 필요, 약 7.6GB)");
+            else ShowSetupPanel("AI 리소스가 없습니다. 아래 버튼으로 설치해 주세요. (인터넷 필요, 약 6.1GB)");
             OllamaBootstrap.OnStatus -= SetAiStatus;
         }
 
@@ -120,10 +141,22 @@ namespace MafiaAI.UI
             try
             {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-                // cmd /k: 스크립트가 끝나든 에러가 나든 콘솔 창이 닫히지 않는다 — 진행 상황/실패 원인이 항상 보인다.
-                string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.bat");
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                { FileName = "cmd.exe", Arguments = "/k \"\"" + script + "\"\"", UseShellExecute = true });
+    string scriptPath = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.bat");
+    string workingDir = Application.streamingAssetsPath;
+
+    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+    {
+        // cmd.exe를 통해 실행하여 배치 파일의 유효성을 확보합니다.
+        FileName = "cmd.exe",
+        // /c는 실행 후 닫기, /k는 실행 후 창 유지입니다. 
+        // 확실한 디버깅을 위해 에러 시 창이 안 닫히도록 /k를 추천합니다.
+        Arguments = $"/k \"{scriptPath}\"", 
+        WorkingDirectory = workingDir,
+        UseShellExecute = true,
+        Verb = "runas" // 관리자 권한 실행 (OllamaSetup 설치 및 Ollama 명령어 실행 권한 확보)
+    };
+
+    System.Diagnostics.Process.Start(startInfo);
 #else
                 string script = System.IO.Path.Combine(Application.streamingAssetsPath, "setup_ai.command");
                 try { System.Diagnostics.Process.Start("/bin/chmod", "+x \"" + script + "\""); } catch { }

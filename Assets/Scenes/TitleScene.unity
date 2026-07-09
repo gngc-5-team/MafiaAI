@@ -3898,6 +3898,8 @@ MonoBehaviour:
   downloadButton: {fileID: 679716798}
   recheckButton: {fileID: 433055059}
   setupStatusText: {fileID: 473537790}
+  titleBgm: {fileID: 8300000, guid: 80bb5b068f130c1449ce3721b4aa72bd, type: 3}
+  titleBgmVolume: 0.3
   gameSceneName: YuminScene
 --- !u!114 &1163751955
 MonoBehaviour:
