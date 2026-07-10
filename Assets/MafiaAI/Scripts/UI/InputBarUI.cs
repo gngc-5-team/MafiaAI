@@ -93,8 +93,9 @@ namespace MafiaAI.UI
         {
             if (controller.HumanPlayer == null) return;
             if (controller.GetPlayerRoom(controller.HumanPlayer.Id) != room) return;
-            SetInputActive(true, asker + "의 질문에 답하세요: " + question);
-            if (input != null) input.ActivateInputField();
+            // 포커스를 강제로 뺏지 않는다 — 이동(WASD) 중 키가 입력창으로 새는 UX 문제.
+            // 플레이서홀더로 질문만 알려주고, 답하고 싶을 때 Enter로 입력창을 연다(Update의 기존 동작).
+            SetInputActive(true, asker + "의 질문 (Enter로 답하기): " + question);
         }
 
         void RebuildChips()
