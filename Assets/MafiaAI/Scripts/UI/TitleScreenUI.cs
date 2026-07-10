@@ -45,6 +45,7 @@ namespace MafiaAI.UI
 
         [Header("설정")]
         [SerializeField] string gameSceneName = "YuminScene";
+        [SerializeField] HowToPlayUI tutorial; // 시작 전 튜토리얼(비어 있으면 바로 시작)
 
         readonly List<Vector2Int> _resolutions = new();
         int _resIndex;
@@ -179,7 +180,12 @@ namespace MafiaAI.UI
 
         void OnDestroy() => OllamaBootstrap.OnStatus -= SetAiStatus;
 
-        void StartGame() => SceneManager.LoadScene(gameSceneName);
+        void StartGame()
+        {
+            // 튜토리얼이 연결돼 있으면 먼저 보여주고(건너뛰기 가능) 끝나면 게임 씬으로.
+            if (tutorial != null) tutorial.Open(() => SceneManager.LoadScene(gameSceneName));
+            else SceneManager.LoadScene(gameSceneName);
+        }
 
         void QuitGame()
         {
