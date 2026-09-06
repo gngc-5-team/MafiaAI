@@ -15,9 +15,9 @@
 - 낮에는 대화와 투표를 하고 밤에는 역할에 맞는 능력을 사용함.
 - AI마다 역할과 성격이 달라 매 판 대화 내용이 바뀌게 만들었음.
 
-| 낮 대화 화면 | 투표 화면 |
+| 낮 토론·대화 화면 | 투표 화면 |
 | --- | --- |
-| ![AI들과 대화하는 낮 화면](Assets/Screenshots/screenshot-20260704-151008.png) | ![의심되는 인물을 고르는 투표 화면](Assets/Screenshots/tut_interrogation.png) |
+| ![같은 방의 AI들과 대화하는 낮 토론 화면](Assets/Screenshots/banner_night2.png) | ![의심되는 인물을 고르는 투표 화면](Assets/Screenshots/tut_interrogation.png) |
 
 ## 내가 만든 부분과 구현 방식
 
