@@ -1,0 +1,3 @@
+이 폴더의 서체는 모두 SIL Open Font License 1.1로 배포된 무료 서체다(게임에 포함·재배포 가능, 서체 단독 판매 금지).
+- NotoSerifKR-Regular.otf / NotoSerifKR-Bold.otf — Noto Serif KR (Google, Adobe) · https://scripts.sil.org/OFL
+- NanumPenScript.ttf / NanumBrushScript.ttf — 나눔손글씨 펜·붓 (NAVER) · macOS 기본 제공 NanumScript.ttc에서 각 서체를 분리함

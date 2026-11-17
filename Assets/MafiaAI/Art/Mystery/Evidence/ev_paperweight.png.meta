@@ -1,0 +1,728 @@
+fileFormatVersion: 2
+guid: 254704928bb154d0cafe486d9999daf6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7040135421799075301
+    second: ev_paperweight_0
+  - first:
+      213: -3828481030524330347
+    second: ev_paperweight_1
+  - first:
+      213: 1665927108082981029
+    second: ev_paperweight_2
+  - first:
+      213: -913897020220873040
+    second: ev_paperweight_3
+  - first:
+      213: 445788257716207661
+    second: ev_paperweight_4
+  - first:
+      213: -8778855285501196947
+    second: ev_paperweight_5
+  - first:
+      213: 4129638846835869652
+    second: ev_paperweight_6
+  - first:
+      213: 5578594496619710051
+    second: ev_paperweight_7
+  - first:
+      213: -3716579068467170309
+    second: ev_paperweight_8
+  - first:
+      213: -7604093640895683896
+    second: ev_paperweight_9
+  - first:
+      213: 8874723255258112917
+    second: ev_paperweight_10
+  - first:
+      213: 7515009769812974826
+    second: ev_paperweight_11
+  - first:
+      213: 3639973705998383883
+    second: ev_paperweight_12
+  - first:
+      213: 2415673353814839444
+    second: ev_paperweight_13
+  - first:
+      213: 4139830783461022878
+    second: ev_paperweight_14
+  - first:
+      213: 5707708917410511152
+    second: ev_paperweight_15
+  - first:
+      213: 8400177215504342407
+    second: ev_paperweight_16
+  - first:
+      213: -6809923546093482032
+    second: ev_paperweight_17
+  - first:
+      213: 1015961013048479376
+    second: ev_paperweight_18
+  - first:
+      213: -4662616283890029954
+    second: ev_paperweight_19
+  - first:
+      213: 340414776739939151
+    second: ev_paperweight_20
+  - first:
+      213: -3592308579377575077
+    second: ev_paperweight_21
+  - first:
+      213: 4559875008656655512
+    second: ev_paperweight_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ev_paperweight_0
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 865
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b127505522a6c4e90800000000000000
+      internalID: -7040135421799075301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_1
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 796
+        width: 76
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59e964279c08edac0800000000000000
+      internalID: -3828481030524330347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_2
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 795
+        width: 118
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a8dafad0ef8e1710800000000000000
+      internalID: 1665927108082981029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_3
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 833
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b6627c808f2153f0800000000000000
+      internalID: -913897020220873040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_4
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 832
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d20073afe02cf2600800000000000000
+      internalID: 445788257716207661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_5
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 811
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d65042551ad3b2680800000000000000
+      internalID: -8778855285501196947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_6
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 810
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d74e44c6ac6f4930800000000000000
+      internalID: 4129638846835869652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_7
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 136
+        width: 738
+        height: 661
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36687f453262b6d40800000000000000
+      internalID: 5578594496619710051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_8
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 779
+        width: 36
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf3bc5c470f0c6cc0800000000000000
+      internalID: -3716579068467170309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_9
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 215
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c22b9f2f15d87690800000000000000
+      internalID: -7604093640895683896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_10
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 207
+        width: 25
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 593ee85c7c9592b70800000000000000
+      internalID: 8874723255258112917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_11
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 203
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aecda45c19daa4860800000000000000
+      internalID: 7515009769812974826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_12
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 208
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0bbbc9dcc8c38230800000000000000
+      internalID: 3639973705998383883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_13
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 184
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4909283dd12368120800000000000000
+      internalID: 2415673353814839444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_14
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 193
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9cdb6ee922a37930800000000000000
+      internalID: 4139830783461022878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_15
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 185
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0393597050bd53f40800000000000000
+      internalID: 5707708917410511152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_16
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 192
+        width: 32
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78d5774ebac639470800000000000000
+      internalID: 8400177215504342407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_17
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 198
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0df87878d9a4e71a0800000000000000
+      internalID: -6809923546093482032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_18
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 169
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09e8668982b691e00800000000000000
+      internalID: 1015961013048479376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_19
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 177
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7a68c2813f0b4fb0800000000000000
+      internalID: -4662616283890029954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_20
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 175
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f43c0e39f6569b400800000000000000
+      internalID: 340414776739939151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_21
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 149
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5b8c92416e852ec0800000000000000
+      internalID: -3592308579377575077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ev_paperweight_22
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 150
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 894492f392ee74f30800000000000000
+      internalID: 4559875008656655512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      ev_paperweight_0: -7040135421799075301
+      ev_paperweight_1: -3828481030524330347
+      ev_paperweight_10: 8874723255258112917
+      ev_paperweight_11: 7515009769812974826
+      ev_paperweight_12: 3639973705998383883
+      ev_paperweight_13: 2415673353814839444
+      ev_paperweight_14: 4139830783461022878
+      ev_paperweight_15: 5707708917410511152
+      ev_paperweight_16: 8400177215504342407
+      ev_paperweight_17: -6809923546093482032
+      ev_paperweight_18: 1015961013048479376
+      ev_paperweight_19: -4662616283890029954
+      ev_paperweight_2: 1665927108082981029
+      ev_paperweight_20: 340414776739939151
+      ev_paperweight_21: -3592308579377575077
+      ev_paperweight_22: 4559875008656655512
+      ev_paperweight_3: -913897020220873040
+      ev_paperweight_4: 445788257716207661
+      ev_paperweight_5: -8778855285501196947
+      ev_paperweight_6: 4129638846835869652
+      ev_paperweight_7: 5578594496619710051
+      ev_paperweight_8: -3716579068467170309
+      ev_paperweight_9: -7604093640895683896
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,858 @@
+fileFormatVersion: 2
+guid: 4b4d5cbab255f454da6503f28cf5196e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5165829437516450881
+    second: fg_armchair_0
+  - first:
+      213: 8632809834477650161
+    second: fg_armchair_1
+  - first:
+      213: 3143352245734182109
+    second: fg_armchair_2
+  - first:
+      213: -7028568797116914382
+    second: fg_armchair_3
+  - first:
+      213: -4588988545579795012
+    second: fg_armchair_4
+  - first:
+      213: -7920510711464157763
+    second: fg_armchair_5
+  - first:
+      213: -8320655989811097561
+    second: fg_armchair_6
+  - first:
+      213: -8944090084272575214
+    second: fg_armchair_7
+  - first:
+      213: -7769041221296847611
+    second: fg_armchair_8
+  - first:
+      213: -5344425858098542880
+    second: fg_armchair_9
+  - first:
+      213: 5460559503172231064
+    second: fg_armchair_10
+  - first:
+      213: -4148075408509333741
+    second: fg_armchair_11
+  - first:
+      213: 8267668677796804167
+    second: fg_armchair_12
+  - first:
+      213: -6504213062587554985
+    second: fg_armchair_13
+  - first:
+      213: 3135293138901064145
+    second: fg_armchair_14
+  - first:
+      213: -7088656052402022910
+    second: fg_armchair_15
+  - first:
+      213: -6957760470214674417
+    second: fg_armchair_16
+  - first:
+      213: -6967694671720893713
+    second: fg_armchair_17
+  - first:
+      213: 8612489855451168802
+    second: fg_armchair_18
+  - first:
+      213: -161979431231843795
+    second: fg_armchair_19
+  - first:
+      213: -474354205310863791
+    second: fg_armchair_20
+  - first:
+      213: -7370282079797597327
+    second: fg_armchair_21
+  - first:
+      213: 1400445261365746866
+    second: fg_armchair_22
+  - first:
+      213: -5709390167786680538
+    second: fg_armchair_23
+  - first:
+      213: 7047810724666165024
+    second: fg_armchair_24
+  - first:
+      213: -750155328644310457
+    second: fg_armchair_25
+  - first:
+      213: 6134381487970028520
+    second: fg_armchair_26
+  - first:
+      213: 1604824980396080958
+    second: fg_armchair_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fg_armchair_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1014
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb3739e0f794f48b0800000000000000
+      internalID: -5165829437516450881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_1
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 718
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f00a8d4ec6edc770800000000000000
+      internalID: 8632809834477650161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_2
+      rect:
+        serializedVersion: 2
+        x: 925
+        y: 720
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddc89ea963e6f9b20800000000000000
+      internalID: 3143352245734182109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_3
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 720
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 235a3700be1857e90800000000000000
+      internalID: -7028568797116914382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_4
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 697
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbd31663b33a050c0800000000000000
+      internalID: -4588988545579795012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_5
+      rect:
+        serializedVersion: 2
+        x: 925
+        y: 679
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbd908bf871b41290800000000000000
+      internalID: -7920510711464157763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_6
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 667
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72055154677178c80800000000000000
+      internalID: -8320655989811097561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_7
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 665
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21de6d7c47530e380800000000000000
+      internalID: -8944090084272575214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_8
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 644
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5050c3fdb22de2490800000000000000
+      internalID: -7769041221296847611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_9
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 604
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e6cf9f7ff8c4d5b0800000000000000
+      internalID: -5344425858098542880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_10
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 601
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89fd675dfedc7cb40800000000000000
+      internalID: 5460559503172231064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_11
+      rect:
+        serializedVersion: 2
+        x: 909
+        y: 554
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31f8446b4631f66c0800000000000000
+      internalID: -4148075408509333741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_12
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 520
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746b3b4cbd8acb270800000000000000
+      internalID: 8267668677796804167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_13
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 526
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 753630d2ea46cb5a0800000000000000
+      internalID: -6504213062587554985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_14
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 482
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d9dae29f7cc28b20800000000000000
+      internalID: 3135293138901064145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_15
+      rect:
+        serializedVersion: 2
+        x: 941
+        y: 490
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20697ada0e800ad90800000000000000
+      internalID: -7088656052402022910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_16
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 407
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08799457b1117f90800000000000000
+      internalID: -6957760470214674417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_17
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 351
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe2b1bccc96cd4f90800000000000000
+      internalID: -6967694671720893713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_18
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 339
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22082d184e5b58770800000000000000
+      internalID: 8612489855451168802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_19
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 341
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d229184c09880cdf0800000000000000
+      internalID: -161979431231843795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_20
+      rect:
+        serializedVersion: 2
+        x: 925
+        y: 337
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 156bbbe0d51ca69f0800000000000000
+      internalID: -474354205310863791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_21
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 324
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17bac337f7f77b990800000000000000
+      internalID: -7370282079797597327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_22
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 323
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bc951b9b816f6310800000000000000
+      internalID: 1400445261365746866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_23
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 334
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62f87fc54eb24c0b0800000000000000
+      internalID: -5709390167786680538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_24
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 221
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0274aef538adec160800000000000000
+      internalID: 7047810724666165024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_25
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 213
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74a1acdf3b9e695f0800000000000000
+      internalID: -750155328644310457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_26
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 129
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8eb8f234673b12550800000000000000
+      internalID: 6134381487970028520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fg_armchair_27
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 124
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3f7e2321db754610800000000000000
+      internalID: 1604824980396080958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fg_armchair_0: -5165829437516450881
+      fg_armchair_1: 8632809834477650161
+      fg_armchair_10: 5460559503172231064
+      fg_armchair_11: -4148075408509333741
+      fg_armchair_12: 8267668677796804167
+      fg_armchair_13: -6504213062587554985
+      fg_armchair_14: 3135293138901064145
+      fg_armchair_15: -7088656052402022910
+      fg_armchair_16: -6957760470214674417
+      fg_armchair_17: -6967694671720893713
+      fg_armchair_18: 8612489855451168802
+      fg_armchair_19: -161979431231843795
+      fg_armchair_2: 3143352245734182109
+      fg_armchair_20: -474354205310863791
+      fg_armchair_21: -7370282079797597327
+      fg_armchair_22: 1400445261365746866
+      fg_armchair_23: -5709390167786680538
+      fg_armchair_24: 7047810724666165024
+      fg_armchair_25: -750155328644310457
+      fg_armchair_26: 6134381487970028520
+      fg_armchair_27: 1604824980396080958
+      fg_armchair_3: -7028568797116914382
+      fg_armchair_4: -4588988545579795012
+      fg_armchair_5: -7920510711464157763
+      fg_armchair_6: -8320655989811097561
+      fg_armchair_7: -8944090084272575214
+      fg_armchair_8: -7769041221296847611
+      fg_armchair_9: -5344425858098542880
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
