@@ -110,3 +110,7 @@ Assets/StreamingAssets/ollama/
 Assets/StreamingAssets/ollama.meta
 mafia_prototype/
 MafiaAI_win*.zip
+
+# 알리바이 하네스 빌드 산출물
+tools/AlibiHarness/bin/
+tools/AlibiHarness/obj/
